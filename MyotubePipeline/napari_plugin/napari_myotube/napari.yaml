@@ -1,0 +1,35 @@
+name: napari-myotube
+display_name: Myotube Tracer
+contributions:
+  commands:
+    - id: napari-myotube.load_run
+      title: Load pipeline run
+      python_name: napari_myotube._widget:load_run
+    - id: napari-myotube.save_traces
+      title: Save traces to traces.txt
+      python_name: napari_myotube._widget:save_traces
+    - id: napari-myotube.import_rois
+      title: Import ImageJ ROIs
+      python_name: napari_myotube._widget:import_rois
+    - id: napari-myotube.export_rois
+      title: Export ImageJ ROIs
+      python_name: napari_myotube._widget:export_rois
+    - id: napari-myotube.export_training
+      title: Export Cellpose training pair
+      python_name: napari_myotube._widget:export_training
+    - id: napari-myotube.cellpose_trace
+      title: Run Cellpose
+      python_name: napari_myotube._widget:cellpose_trace
+  widgets:
+    - command: napari-myotube.load_run
+      display_name: Load run
+    - command: napari-myotube.save_traces
+      display_name: Save traces
+    - command: napari-myotube.import_rois
+      display_name: Import ROIs
+    - command: napari-myotube.export_rois
+      display_name: Export ROIs
+    - command: napari-myotube.export_training
+      display_name: Export training pair
+    - command: napari-myotube.cellpose_trace
+      display_name: Run Cellpose (experimental)

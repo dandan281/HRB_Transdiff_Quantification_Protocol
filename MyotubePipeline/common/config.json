@@ -1,0 +1,14 @@
+{
+  "fiji_exe": "C:/Users/liqig/Desktop/Fiji/fiji-windows-x64.exe",
+  "python_exe": "C:/Users/liqig/anaconda3/python.exe",
+  "pixel_um": 0.6492666666666667,
+  "width": 3636,
+  "height": 3636,
+  "edge_margin": 20,
+  "calibration_images": [
+    "32_C08_br223_igf1r",
+    "P23_B02",
+    "P23_B06",
+    "P23_C09"
+  ]
+}

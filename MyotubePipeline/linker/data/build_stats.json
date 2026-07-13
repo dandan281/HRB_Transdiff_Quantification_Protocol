@@ -1,0 +1,50 @@
+[
+  {
+    "well": "P23_B03_ACT104_EGFR",
+    "plate": "PLATE_23",
+    "n_frag": 861,
+    "n_gt": 224,
+    "frag_mapped": 614,
+    "frag_mapped_frac": 0.7131242740998839,
+    "n_pairs": 3885,
+    "n_pos": 754,
+    "n_skipped_unmapped": 3446,
+    "pos_frac": 0.1940797940797941
+  },
+  {
+    "well": "P32_B02_Ctrl",
+    "plate": "PLATE_32",
+    "n_frag": 715,
+    "n_gt": 356,
+    "frag_mapped": 648,
+    "frag_mapped_frac": 0.9062937062937063,
+    "n_pairs": 3598,
+    "n_pos": 540,
+    "n_skipped_unmapped": 723,
+    "pos_frac": 0.15008337965536409
+  },
+  {
+    "well": "P32_C02_ACT104_FGFR",
+    "plate": "PLATE_32",
+    "n_frag": 1016,
+    "n_gt": 589,
+    "frag_mapped": 854,
+    "frag_mapped_frac": 0.8405511811023622,
+    "n_pairs": 5513,
+    "n_pos": 576,
+    "n_skipped_unmapped": 2122,
+    "pos_frac": 0.10448031924541992
+  },
+  {
+    "well": "P32_C03_ACT104_EGFR",
+    "plate": "PLATE_32",
+    "n_frag": 791,
+    "n_gt": 446,
+    "frag_mapped": 687,
+    "frag_mapped_frac": 0.8685208596713021,
+    "n_pairs": 3817,
+    "n_pos": 467,
+    "n_skipped_unmapped": 1175,
+    "pos_frac": 0.122347393240765
+  }
+]

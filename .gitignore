@@ -1,0 +1,59 @@
+# ============================================================
+#  HRB_Transdiff — .gitignore
+#  This repository tracks CODE ONLY. Raw microscopy data, bundled
+#  conda environments, and generated outputs are excluded and live
+#  on local disk / data backup (see README). Rebuild envs from
+#  environment.yml, not from committed binaries.
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.pytest_cache/
+.ipynb_checkpoints/
+
+# --- Bundled environments (NEVER commit — 4.8 GB of torch/CUDA) ---
+Conversion_Efficiency/cpenv/
+**/cpenv/
+**/venv/
+**/.venv/
+**/site-packages/
+
+# --- Raw microscopy data (irreplaceable — back up separately, not git) ---
+Q_PLATES/
+*.nd2
+
+# --- Large image/volume binaries ---
+*.tif
+*.tiff
+
+# --- Generated analysis outputs ---
+ClaudeOutputs/
+outputs/
+Conversion_Efficiency/cp_c08_full/
+Conversion_Efficiency/cp_c08_crop/
+Conversion_Efficiency/outputs/
+Conversion_Efficiency/outputs_B02/
+
+# --- Pipeline run outputs (4.1 GB, regenerable) ---
+#     ...but KEEP the human-review label files, which are precious.
+MyotubePipeline/runs/**
+!MyotubePipeline/runs/**/
+!MyotubePipeline/runs/**/decisions.json
+
+# --- Large regenerable renders ---
+MyotubePipeline/linker/overlays/
+
+# --- Nested / experimental temp repo ---
+.codex_tmp_repo/
+
+# --- Logs ---
+*.log
+*.err
+
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini

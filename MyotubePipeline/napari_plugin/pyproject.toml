@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "napari-myotube"
+version = "0.1.0"
+description = "napari plugin to review/curate myotube traces and bridge to Cellpose"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scikit-image",
+    "tifffile",
+    "roifile",
+    "magicgui",
+    "qtpy",
+    "napari",
+]
+
+[project.optional-dependencies]
+cellpose = ["cellpose"]
+test = ["pytest"]
+
+[project.entry-points."napari.manifest"]
+napari-myotube = "napari_myotube:napari.yaml"
+
+[tool.setuptools]
+packages = ["napari_myotube"]
+
+[tool.setuptools.package-data]
+napari_myotube = ["napari.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

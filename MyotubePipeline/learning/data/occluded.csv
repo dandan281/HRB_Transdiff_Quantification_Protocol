@@ -1,0 +1,12 @@
+stem,case_id,action,label,length_px,brightness
+32_C08_br223_igf1r,occlude_0079,drop,0,139.3,143.9
+32_C08_br223_igf1r,occlude_0137,drop,0,93.5,150.0
+32_C08_br223_igf1r,occlude_0182,restore,1,160.4,150.0
+32_C08_br223_igf1r,occlude_0189,restore,1,80.5,150.0
+32_C08_br223_igf1r,occlude_0190,restore,1,81.7,150.0
+32_C08_br223_igf1r,occlude_0192,drop,0,161.3,150.0
+32_C08_br223_igf1r,occlude_0219,restore,1,110.3,150.0
+32_C08_br223_igf1r,occlude_0318,restore,1,107.8,149.5
+32_C08_br223_igf1r,occlude_0319,restore,1,106.5,149.4
+32_C08_br223_igf1r,occlude_0322,drop,0,169.1,149.4
+32_C08_br223_igf1r,occlude_0129,redraw_restore,1,136.8,150.0

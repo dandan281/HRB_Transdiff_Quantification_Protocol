@@ -1,0 +1,6 @@
+group,n_wells,gt_pct_below_300,gt_sem,pred_pct_below_300,pred_sem,mean_delta
+Ctrl,2,72.5,8.6,91.3,3.8,18.8
+BR223_IGF1R,2,35.6,12.8,87.2,0.1,51.6
+ACT104_EGFR,1,74.2,0.0,94.0,0.0,19.8
+ACT104_TrkA,1,42.5,0.0,81.7,0.0,39.3
+ACT104_FGFR,1,79.3,0.0,94.5,0.0,15.2

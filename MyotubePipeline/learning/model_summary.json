@@ -1,0 +1,63 @@
+{
+  "split": {
+    "type": "split",
+    "n": 93,
+    "n_pos": 34,
+    "features": [
+      "length_px",
+      "brightness",
+      "longest_dark_px",
+      "max_bend_deg",
+      "n_gap",
+      "n_kink"
+    ],
+    "status": "fitted",
+    "train_accuracy": 0.72,
+    "coef_std": {
+      "n_gap": 0.829,
+      "n_kink": 0.621,
+      "max_bend_deg": -0.476,
+      "longest_dark_px": 0.191,
+      "brightness": 0.17,
+      "length_px": -0.033
+    },
+    "rule": "you tend to 'split/split_n' a split case when n_gap is higher (top driver, std-coef +0.83); base rate 37%"
+  },
+  "merge": {
+    "type": "merge",
+    "n": 306,
+    "n_pos": 102,
+    "features": [
+      "gap_px",
+      "angle_deg",
+      "continuity",
+      "len_min",
+      "len_max",
+      "bright_min",
+      "bright_max"
+    ],
+    "status": "fitted",
+    "train_accuracy": 0.706,
+    "coef_std": {
+      "continuity": 1.172,
+      "bright_max": -0.457,
+      "len_min": -0.409,
+      "bright_min": -0.405,
+      "len_max": -0.095,
+      "angle_deg": -0.077,
+      "gap_px": -0.076
+    },
+    "rule": "you tend to 'merge' a merge case when continuity is higher (top driver, std-coef +1.17); base rate 33%"
+  },
+  "occluded": {
+    "type": "occluded",
+    "n": 11,
+    "n_pos": 7,
+    "features": [
+      "length_px",
+      "brightness"
+    ],
+    "status": "insufficient",
+    "majority": 1
+  }
+}

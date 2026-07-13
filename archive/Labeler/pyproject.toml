@@ -1,0 +1,9 @@
+[project]
+name = "wb-auto-annotator"
+version = "0.1.0"
+description = "Windows-first Western blot folder auto-annotator and safe renamer."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
