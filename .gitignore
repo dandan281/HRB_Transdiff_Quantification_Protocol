@@ -21,8 +21,20 @@ Conversion_Efficiency/cpenv/
 **/.venv/
 **/site-packages/
 
-# --- Raw microscopy data (irreplaceable — back up separately, not git) ---
-Q_PLATES/
+# --- Q_Plates: ignore the raw data, but KEEP the small hand-label files ---
+#     (irreplaceable ROI zips + Results CSVs + analysis scripts, ~2 MB total)
+Q_PLATES/**
+!Q_PLATES/**/
+!Q_PLATES/**/*_ROIs.zip
+!Q_PLATES/**/*_Results*.csv
+!Q_PLATES/**/*.R
+!Q_PLATES/**/*_summary.csv
+# never the raws, even via a re-included directory
+Q_PLATES/**/*.nd2
+Q_PLATES/**/*.tif
+Q_PLATES/**/*.tiff
+
+# --- Raw microscopy data anywhere ---
 *.nd2
 
 # --- Large image/volume binaries ---
