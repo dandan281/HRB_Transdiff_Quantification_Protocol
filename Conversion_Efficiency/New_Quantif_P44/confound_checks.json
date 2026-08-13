@@ -1,0 +1,21 @@
+{
+  "plate": "PLATE_44",
+  "density_pearson_r": 0.207,
+  "density_pearson_p": 0.1999921177292842,
+  "density_spearman_r": 0.139,
+  "column_pearson_r": -0.285,
+  "row_pearson_r": 0.274,
+  "conversion_min_pct": 4.51,
+  "conversion_max_pct": 20.27,
+  "assumed_control": "23_B02",
+  "assumed_control_pct": 15.74,
+  "assumed_control_rank_of_40": 27,
+  "plate9_control_only_spread_pct": [
+    11.3,
+    46.7
+  ],
+  "verdict": [
+    "density is not driving the ranking",
+    "observed spread is WITHIN the control-only spread measured on Plate 9 -- not separable from well-to-well noise"
+  ]
+}

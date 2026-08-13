@@ -1,0 +1,164 @@
+{
+  "plate": "PLATE_44",
+  "pilots": [
+    "23_B02",
+    "31_C07",
+    "44_D05",
+    "59_E11"
+  ],
+  "cellprobs": [
+    -2.0,
+    -1.0,
+    0.0,
+    1.0,
+    2.0
+  ],
+  "plateau_metric": "valid nuclei (50-500 um2), relative neighbour sensitivity",
+  "chosen_cellprob": 0.0,
+  "votes": {
+    "-2": 0,
+    "-1": 0,
+    "+0": 4,
+    "+1": 0,
+    "+2": 0
+  },
+  "per_pilot": {
+    "23_B02": {
+      "-2": {
+        "raw": 17138,
+        "valid": 17079,
+        "median_area_um2": 214.1,
+        "seconds": 5.2
+      },
+      "-1": {
+        "raw": 17762,
+        "valid": 17688,
+        "median_area_um2": 184.4,
+        "seconds": 4.3
+      },
+      "+0": {
+        "raw": 17862,
+        "valid": 17759,
+        "median_area_um2": 157.6,
+        "seconds": 4.4
+      },
+      "+1": {
+        "raw": 17682,
+        "valid": 17542,
+        "median_area_um2": 136.8,
+        "seconds": 4.3
+      },
+      "+2": {
+        "raw": 17274,
+        "valid": 17057,
+        "median_area_um2": 113.0,
+        "seconds": 4.3
+      }
+    },
+    "31_C07": {
+      "-2": {
+        "raw": 19890,
+        "valid": 19831,
+        "median_area_um2": 196.3,
+        "seconds": 4.6
+      },
+      "-1": {
+        "raw": 20806,
+        "valid": 20734,
+        "median_area_um2": 169.5,
+        "seconds": 4.5
+      },
+      "+0": {
+        "raw": 20977,
+        "valid": 20875,
+        "median_area_um2": 142.8,
+        "seconds": 4.6
+      },
+      "+1": {
+        "raw": 20831,
+        "valid": 20686,
+        "median_area_um2": 121.9,
+        "seconds": 4.3
+      },
+      "+2": {
+        "raw": 20387,
+        "valid": 20086,
+        "median_area_um2": 98.1,
+        "seconds": 4.4
+      }
+    },
+    "44_D05": {
+      "-2": {
+        "raw": 20348,
+        "valid": 20287,
+        "median_area_um2": 190.3,
+        "seconds": 4.4
+      },
+      "-1": {
+        "raw": 21179,
+        "valid": 21091,
+        "median_area_um2": 163.6,
+        "seconds": 4.3
+      },
+      "+0": {
+        "raw": 21305,
+        "valid": 21220,
+        "median_area_um2": 139.8,
+        "seconds": 4.2
+      },
+      "+1": {
+        "raw": 21167,
+        "valid": 21013,
+        "median_area_um2": 119.0,
+        "seconds": 4.2
+      },
+      "+2": {
+        "raw": 20740,
+        "valid": 20407,
+        "median_area_um2": 98.1,
+        "seconds": 4.2
+      }
+    },
+    "59_E11": {
+      "-2": {
+        "raw": 14306,
+        "valid": 14234,
+        "median_area_um2": 220.1,
+        "seconds": 4.2
+      },
+      "-1": {
+        "raw": 14745,
+        "valid": 14689,
+        "median_area_um2": 187.4,
+        "seconds": 4.1
+      },
+      "+0": {
+        "raw": 14802,
+        "valid": 14738,
+        "median_area_um2": 163.6,
+        "seconds": 4.1
+      },
+      "+1": {
+        "raw": 14713,
+        "valid": 14622,
+        "median_area_um2": 136.8,
+        "seconds": 4.2
+      },
+      "+2": {
+        "raw": 14480,
+        "valid": 14344,
+        "median_area_um2": 113.0,
+        "seconds": 4.3
+      }
+    }
+  },
+  "resolution_crosscheck": {
+    "native_px_um": 1.724571,
+    "resampled_px_um": 0.650017,
+    "native_valid": 17759,
+    "resampled_valid": 18292,
+    "valid_pct_difference": 3.0,
+    "decision": "segment at native resolution"
+  },
+  "gpu": true
+}

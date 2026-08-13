@@ -1,0 +1,339 @@
+{
+  "plate": "PLATE_44",
+  "pixel_um": 1.724571,
+  "ring_um": 10.0,
+  "ring_px": 6,
+  "otsu_threshold_raw": 118.90987359820369,
+  "otsu_threshold_log10": 2.0752179174545526,
+  "threshold_units": "raw camera (12-bit); not cross-plate comparable",
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "pooled_cells": 739280,
+  "control_well": "23_B02",
+  "control_is_assumed_by_position": true,
+  "condition_labels": "absent -- no layout sheet provided for this plate",
+  "per_well": {
+    "14_B11": {
+      "well_id": "B11",
+      "cells": 14474,
+      "desmin_pos": 653,
+      "conversion_pct": 4.51,
+      "ring_median": 38.4,
+      "fold_vs_assumed_ctrl": 0.29
+    },
+    "15_B10": {
+      "well_id": "B10",
+      "cells": 16584,
+      "desmin_pos": 2027,
+      "conversion_pct": 12.22,
+      "ring_median": 50.0,
+      "fold_vs_assumed_ctrl": 0.78
+    },
+    "16_B09": {
+      "well_id": "B09",
+      "cells": 17135,
+      "desmin_pos": 1616,
+      "conversion_pct": 9.43,
+      "ring_median": 49.7,
+      "fold_vs_assumed_ctrl": 0.6
+    },
+    "17_B08": {
+      "well_id": "B08",
+      "cells": 16832,
+      "desmin_pos": 2686,
+      "conversion_pct": 15.96,
+      "ring_median": 53.9,
+      "fold_vs_assumed_ctrl": 1.01
+    },
+    "18_B07": {
+      "well_id": "B07",
+      "cells": 23130,
+      "desmin_pos": 3601,
+      "conversion_pct": 15.57,
+      "ring_median": 49.7,
+      "fold_vs_assumed_ctrl": 0.99
+    },
+    "19_B06": {
+      "well_id": "B06",
+      "cells": 24615,
+      "desmin_pos": 3577,
+      "conversion_pct": 14.53,
+      "ring_median": 50.5,
+      "fold_vs_assumed_ctrl": 0.92
+    },
+    "20_B05": {
+      "well_id": "B05",
+      "cells": 22975,
+      "desmin_pos": 3676,
+      "conversion_pct": 16.0,
+      "ring_median": 50.0,
+      "fold_vs_assumed_ctrl": 1.02
+    },
+    "21_B04": {
+      "well_id": "B04",
+      "cells": 15641,
+      "desmin_pos": 2198,
+      "conversion_pct": 14.05,
+      "ring_median": 48.1,
+      "fold_vs_assumed_ctrl": 0.89
+    },
+    "22_B03": {
+      "well_id": "B03",
+      "cells": 17516,
+      "desmin_pos": 2578,
+      "conversion_pct": 14.72,
+      "ring_median": 55.5,
+      "fold_vs_assumed_ctrl": 0.94
+    },
+    "23_B02": {
+      "well_id": "B02",
+      "cells": 17758,
+      "desmin_pos": 2795,
+      "conversion_pct": 15.74,
+      "ring_median": 55.7,
+      "fold_vs_assumed_ctrl": 1.0
+    },
+    "26_C02": {
+      "well_id": "C02",
+      "cells": 17066,
+      "desmin_pos": 3223,
+      "conversion_pct": 18.89,
+      "ring_median": 57.0,
+      "fold_vs_assumed_ctrl": 1.2
+    },
+    "27_C03": {
+      "well_id": "C03",
+      "cells": 17096,
+      "desmin_pos": 2312,
+      "conversion_pct": 13.52,
+      "ring_median": 51.6,
+      "fold_vs_assumed_ctrl": 0.86
+    },
+    "28_C04": {
+      "well_id": "C04",
+      "cells": 14591,
+      "desmin_pos": 2259,
+      "conversion_pct": 15.48,
+      "ring_median": 48.3,
+      "fold_vs_assumed_ctrl": 0.98
+    },
+    "29_C05": {
+      "well_id": "C05",
+      "cells": 14537,
+      "desmin_pos": 2217,
+      "conversion_pct": 15.25,
+      "ring_median": 48.9,
+      "fold_vs_assumed_ctrl": 0.97
+    },
+    "30_C06": {
+      "well_id": "C06",
+      "cells": 14716,
+      "desmin_pos": 2281,
+      "conversion_pct": 15.5,
+      "ring_median": 46.7,
+      "fold_vs_assumed_ctrl": 0.98
+    },
+    "31_C07": {
+      "well_id": "C07",
+      "cells": 20875,
+      "desmin_pos": 3763,
+      "conversion_pct": 18.03,
+      "ring_median": 48.8,
+      "fold_vs_assumed_ctrl": 1.15
+    },
+    "32_C08": {
+      "well_id": "C08",
+      "cells": 21582,
+      "desmin_pos": 4364,
+      "conversion_pct": 20.22,
+      "ring_median": 49.4,
+      "fold_vs_assumed_ctrl": 1.28
+    },
+    "33_C09": {
+      "well_id": "C09",
+      "cells": 24441,
+      "desmin_pos": 3301,
+      "conversion_pct": 13.51,
+      "ring_median": 52.1,
+      "fold_vs_assumed_ctrl": 0.86
+    },
+    "34_C10": {
+      "well_id": "C10",
+      "cells": 18186,
+      "desmin_pos": 2130,
+      "conversion_pct": 11.71,
+      "ring_median": 50.0,
+      "fold_vs_assumed_ctrl": 0.74
+    },
+    "35_C11": {
+      "well_id": "C11",
+      "cells": 15445,
+      "desmin_pos": 2029,
+      "conversion_pct": 13.14,
+      "ring_median": 43.5,
+      "fold_vs_assumed_ctrl": 0.83
+    },
+    "38_D11": {
+      "well_id": "D11",
+      "cells": 16060,
+      "desmin_pos": 1928,
+      "conversion_pct": 12.0,
+      "ring_median": 45.8,
+      "fold_vs_assumed_ctrl": 0.76
+    },
+    "39_D10": {
+      "well_id": "D10",
+      "cells": 15689,
+      "desmin_pos": 2289,
+      "conversion_pct": 14.59,
+      "ring_median": 45.3,
+      "fold_vs_assumed_ctrl": 0.93
+    },
+    "40_D09": {
+      "well_id": "D09",
+      "cells": 17367,
+      "desmin_pos": 2519,
+      "conversion_pct": 14.5,
+      "ring_median": 48.0,
+      "fold_vs_assumed_ctrl": 0.92
+    },
+    "41_D08": {
+      "well_id": "D08",
+      "cells": 15502,
+      "desmin_pos": 2240,
+      "conversion_pct": 14.45,
+      "ring_median": 44.1,
+      "fold_vs_assumed_ctrl": 0.92
+    },
+    "42_D07": {
+      "well_id": "D07",
+      "cells": 16707,
+      "desmin_pos": 2908,
+      "conversion_pct": 17.41,
+      "ring_median": 46.9,
+      "fold_vs_assumed_ctrl": 1.11
+    },
+    "43_D06": {
+      "well_id": "D06",
+      "cells": 15077,
+      "desmin_pos": 2399,
+      "conversion_pct": 15.91,
+      "ring_median": 47.7,
+      "fold_vs_assumed_ctrl": 1.01
+    },
+    "44_D05": {
+      "well_id": "D05",
+      "cells": 21217,
+      "desmin_pos": 3321,
+      "conversion_pct": 15.65,
+      "ring_median": 48.1,
+      "fold_vs_assumed_ctrl": 0.99
+    },
+    "45_D04": {
+      "well_id": "D04",
+      "cells": 21369,
+      "desmin_pos": 2844,
+      "conversion_pct": 13.31,
+      "ring_median": 44.9,
+      "fold_vs_assumed_ctrl": 0.85
+    },
+    "46_D03": {
+      "well_id": "D03",
+      "cells": 22534,
+      "desmin_pos": 3274,
+      "conversion_pct": 14.53,
+      "ring_median": 42.8,
+      "fold_vs_assumed_ctrl": 0.92
+    },
+    "47_D02": {
+      "well_id": "D02",
+      "cells": 15951,
+      "desmin_pos": 2773,
+      "conversion_pct": 17.38,
+      "ring_median": 54.1,
+      "fold_vs_assumed_ctrl": 1.1
+    },
+    "50_E02": {
+      "well_id": "E02",
+      "cells": 21580,
+      "desmin_pos": 3366,
+      "conversion_pct": 15.6,
+      "ring_median": 41.4,
+      "fold_vs_assumed_ctrl": 0.99
+    },
+    "51_E03": {
+      "well_id": "E03",
+      "cells": 22865,
+      "desmin_pos": 2599,
+      "conversion_pct": 11.37,
+      "ring_median": 37.1,
+      "fold_vs_assumed_ctrl": 0.72
+    },
+    "52_E04": {
+      "well_id": "E04",
+      "cells": 22365,
+      "desmin_pos": 3099,
+      "conversion_pct": 13.86,
+      "ring_median": 41.2,
+      "fold_vs_assumed_ctrl": 0.88
+    },
+    "53_E05": {
+      "well_id": "E05",
+      "cells": 20607,
+      "desmin_pos": 3131,
+      "conversion_pct": 15.19,
+      "ring_median": 43.9,
+      "fold_vs_assumed_ctrl": 0.97
+    },
+    "54_E06": {
+      "well_id": "E06",
+      "cells": 19864,
+      "desmin_pos": 3382,
+      "conversion_pct": 17.03,
+      "ring_median": 46.4,
+      "fold_vs_assumed_ctrl": 1.08
+    },
+    "55_E07": {
+      "well_id": "E07",
+      "cells": 21160,
+      "desmin_pos": 4091,
+      "conversion_pct": 19.33,
+      "ring_median": 47.4,
+      "fold_vs_assumed_ctrl": 1.23
+    },
+    "56_E08": {
+      "well_id": "E08",
+      "cells": 19313,
+      "desmin_pos": 3664,
+      "conversion_pct": 18.97,
+      "ring_median": 47.3,
+      "fold_vs_assumed_ctrl": 1.21
+    },
+    "57_E09": {
+      "well_id": "E09",
+      "cells": 18895,
+      "desmin_pos": 3830,
+      "conversion_pct": 20.27,
+      "ring_median": 44.7,
+      "fold_vs_assumed_ctrl": 1.29
+    },
+    "58_E10": {
+      "well_id": "E10",
+      "cells": 15225,
+      "desmin_pos": 1636,
+      "conversion_pct": 10.75,
+      "ring_median": 43.3,
+      "fold_vs_assumed_ctrl": 0.68
+    },
+    "59_E11": {
+      "well_id": "E11",
+      "cells": 14738,
+      "desmin_pos": 2409,
+      "conversion_pct": 16.35,
+      "ring_median": 46.5,
+      "fold_vs_assumed_ctrl": 1.04
+    }
+  }
+}
