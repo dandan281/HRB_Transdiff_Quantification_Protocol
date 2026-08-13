@@ -103,8 +103,11 @@ def human_lengths(path):
 
 
 def binpct(lengths):
+    # len(EDGES)-1 bins, not a hardcoded 3: EDGES was trimmed from the original
+    # three-bin design to two, and a zeros(3) empty-well row made the per-well
+    # arrays ragged and crashed the group summary.
     if lengths.size == 0:
-        return np.zeros(3)
+        return np.zeros(len(EDGES) - 1)
     h, _ = np.histogram(lengths, bins=EDGES)
     return 100 * h / h.sum()
 

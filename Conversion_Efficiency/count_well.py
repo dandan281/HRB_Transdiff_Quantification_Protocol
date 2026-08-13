@@ -86,8 +86,17 @@ def main():
     rec = {"well": stem, "operating_cellprob": op_cp, "nuclei": op_count,
            "sweep": dict(zip([f"{v:+.0f}" for v in cps], counts)),
            "seconds": round(secs, 1), "gpu": gpu}
-    with open(os.path.join(a.outdir, "plate_results.jsonl"), "a") as fh:
-        fh.write(json.dumps(rec) + "\n")
+    # Re-running a well must replace its old record, not append a second one --
+    # the summary scripts sum every line, so duplicates double-count the plate.
+    path = os.path.join(a.outdir, "plate_results.jsonl")
+    rows = []
+    if os.path.exists(path):
+        with open(path) as fh:
+            rows = [json.loads(l) for l in fh if l.strip()]
+    rows = [r for r in rows if r.get("well") != rec["well"]] + [rec]
+    with open(path, "w") as fh:
+        for r in rows:
+            fh.write(json.dumps(r) + "\n")
     print("WELL_DONE", stem, op_count)
 
 

@@ -125,8 +125,17 @@ def main():
            "sweep": {f"{h:.0f}": n for h, n in zip(highs, counts)},
            "sweep_cov": {f"{h:.0f}": v for h, v in zip(highs, covs)},
            "seconds": round(secs, 1)}
-    with open(os.path.join(a.outdir, "myotube_results.jsonl"), "a") as fh:
-        fh.write(json.dumps(rec) + "\n")
+    # Re-running a well must replace its old record, not append a second one --
+    # the summary scripts sum every line, so duplicates double-count the plate.
+    path = os.path.join(a.outdir, "myotube_results.jsonl")
+    rows = []
+    if os.path.exists(path):
+        with open(path) as fh:
+            rows = [json.loads(l) for l in fh if l.strip()]
+    rows = [r for r in rows if r.get("well") != rec["well"]] + [rec]
+    with open(path, "w") as fh:
+        for r in rows:
+            fh.write(json.dumps(r) + "\n")
     print("MYOTUBE_DONE", stem, op_count)
 
 

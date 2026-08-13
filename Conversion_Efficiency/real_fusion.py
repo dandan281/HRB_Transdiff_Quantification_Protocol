@@ -151,6 +151,11 @@ def main():
     fracs = [float(f) for f in a.fracs.split(",")]
     if a.primary_frac not in fracs:
         fracs.append(a.primary_frac)
+    # The overlay block below reads terr_p/is_in_p/valid_p, which are only bound
+    # on the (primary gate, primary frac) iteration — so the primary gate must be
+    # in the sweep, same as the primary frac above.
+    if a.primary not in gates:
+        gates.append(a.primary)
     fkey = lambda f: f"overlap_{int(round(100 * f))}pct"      # noqa: E731
 
     wells = sorted(f.replace("_myotube_mask.npy", "") for f in os.listdir(MYO_DIR)

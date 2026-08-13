@@ -82,8 +82,17 @@ def main():
            "fusion_index_pct": round(fusion, 2),
            "myotube_coverage_pct": round(dbg["coverage_pct"], 2),
            "frac_thresh": a.frac}
-    with open(os.path.join(a.outdir, "fusion_results.jsonl"), "a") as fh:
-        fh.write(json.dumps(rec) + "\n")
+    # Re-running a well must replace its old record, not append a second one --
+    # the summary scripts sum every line, so duplicates double-count the plate.
+    path = os.path.join(a.outdir, "fusion_results.jsonl")
+    rows = []
+    if os.path.exists(path):
+        with open(path) as fh:
+            rows = [json.loads(l) for l in fh if l.strip()]
+    rows = [r for r in rows if r.get("well") != rec["well"]] + [rec]
+    with open(path, "w") as fh:
+        for r in rows:
+            fh.write(json.dumps(r) + "\n")
     print(f"FUSION_DONE {stem}  inside={n_inside}/{n}  = {fusion:.1f}%  "
           f"(myo cov {dbg['coverage_pct']:.1f}%)")
 

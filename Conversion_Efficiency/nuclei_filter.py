@@ -13,7 +13,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 UM2 = 0.6493 ** 2           # um^2 per pixel
-NUC_DIR = "plate23_nuclei"
 
 
 def areas_um2(nuc):
@@ -29,11 +28,14 @@ def main():
     ap.add_argument("--outdir", default="plate23_nuclei")
     a = ap.parse_args()
 
-    wells = sorted(f.replace("_masks.npy", "") for f in os.listdir(NUC_DIR)
+    # Masks are read from the SAME folder the report is written to. A separate
+    # hardcoded input dir once meant `--outdir plate26_nuclei` silently analysed
+    # plate 23 and filed the answer under plate 26.
+    wells = sorted(f.replace("_masks.npy", "") for f in os.listdir(a.outdir)
                    if f.endswith("_masks.npy"))
     pooled, rows, totals = [], {}, {"raw": 0, "keep": 0}
     for w in wells:
-        nuc = np.load(os.path.join(NUC_DIR, f"{w}_masks.npy"))
+        nuc = np.load(os.path.join(a.outdir, f"{w}_masks.npy"))
         ar = areas_um2(nuc)[1:]                 # drop background
         ar = ar[ar > 0]
         keep = (ar >= a.amin) & (ar <= a.amax)
@@ -70,7 +72,8 @@ def main():
         ax[1].text(i, v, f"{v:,}", ha="center", va="bottom", fontweight="bold")
     ax[1].set_ylabel("nuclei"); ax[1].set_title("Area-filter impact (plate)")
     ax[1].grid(axis="y", alpha=0.3)
-    fig.suptitle(f"Nucleus area boundary {a.amin:.0f}-{a.amax:.0f} um2 — Plate 23",
+    fig.suptitle(f"Nucleus area boundary {a.amin:.0f}-{a.amax:.0f} um2 — "
+                 f"{os.path.basename(os.path.normpath(a.outdir))}",
                  fontsize=15, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     fig.savefig(os.path.join(a.outdir, "nuclei_area_filter.png"), dpi=120,
@@ -80,9 +83,11 @@ def main():
         json.dump({"amin": a.amin, "amax": a.amax, "per_well": rows,
                    "plate": totals}, fh, indent=2)
     print("-" * 60)
+    removed_pct = (100 * (totals["raw"] - totals["keep"]) / totals["raw"]
+                   if totals["raw"] else 0.0)
     print(f"PLATE raw={totals['raw']:,}  kept[{a.amin:.0f},{a.amax:.0f}]="
           f"{totals['keep']:,}  removed={totals['raw']-totals['keep']:,} "
-          f"({100*(totals['raw']-totals['keep'])/totals['raw']:.1f}%)")
+          f"({removed_pct:.1f}%)")
 
 
 if __name__ == "__main__":

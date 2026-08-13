@@ -86,7 +86,6 @@ if __name__ == "__main__":
             m, dbg = detect_myotubes(sub, **kw)
             rgb = np.zeros((s, s, 3), np.uint8)
             rgb[..., 1] = raw                       # green raw
-            edge = m ^ binary_closing(m, disk(1))
             rgb[m, 0] = 120                          # red tint = mask fill
             rgb[m, 2] = 120
             cov = 100 * m.mean()
