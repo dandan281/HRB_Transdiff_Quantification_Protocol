@@ -1,0 +1,191 @@
+{
+  "audit": "tier_a_conversion_pipeline",
+  "evidence_class": "read_only_reproduction",
+  "reproduction": {
+    "all_wells_match_declared": true,
+    "declared_present": true,
+    "threshold_raw": 440.76596787901417,
+    "comparison": [
+      {
+        "well": "23_B02_ctrl",
+        "desmin_pos": 1166,
+        "valid": 7635,
+        "conversion_pct": 15.27,
+        "matches_declared": true,
+        "declared_desmin_pos": 1166,
+        "declared_valid": 7635,
+        "declared_conversion_pct": 15.27
+      },
+      {
+        "well": "33_C09_br223_trka",
+        "desmin_pos": 1616,
+        "valid": 8947,
+        "conversion_pct": 18.06,
+        "matches_declared": true,
+        "declared_desmin_pos": 1616,
+        "declared_valid": 8947,
+        "declared_conversion_pct": 18.06
+      },
+      {
+        "well": "29_C05_br223_egfrc",
+        "desmin_pos": 1750,
+        "valid": 7210,
+        "conversion_pct": 24.27,
+        "matches_declared": true,
+        "declared_desmin_pos": 1750,
+        "declared_valid": 7210,
+        "declared_conversion_pct": 24.27
+      },
+      {
+        "well": "19_B06_act104_trka",
+        "desmin_pos": 2748,
+        "valid": 8440,
+        "conversion_pct": 32.56,
+        "matches_declared": true,
+        "declared_desmin_pos": 2748,
+        "declared_valid": 8440,
+        "declared_conversion_pct": 32.56
+      },
+      {
+        "well": "32_C08_br223_igf1r",
+        "desmin_pos": 3341,
+        "valid": 10114,
+        "conversion_pct": 33.03,
+        "matches_declared": true,
+        "declared_desmin_pos": 3341,
+        "declared_valid": 10114,
+        "declared_conversion_pct": 33.03
+      },
+      {
+        "well": "22_B03_act104_egfrc",
+        "desmin_pos": 3749,
+        "valid": 9524,
+        "conversion_pct": 39.36,
+        "matches_declared": true,
+        "declared_desmin_pos": 3749,
+        "declared_valid": 9524,
+        "declared_conversion_pct": 39.36
+      }
+    ]
+  },
+  "plate_wide_operating_point": {
+    "single_threshold_all_wells": true,
+    "declared_threshold_method_is_pooled_uniform": true,
+    "reproduced_threshold_matches_declared": true,
+    "no_per_well_threshold_field": true,
+    "passed": true
+  },
+  "c08_nucleus_reconciliation": {
+    "canonical_mask": "Conversion_Efficiency\\plate23_nuclei\\32_C08_br223_igf1r_masks.npy",
+    "myofuse_mask": "Conversion_Efficiency\\cp_c08_full\\cellpose_masks.npy",
+    "proven": true,
+    "mask_arrays_identical": true,
+    "canonical_sha256": "ca15dffda03f52ff310381212d45e6067066dc5f1a8666a6fac45f062a0d47c9",
+    "myofuse_sha256": "ca15dffda03f52ff310381212d45e6067066dc5f1a8666a6fac45f062a0d47c9",
+    "counts": {
+      "total_labels": 10588,
+      "ge_30px_myofuse_floor": 10562,
+      "area_50_500um2_canonical": 10114
+    },
+    "reproduces_canonical_10114": true,
+    "myofuse_reported": 10560,
+    "myofuse_floor_minus_reported": 2,
+    "explanation": "Same Cellpose mask array (identical bytes). The difference is the nucleus size gate: canonical keeps area in [50,500] um^2 -> 10,114; MyoFuse keeps >=30 px with no upper bound (then drops a few for ring<20px/around<=0) -> 10,560. Not a mask-source discrepancy."
+  },
+  "method_distinction": {
+    "declared_ring_method": {
+      "well": "32_C08_br223_igf1r",
+      "desmin_pos": 3341,
+      "valid": 10114,
+      "conversion_pct": 33.03,
+      "method": "10um cytoplasmic ring, pooled log-Otsu (reproduced here)"
+    },
+    "superseded_traced_fiber": {
+      "well": "32_C08_br223_igf1r",
+      "n_converted": 670,
+      "n_valid": 10114,
+      "conversion_pct": 6.6245,
+      "method": "50% traced-fiber/territory overlap (superseded)"
+    },
+    "diagnostic_sweeps_not_operating_points": [
+      "conversion_v2.json (absolute-threshold k-sweep, pixel overlap)",
+      "absolute_desmin.json (per-image vs absolute coverage diagnosis)",
+      "ring_sweep.json / amin_sweep*.json"
+    ],
+    "note": "The ring method (~33%) and the superseded traced-fiber method (~6.6%) are different definitions on the SAME 10,114 valid nuclei; the k-sweeps are robustness diagnostics and must not be presented as competing operating points."
+  },
+  "manifest_sha256": {
+    "source_images_nd2": {
+      "Q_PLATES/Q_Plates/PLATE_23/23_B02_ctrl.nd2": "e136dab0a5e3f76912aea66235e7b861974cad0473a3202602fad87d1bf478f5",
+      "Q_PLATES/Q_Plates/PLATE_23/33_C09_br223_trka.nd2": "cb7598ba772c407c9b409b64575eb219fdc901e3ba55a6bcb0a29bbc9274ac90",
+      "Q_PLATES/Q_Plates/PLATE_23/29_C05_br223_egfrc.nd2": "1d59e6d951c39493d198b0b41fe6be7cbfc0c5ceacabfd7cb77be937119c76d2",
+      "Q_PLATES/Q_Plates/PLATE_23/19_B06_act104_trka.nd2": "47cbdf5e4b29b3be8d7aebf614e1e940acec1ddba5ad7e9c2396fa6f6913bb87",
+      "Q_PLATES/Q_Plates/PLATE_23/32_C08_br223_igf1r.nd2": "d7902b3c0103f542941c31f50b7fb3f848c6d6fba7d8a0b90c9434da91da9043",
+      "Q_PLATES/Q_Plates/PLATE_23/22_B03_act104_egfrc.nd2": "e929a9aa04451f6eb3892252f158663a1cd6703ab8f09164c3f61010ba7fa0d1"
+    },
+    "nucleus_masks": {
+      "Conversion_Efficiency/plate23_nuclei/23_B02_ctrl_masks.npy": "e107fa770e4fed747bebae97b1db92d1c755747005bbeb124eed5f055a19e8e4",
+      "Conversion_Efficiency/plate23_nuclei/33_C09_br223_trka_masks.npy": "1576258f1ff05e181942bbca68bc487c0c7285278a22f9fd9908e67259624b39",
+      "Conversion_Efficiency/plate23_nuclei/29_C05_br223_egfrc_masks.npy": "47e26e0ecead0dd587b2aaba752bf4654e1f81c8df968c78cc1a42a512cba173",
+      "Conversion_Efficiency/plate23_nuclei/19_B06_act104_trka_masks.npy": "f2ee0d5aecd843c1289468f8075379df68cc64adc2e7e8788c89c170b4c809c3",
+      "Conversion_Efficiency/plate23_nuclei/32_C08_br223_igf1r_masks.npy": "ca15dffda03f52ff310381212d45e6067066dc5f1a8666a6fac45f062a0d47c9",
+      "Conversion_Efficiency/plate23_nuclei/22_B03_act104_egfrc_masks.npy": "2bc6ce87697e0516d3f439f1241e264ff2fe11678b823abd183e568d928463b8"
+    },
+    "desmin_dbs_cache": {
+      "Conversion_Efficiency/New_Quantif_P23/dbs_cache/23_B02_ctrl_dbs.npy": "4dcebc298d63a72634b6a54e1c017f125756e6a0f0d86d6e6a5359ee11a627c0",
+      "Conversion_Efficiency/New_Quantif_P23/dbs_cache/33_C09_br223_trka_dbs.npy": "f241a55c4905310698a0f2df48815a1d8e9e9665ec9f3f62a2a248901c3ea3d1",
+      "Conversion_Efficiency/New_Quantif_P23/dbs_cache/29_C05_br223_egfrc_dbs.npy": "19495415ea7b2c2e3fad2baa2b2a09c65b5b3fa493b9822990571abe64aef05f",
+      "Conversion_Efficiency/New_Quantif_P23/dbs_cache/19_B06_act104_trka_dbs.npy": "44b3739c39b8571176c79d488e60ebc4adb6abab8edce62e0f77c5aa183dba61",
+      "Conversion_Efficiency/New_Quantif_P23/dbs_cache/32_C08_br223_igf1r_dbs.npy": "76cd48e8bac6e069bb7d36a2777baf7c9229ef3117381e4264a64e5e1b99464e",
+      "Conversion_Efficiency/New_Quantif_P23/dbs_cache/22_B03_act104_egfrc_dbs.npy": "6f255b42411f215aa3698a1b353263e099212a226b85754377d4179955995a48"
+    },
+    "percell_intensity_cache": {
+      "Conversion_Efficiency/New_Quantif_P23/percell_values_r10.0.npz": "1ff4f517fd141b1e3d0b56dc37a7025a5ed6cd557e9e921d80e0a9abf68336c2"
+    },
+    "analysis_scripts": {
+      "Conversion_Efficiency/New_Quantif_P23/visualize_final.py": "0c52b1454f9b7b6f6c9c39c4d897262cc08426c02c7dcff4afb366b94aeb7bb4",
+      "Conversion_Efficiency/New_Quantif_P23/percell_desmin.py": "d37a181872e23b92c8c302559766119f6677949556e48e099460dcaa6a7f7d80",
+      "Conversion_Efficiency/real_fusion.py": "79b56191374cbbb57a2245793daa13737fd0677cefe2c9c4ca3dbc5d7b47a66f",
+      "Conversion_Efficiency/New_Quantif_P23/README.md": "47ea7e7fb8acf1f6d84af92371f640cf643a6fa398b9e004918e95b4bbe16c54"
+    },
+    "declared_output": {
+      "Conversion_Efficiency/New_Quantif_P23/visualize_final.json": "2d84b2b2a221890f40007d5fd67c902f2d8c33cc821adc6dcc200d04524b6711"
+    },
+    "parameter_configuration": {
+      "params": {
+        "UM": 0.6493,
+        "UM2": 0.42159049,
+        "ring_um": 10.0,
+        "ring_px": 15,
+        "area_um2": [
+          50.0,
+          500.0
+        ],
+        "threshold_method": "pooled_otsu_log_uniform",
+        "order": [
+          "23_B02_ctrl",
+          "33_C09_br223_trka",
+          "29_C05_br223_egfrc",
+          "19_B06_act104_trka",
+          "32_C08_br223_igf1r",
+          "22_B03_act104_egfrc"
+        ],
+        "control": "23_B02_ctrl",
+        "cellpose_sam_cellprob_threshold": 0,
+        "tophat_disk_radius": 40
+      },
+      "sha256": "9fec331a85f377e41ce9acfd55161590f08caa0b0a01bf7e88bc4a48fc8624c1"
+    },
+    "reproduced_output": {
+      "model_labs/tier_a_audit/_audit/reproduced_visualize_final.json": "2134a38a6fc142328f43ab332115a97c6fd616c972bd202d73ef71335b1d65be"
+    }
+  },
+  "constraints_honored": [
+    "Conversion_Efficiency/**, DEVELOPMENT_PLAN.md, WORKBOARD.md read-only",
+    "production method unchanged; Tier A NOT declared released",
+    "Cellpose-SAM / cpenv not re-run (upstream hashed, not re-executed)",
+    "same-plate fold changes are NOT treatment effects",
+    "orthogonal validation still required; a 2D Desmin review cannot substitute"
+  ],
+  "overall_pass": true
+}

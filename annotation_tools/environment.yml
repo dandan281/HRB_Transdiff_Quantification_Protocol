@@ -1,0 +1,28 @@
+# Isolated environment for the interactive annotation GUI (napari + micro-sam).
+#
+# P0.4 PRIMARY FAILURE TO AVOID: never install napari/micro-sam into
+# Conversion_Efficiency/cpenv (the validated Cellpose/nucleus environment).
+# This is a separate conda environment used only for annotation.
+#
+#   conda env create -f annotation_tools/environment.yml
+#   conda activate pm-annotate
+#   pip install -e PrecisionMyotube --no-deps   # schema only, read-only consumer
+#   pip install -e annotation_tools
+#   annotation-tools launch --package <annotation_dir>
+#
+# The headless core (model/masks/roundtrip) needs only numpy/scipy/tifffile and
+# runs in any environment, including cpenv, for tests and batch validation.
+name: pm-annotate
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - tifffile
+  - pip
+  - pip:
+      - "napari[all]"
+      - magicgui
+      - micro-sam
+      - pytest

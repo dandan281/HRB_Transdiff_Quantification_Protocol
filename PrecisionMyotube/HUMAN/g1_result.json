@@ -1,0 +1,50 @@
+{
+  "gate": "G1",
+  "passed": false,
+  "decision": "repeat_or_complete_pilot",
+  "requirements": {
+    "synthetic_overlap_roundtrip_passed": true,
+    "pilot_ready_and_approximately_100": true,
+    "all_pilot_tasks_dual_annotated": false,
+    "disagreements_categorized": false,
+    "disagreements_adjudicated_or_ambiguous": false,
+    "no_critical_tool_defects": false,
+    "biological_reviewers_approved": false,
+    "schema_validation_passed": false
+  },
+  "pilot_audit": {
+    "task_count": 100,
+    "hard_case_count": 86,
+    "plates": [
+      "PLATE_23",
+      "PLATE_28",
+      "PLATE_32"
+    ],
+    "densities": [
+      "dense",
+      "medium",
+      "sparse"
+    ],
+    "intensities": [
+      "bright",
+      "dim",
+      "medium"
+    ],
+    "length_classes": [
+      "long",
+      "medium",
+      "short"
+    ],
+    "requirements": {
+      "approximately_target_size": true,
+      "hard_cases_ge_minimum": true,
+      "sparse_and_dense_present": true,
+      "bright_and_dim_present": true,
+      "short_and_long_present": true,
+      "plate26_excluded": true,
+      "multiple_development_plates": true,
+      "unique_task_ids": true
+    },
+    "ready_for_dual_annotation": true
+  }
+}

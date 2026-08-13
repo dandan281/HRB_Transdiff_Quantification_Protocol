@@ -1,0 +1,68 @@
+{
+  "plate": "PLATE_32",
+  "ring_um": 10.0,
+  "threshold_raw": 237.21567822671776,
+  "threshold_method": "pooled_otsu_log_uniform",
+  "per_well": {
+    "23_B02_ctrl": {
+      "desmin_pos": 3178,
+      "valid": 12356,
+      "conversion_pct": 25.72,
+      "fold": 1.0
+    },
+    "26_C02_fgfr_act104": {
+      "desmin_pos": 5365,
+      "valid": 14269,
+      "conversion_pct": 37.6,
+      "fold": 1.46
+    },
+    "27_C03_egfrc_act104": {
+      "desmin_pos": 3942,
+      "valid": 12285,
+      "conversion_pct": 32.09,
+      "fold": 1.25
+    },
+    "29_C05_trka_act104": {
+      "desmin_pos": 3846,
+      "valid": 11311,
+      "conversion_pct": 34.0,
+      "fold": 1.32
+    },
+    "35_C11_igf1r_bmpr211m2": {
+      "desmin_pos": 4546,
+      "valid": 11843,
+      "conversion_pct": 38.39,
+      "fold": 1.49
+    },
+    "38_D11_her2mb_br223": {
+      "desmin_pos": 5141,
+      "valid": 12003,
+      "conversion_pct": 42.83,
+      "fold": 1.67
+    },
+    "40_D09_trka_br223": {
+      "desmin_pos": 4800,
+      "valid": 13202,
+      "conversion_pct": 36.36,
+      "fold": 1.41
+    },
+    "41_D08_igf1r_br223": {
+      "desmin_pos": 6026,
+      "valid": 14345,
+      "conversion_pct": 42.01,
+      "fold": 1.63
+    },
+    "45_D04_her2mb_br223m2": {
+      "desmin_pos": 5821,
+      "valid": 15704,
+      "conversion_pct": 37.07,
+      "fold": 1.44
+    },
+    "47_D02_trka_bmpr211m2": {
+      "desmin_pos": 3452,
+      "valid": 10563,
+      "conversion_pct": 32.68,
+      "fold": 1.27
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "fields": [
+    {
+      "image_id": "32_C08_br223_igf1r",
+      "nd2": "../Q_PLATES/Q_Plates/PLATE_23/32_C08_br223_igf1r.nd2",
+      "plate": "23",
+      "well": "C08",
+      "field": "32",
+      "output_dir": "runs/32_C08_br223_igf1r",
+      "fiber_ch": 1,
+      "dapi_ch": 2,
+      "nuclei_masks": "../Conversion_Efficiency/plate23_nuclei/32_C08_br223_igf1r/validated_masks.npy"
+    }
+  ]
+}

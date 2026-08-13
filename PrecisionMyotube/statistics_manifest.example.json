@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "analysis_id": "prospective_conversion_efficiency_primary",
+  "outcome_label": "conversion efficiency proportion",
+  "value_key": "conversion_efficiency",
+  "condition_key": "condition",
+  "biological_unit_key": "differentiation_batch",
+  "technical_unit_key": "well",
+  "technical_aggregation": "mean",
+  "confidence": 0.95,
+  "bootstrap_resamples": 10000,
+  "seed": 20260722,
+  "pre_specified": true,
+  "exclusion_rule": "Exclude only predeclared acquisition or integrity failures; retain biological outliers.",
+  "comparisons": [
+    {
+      "a": "control",
+      "b": "treated",
+      "paired": true
+    }
+  ],
+  "records": [
+    {
+      "condition": "control",
+      "differentiation_batch": "batch_01",
+      "well": "B02",
+      "conversion_efficiency": 0.10
+    },
+    {
+      "condition": "treated",
+      "differentiation_batch": "batch_01",
+      "well": "B03",
+      "conversion_efficiency": 0.25
+    }
+  ]
+}

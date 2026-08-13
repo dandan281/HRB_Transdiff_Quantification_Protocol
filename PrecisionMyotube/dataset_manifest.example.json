@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "samples": [
+    {
+      "image_id": "32_C08_br223_igf1r",
+      "plate": "PLATE_23",
+      "split": "train",
+      "run_dir": "runs/32_C08_br223_igf1r",
+      "instances": "annotations/32_C08_br223_igf1r.instances.json",
+      "double_annotated": true
+    },
+    {
+      "image_id": "P26_B02_Ctrl",
+      "plate": "PLATE_26",
+      "split": "test",
+      "run_dir": "runs/P26_B02_Ctrl",
+      "instances": "annotations/P26_B02_Ctrl.instances.json",
+      "double_annotated": true
+    }
+  ]
+}
+

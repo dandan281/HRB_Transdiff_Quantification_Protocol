@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "precision-myotube"
+version = "0.1.0"
+description = "Precision-first myotube instance quantification from ND2 fluorescence images"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "scipy",
+  "scikit-image",
+  "pillow",
+  "nd2",
+  "tifffile",
+  "skan",
+  "networkx",
+]
+
+[project.optional-dependencies]
+nuclei = ["cellpose>=4"]
+annotation = ["napari", "magicgui", "micro-sam"]
+test = ["pytest"]
+
+[project.scripts]
+precision-myotube = "precision_myotube.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["precision_myotube*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,45 @@
+{
+  "ring_um": 10.0,
+  "ring_px": 15,
+  "threshold_raw": 440.76596787901417,
+  "threshold_method": "pooled_otsu_log_uniform",
+  "pooled_cells": 51869,
+  "per_well": {
+    "23_B02_ctrl": {
+      "desmin_pos": 1166,
+      "valid": 7635,
+      "conversion_pct": 15.27,
+      "fold": 1.0
+    },
+    "33_C09_br223_trka": {
+      "desmin_pos": 1616,
+      "valid": 8947,
+      "conversion_pct": 18.06,
+      "fold": 1.18
+    },
+    "29_C05_br223_egfrc": {
+      "desmin_pos": 1750,
+      "valid": 7210,
+      "conversion_pct": 24.27,
+      "fold": 1.59
+    },
+    "19_B06_act104_trka": {
+      "desmin_pos": 2748,
+      "valid": 8440,
+      "conversion_pct": 32.56,
+      "fold": 2.13
+    },
+    "32_C08_br223_igf1r": {
+      "desmin_pos": 3341,
+      "valid": 10114,
+      "conversion_pct": 33.03,
+      "fold": 2.16
+    },
+    "22_B03_act104_egfrc": {
+      "desmin_pos": 3749,
+      "valid": 9524,
+      "conversion_pct": 39.36,
+      "fold": 2.58
+    }
+  }
+}

@@ -1,0 +1,344 @@
+{
+  "shared_sigma": 103.78199768066406,
+  "ks": [
+    3,
+    5,
+    8,
+    12
+  ],
+  "tophat_radius": 40,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "per_well_sigma": {
+    "19_B06_act104_trka": 109.71239471435547,
+    "22_B03_act104_egfrc": 136.39920043945312,
+    "23_B02_ctrl": 97.85160064697266,
+    "29_C05_br223_egfrc": 90.4385986328125,
+    "32_C08_br223_igf1r": 123.05580139160156,
+    "33_C09_br223_trka": 83.02559661865234
+  },
+  "results": {
+    "3": {
+      "19_B06_act104_trka": {
+        "desmin_pct": 20.39,
+        "overlap_25pct": {
+          "converted": 2518,
+          "total": 8440,
+          "efficiency_pct": 29.83
+        },
+        "overlap_50pct": {
+          "converted": 1767,
+          "total": 8440,
+          "efficiency_pct": 20.94
+        }
+      },
+      "22_B03_act104_egfrc": {
+        "desmin_pct": 41.38,
+        "overlap_25pct": {
+          "converted": 5198,
+          "total": 9524,
+          "efficiency_pct": 54.58
+        },
+        "overlap_50pct": {
+          "converted": 4514,
+          "total": 9524,
+          "efficiency_pct": 47.4
+        }
+      },
+      "23_B02_ctrl": {
+        "desmin_pct": 12.1,
+        "overlap_25pct": {
+          "converted": 2283,
+          "total": 7635,
+          "efficiency_pct": 29.9
+        },
+        "overlap_50pct": {
+          "converted": 1786,
+          "total": 7635,
+          "efficiency_pct": 23.39
+        }
+      },
+      "29_C05_br223_egfrc": {
+        "desmin_pct": 17.02,
+        "overlap_25pct": {
+          "converted": 1828,
+          "total": 7210,
+          "efficiency_pct": 25.35
+        },
+        "overlap_50pct": {
+          "converted": 1334,
+          "total": 7210,
+          "efficiency_pct": 18.5
+        }
+      },
+      "32_C08_br223_igf1r": {
+        "desmin_pct": 28.01,
+        "overlap_25pct": {
+          "converted": 4065,
+          "total": 10114,
+          "efficiency_pct": 40.19
+        },
+        "overlap_50pct": {
+          "converted": 3171,
+          "total": 10114,
+          "efficiency_pct": 31.35
+        }
+      },
+      "33_C09_br223_trka": {
+        "desmin_pct": 12.71,
+        "overlap_25pct": {
+          "converted": 1730,
+          "total": 8947,
+          "efficiency_pct": 19.34
+        },
+        "overlap_50pct": {
+          "converted": 1143,
+          "total": 8947,
+          "efficiency_pct": 12.78
+        }
+      }
+    },
+    "5": {
+      "19_B06_act104_trka": {
+        "desmin_pct": 14.62,
+        "overlap_25pct": {
+          "converted": 1636,
+          "total": 8440,
+          "efficiency_pct": 19.38
+        },
+        "overlap_50pct": {
+          "converted": 1089,
+          "total": 8440,
+          "efficiency_pct": 12.9
+        }
+      },
+      "22_B03_act104_egfrc": {
+        "desmin_pct": 20.82,
+        "overlap_25pct": {
+          "converted": 2656,
+          "total": 9524,
+          "efficiency_pct": 27.89
+        },
+        "overlap_50pct": {
+          "converted": 1910,
+          "total": 9524,
+          "efficiency_pct": 20.05
+        }
+      },
+      "23_B02_ctrl": {
+        "desmin_pct": 5.63,
+        "overlap_25pct": {
+          "converted": 694,
+          "total": 7635,
+          "efficiency_pct": 9.09
+        },
+        "overlap_50pct": {
+          "converted": 432,
+          "total": 7635,
+          "efficiency_pct": 5.66
+        }
+      },
+      "29_C05_br223_egfrc": {
+        "desmin_pct": 10.03,
+        "overlap_25pct": {
+          "converted": 1030,
+          "total": 7210,
+          "efficiency_pct": 14.29
+        },
+        "overlap_50pct": {
+          "converted": 638,
+          "total": 7210,
+          "efficiency_pct": 8.85
+        }
+      },
+      "32_C08_br223_igf1r": {
+        "desmin_pct": 14.42,
+        "overlap_25pct": {
+          "converted": 2153,
+          "total": 10114,
+          "efficiency_pct": 21.29
+        },
+        "overlap_50pct": {
+          "converted": 1328,
+          "total": 10114,
+          "efficiency_pct": 13.13
+        }
+      },
+      "33_C09_br223_trka": {
+        "desmin_pct": 7.5,
+        "overlap_25pct": {
+          "converted": 1033,
+          "total": 8947,
+          "efficiency_pct": 11.55
+        },
+        "overlap_50pct": {
+          "converted": 598,
+          "total": 8947,
+          "efficiency_pct": 6.68
+        }
+      }
+    },
+    "8": {
+      "19_B06_act104_trka": {
+        "desmin_pct": 10.47,
+        "overlap_25pct": {
+          "converted": 1188,
+          "total": 8440,
+          "efficiency_pct": 14.08
+        },
+        "overlap_50pct": {
+          "converted": 719,
+          "total": 8440,
+          "efficiency_pct": 8.52
+        }
+      },
+      "22_B03_act104_egfrc": {
+        "desmin_pct": 13.75,
+        "overlap_25pct": {
+          "converted": 1752,
+          "total": 9524,
+          "efficiency_pct": 18.4
+        },
+        "overlap_50pct": {
+          "converted": 1092,
+          "total": 9524,
+          "efficiency_pct": 11.47
+        }
+      },
+      "23_B02_ctrl": {
+        "desmin_pct": 4.29,
+        "overlap_25pct": {
+          "converted": 446,
+          "total": 7635,
+          "efficiency_pct": 5.84
+        },
+        "overlap_50pct": {
+          "converted": 277,
+          "total": 7635,
+          "efficiency_pct": 3.63
+        }
+      },
+      "29_C05_br223_egfrc": {
+        "desmin_pct": 7.0,
+        "overlap_25pct": {
+          "converted": 716,
+          "total": 7210,
+          "efficiency_pct": 9.93
+        },
+        "overlap_50pct": {
+          "converted": 419,
+          "total": 7210,
+          "efficiency_pct": 5.81
+        }
+      },
+      "32_C08_br223_igf1r": {
+        "desmin_pct": 10.33,
+        "overlap_25pct": {
+          "converted": 1514,
+          "total": 10114,
+          "efficiency_pct": 14.97
+        },
+        "overlap_50pct": {
+          "converted": 850,
+          "total": 10114,
+          "efficiency_pct": 8.4
+        }
+      },
+      "33_C09_br223_trka": {
+        "desmin_pct": 4.84,
+        "overlap_25pct": {
+          "converted": 684,
+          "total": 8947,
+          "efficiency_pct": 7.65
+        },
+        "overlap_50pct": {
+          "converted": 374,
+          "total": 8947,
+          "efficiency_pct": 4.18
+        }
+      }
+    },
+    "12": {
+      "19_B06_act104_trka": {
+        "desmin_pct": 7.41,
+        "overlap_25pct": {
+          "converted": 856,
+          "total": 8440,
+          "efficiency_pct": 10.14
+        },
+        "overlap_50pct": {
+          "converted": 467,
+          "total": 8440,
+          "efficiency_pct": 5.53
+        }
+      },
+      "22_B03_act104_egfrc": {
+        "desmin_pct": 9.93,
+        "overlap_25pct": {
+          "converted": 1254,
+          "total": 9524,
+          "efficiency_pct": 13.17
+        },
+        "overlap_50pct": {
+          "converted": 716,
+          "total": 9524,
+          "efficiency_pct": 7.52
+        }
+      },
+      "23_B02_ctrl": {
+        "desmin_pct": 3.21,
+        "overlap_25pct": {
+          "converted": 351,
+          "total": 7635,
+          "efficiency_pct": 4.6
+        },
+        "overlap_50pct": {
+          "converted": 211,
+          "total": 7635,
+          "efficiency_pct": 2.76
+        }
+      },
+      "29_C05_br223_egfrc": {
+        "desmin_pct": 4.72,
+        "overlap_25pct": {
+          "converted": 494,
+          "total": 7210,
+          "efficiency_pct": 6.85
+        },
+        "overlap_50pct": {
+          "converted": 261,
+          "total": 7210,
+          "efficiency_pct": 3.62
+        }
+      },
+      "32_C08_br223_igf1r": {
+        "desmin_pct": 7.25,
+        "overlap_25pct": {
+          "converted": 1050,
+          "total": 10114,
+          "efficiency_pct": 10.38
+        },
+        "overlap_50pct": {
+          "converted": 525,
+          "total": 10114,
+          "efficiency_pct": 5.19
+        }
+      },
+      "33_C09_br223_trka": {
+        "desmin_pct": 3.21,
+        "overlap_25pct": {
+          "converted": 474,
+          "total": 8947,
+          "efficiency_pct": 5.3
+        },
+        "overlap_50pct": {
+          "converted": 232,
+          "total": 8947,
+          "efficiency_pct": 2.59
+        }
+      }
+    }
+  }
+}

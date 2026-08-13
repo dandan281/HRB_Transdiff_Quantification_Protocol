@@ -1,0 +1,81 @@
+{
+  "ring_um": 10.0,
+  "ring_px": 15,
+  "otsu_threshold_raw": 237.21567822671776,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "per_well": {
+    "23_B02_ctrl": {
+      "cells": 12356,
+      "desmin_pos": 3178,
+      "conversion_pct": 25.72,
+      "ring_median": 123.5,
+      "fold_vs_ctrl": 1.0
+    },
+    "26_C02_fgfr_act104": {
+      "cells": 14265,
+      "desmin_pos": 5365,
+      "conversion_pct": 37.61,
+      "ring_median": 167.6,
+      "fold_vs_ctrl": 1.46
+    },
+    "27_C03_egfrc_act104": {
+      "cells": 12284,
+      "desmin_pos": 3942,
+      "conversion_pct": 32.09,
+      "ring_median": 136.0,
+      "fold_vs_ctrl": 1.25
+    },
+    "29_C05_trka_act104": {
+      "cells": 11309,
+      "desmin_pos": 3846,
+      "conversion_pct": 34.01,
+      "ring_median": 146.7,
+      "fold_vs_ctrl": 1.32
+    },
+    "35_C11_igf1r_bmpr211m2": {
+      "cells": 11843,
+      "desmin_pos": 4546,
+      "conversion_pct": 38.39,
+      "ring_median": 161.4,
+      "fold_vs_ctrl": 1.49
+    },
+    "38_D11_her2mb_br223": {
+      "cells": 12003,
+      "desmin_pos": 5141,
+      "conversion_pct": 42.83,
+      "ring_median": 199.2,
+      "fold_vs_ctrl": 1.67
+    },
+    "40_D09_trka_br223": {
+      "cells": 13201,
+      "desmin_pos": 4800,
+      "conversion_pct": 36.36,
+      "ring_median": 157.0,
+      "fold_vs_ctrl": 1.41
+    },
+    "41_D08_igf1r_br223": {
+      "cells": 14344,
+      "desmin_pos": 6026,
+      "conversion_pct": 42.01,
+      "ring_median": 193.3,
+      "fold_vs_ctrl": 1.63
+    },
+    "45_D04_her2mb_br223m2": {
+      "cells": 15704,
+      "desmin_pos": 5821,
+      "conversion_pct": 37.07,
+      "ring_median": 180.7,
+      "fold_vs_ctrl": 1.44
+    },
+    "47_D02_trka_bmpr211m2": {
+      "cells": 10563,
+      "desmin_pos": 3452,
+      "conversion_pct": 32.68,
+      "ring_median": 141.3,
+      "fold_vs_ctrl": 1.27
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "plate": "PLATE_26",
+  "ring_um": 10.0,
+  "threshold_raw": 351.8321761112867,
+  "threshold_method": "pooled_otsu_log_uniform",
+  "per_well": {
+    "23_B02_ctrl": {
+      "desmin_pos": 816,
+      "valid": 8430,
+      "conversion_pct": 9.68,
+      "fold": 1.0
+    },
+    "19_B06_actv104_trka": {
+      "desmin_pos": 1457,
+      "valid": 9807,
+      "conversion_pct": 14.86,
+      "fold": 1.54
+    },
+    "32_C08_br223_igf1r": {
+      "desmin_pos": 2158,
+      "valid": 9192,
+      "conversion_pct": 23.48,
+      "fold": 2.43
+    }
+  }
+}

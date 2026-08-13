@@ -1,0 +1,169 @@
+{
+  "schema_version": "1.0",
+  "gate": "G-SO1",
+  "evaluated_at_utc": "2026-07-22T03:45:20.2556803Z",
+  "evaluator": "Codex integrator",
+  "subject": "round-2 blind repeat",
+  "passed": false,
+  "development_blocking": false,
+  "release_evidence_only": true,
+  "decision": "repeatability_evidence_incomplete_development_unblocked_recheck_optional",
+  "metric_outcome": "pass",
+  "evidence_outcome": "fail",
+  "inter_rater_agreement_measured": false,
+  "requirements": {
+    "all_30_have_reviewer_timestamp_disposition_and_source_lineage": false,
+    "disposition_agreement_ge_0_85": true,
+    "no_unsafe_border_complete_error": true,
+    "median_mask_iou_ge_0_80_on_at_least_8_complete_pairs": true,
+    "all_disagreements_ambiguous_or_excluded": false,
+    "single_operator_limitation_disclosed": true
+  },
+  "wave_0_validation": {
+    "R02": {
+      "passed": true,
+      "snapshot_sha256": "5171286b5bcb153ad45cfe5db7ae532c4f6158a4f6fcaebbc25ad2649dc36994",
+      "reviewer": "reviewer_01",
+      "mode": "single-operator",
+      "wells": 6,
+      "decision_files_valid": 6,
+      "instance_exports_valid": 6,
+      "review_logs_valid": 6,
+      "review_log_rows": 1800,
+      "counts": {
+        "complete": 377,
+        "border_truncated": 31,
+        "ambiguous": 839,
+        "rejected": 553,
+        "total": 1800
+      },
+      "note": "All canonical instance exports validate. Each well has 300 decisions and 300 reviewer_01 log rows. The manifest's 16-character hash prefixes match independently computed full SHA-256 values recorded in the integrator report."
+    },
+    "R03": {
+      "passed": true,
+      "rows": 961,
+      "accept_rows": 408,
+      "reject_rows": 553,
+      "exact_multiset_match_to_current_six_decision_files": true,
+      "duplicate_rows": 0,
+      "per_well_rows": {
+        "32_C08_br223_igf1r": 136,
+        "19_B06_act104_trka": 189,
+        "22_B03_act104_egfrc": 124,
+        "29_C05_br223_egfrc": 123,
+        "33_C09_br223_trka": 118,
+        "23_B02_ctrl": 271
+      },
+      "accept_csv_sha256": "a1781a4cdae5c881a0179ce57575c5a2107dc7314c1a717ff85173dae50c2fe4",
+      "model_sha256": "a0129ad36f9ec941974b28c129359373398a74c2910923dd080a064624dd716d",
+      "model_summary_sha256": "89bb52c80d003de1910cbc95537aee6c8e6cfcb3440d711300ce82a575154736",
+      "training_accuracy": 0.889
+    }
+  },
+  "round_2_artifacts": {
+    "key_sha256": "50c3360652fdfa7fd43dd72bb9717da40af11ebad425a90dc44f3241c428bb1a",
+    "decisions_sha256": "4bb3c833e4f1856d869059f2f4c79aaa2a48c6d3cf7abd90bbc28d453c4eea5e",
+    "seed": 20260723,
+    "task_count": 30,
+    "strata": {
+      "complete": 10,
+      "border": 5,
+      "ambiguous": 10,
+      "reject": 5
+    },
+    "all_six_wells_present": true,
+    "overlap_with_round_1": 0,
+    "source_key_matches_first_pass_decisions": true,
+    "second_pass_reviewer_id_present": false,
+    "second_pass_review_timestamp_present": false,
+    "washout_verifiable": false
+  },
+  "metrics": {
+    "compared": 30,
+    "agreements": 27,
+    "disposition_agreement": 0.9,
+    "unsafe_border_complete_errors": 0,
+    "complete_complete_pairs": 8,
+    "complete_pair_ious": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.7865466101694916
+    ],
+    "median_mask_iou": 1.0
+  },
+  "disagreements": [
+    {
+      "case": "case_02",
+      "well": "19_B06_act104_trka",
+      "real_id": "myotube_0377",
+      "first": "complete",
+      "second": "ambiguous",
+      "required_training_action": "exclude_or_relabel_ambiguous"
+    },
+    {
+      "case": "case_24",
+      "well": "22_B03_act104_egfrc",
+      "real_id": "myotube_0321",
+      "first": "complete",
+      "second": "ambiguous",
+      "required_training_action": "exclude_or_relabel_ambiguous"
+    },
+    {
+      "case": "case_25",
+      "well": "22_B03_act104_egfrc",
+      "real_id": "myotube_0113",
+      "first": "ambiguous",
+      "second": "reject",
+      "required_training_action": "already_non_trainable"
+    }
+  ],
+  "remediation": {
+    "status": "optional_deferred_by_project_owner",
+    "approved_at_utc": "2026-07-22T04:14:19.4174878Z",
+    "protocol": "G_SO1_RECHECK_PROTOCOL.md",
+    "provenance_fix_verified": true,
+    "annotation_model_lab_tests_passed": 26,
+    "recheck_key_sha256": "8784d3ec54f76f59df67ce5a8c911b9df43187d1eb2a26d15922e1abc939ce7f",
+    "recheck_html_sha256": "0377ae15b3a2036f0ceaac7f46c7965eca4091e8161b1f92a8391be76a06251f",
+    "sample": {
+      "n": 10,
+      "seed": 20260724,
+      "complete": 4,
+      "border": 2,
+      "ambiguous": 3,
+      "reject": 1,
+      "prior_round_overlap": 0,
+      "source_lineage_valid": true,
+      "real_source_ids_exposed_in_html": false,
+      "per_case_model_suggestions_present": false
+    },
+    "training_exclusion_file": "../annotation_work/training_exclude.json",
+    "training_exclusion_sha256": "b15492c167c8555dd8d306db5285792eea5ca6447cdc935268aa160d7ff847fb",
+    "training_exclusions_valid": true,
+    "trainable_complete_count_after_exclusions": 375,
+    "washout_anchor_utc": "2026-07-22T02:23:02.904447+00:00",
+    "earliest_allowed_session_start_utc": "2026-07-29T02:23:02.904447+00:00",
+    "earliest_allowed_session_start_pacific": "2026-07-28T19:23:02.904447-07:00",
+    "recommended_review_date_pacific": "2026-07-29",
+    "recovery_pass_conditions": {
+      "reviewer_is_reviewer_01": true,
+      "all_10_have_non_null_iso_decided_at": true,
+      "session_starts_after_washout": true,
+      "export_time_is_after_all_decision_times": true,
+      "agreement_at_least_9_of_10": true,
+      "unsafe_border_complete_errors_zero": true,
+      "all_new_disagreements_ambiguous_or_excluded": true,
+      "round_2_iou_evidence_retained": true,
+      "binding_exclusion_manifest_remains_unchanged": true
+    }
+  },
+  "blockers": [
+    "The historical round-2 decisions remain provenance-incomplete; the approved targeted recovery recheck has not yet been performed."
+  ],
+  "next_action": "Continue T02/T03 development immediately from bootstrap_v1. Perform the 10-case recovery later only if a formal repeatability claim is needed."
+}

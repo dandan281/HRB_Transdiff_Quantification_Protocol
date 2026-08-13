@@ -1,0 +1,74 @@
+{
+  "well": "23_B02_ctrl",
+  "plate": "PLATE_23",
+  "source_nd2": "../Q_PLATES/Q_Plates/PLATE_23/23_B02_ctrl.nd2",
+  "nuclei_total_raw": 7905,
+  "nuclei_total_valid": 7635,
+  "nucleus_area_boundary_um2": [
+    50.0,
+    500.0
+  ],
+  "nucleus_area_um2_median": 153.9,
+  "primary_gate_um": 50.0,
+  "primary_overlap_frac": 0.25,
+  "nuclei_inside_myotube": 391,
+  "fusion_index_pct": 5.12,
+  "by_fibre_length_gate_um": {
+    "0": {
+      "n_real_fibres": 5507,
+      "myotube_coverage_pct": 8.43,
+      "overlap_25pct": {
+        "nuclei_inside_myotube": 1732,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 22.69
+      },
+      "overlap_50pct": {
+        "nuclei_inside_myotube": 827,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 10.83
+      }
+    },
+    "30": {
+      "n_real_fibres": 715,
+      "myotube_coverage_pct": 4.23,
+      "overlap_25pct": {
+        "nuclei_inside_myotube": 668,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 8.75
+      },
+      "overlap_50pct": {
+        "nuclei_inside_myotube": 275,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 3.6
+      }
+    },
+    "50": {
+      "n_real_fibres": 317,
+      "myotube_coverage_pct": 2.95,
+      "overlap_25pct": {
+        "nuclei_inside_myotube": 391,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 5.12
+      },
+      "overlap_50pct": {
+        "nuclei_inside_myotube": 156,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 2.04
+      }
+    },
+    "100": {
+      "n_real_fibres": 83,
+      "myotube_coverage_pct": 1.44,
+      "overlap_25pct": {
+        "nuclei_inside_myotube": 162,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 2.12
+      },
+      "overlap_50pct": {
+        "nuclei_inside_myotube": 76,
+        "nuclei_total_valid": 7635,
+        "fusion_index_pct": 1.0
+      }
+    }
+  }
+}

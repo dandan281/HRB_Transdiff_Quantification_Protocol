@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Development-plate proposal runs for the G1 dual-annotation pilot",
+  "locked_test_plate_excluded": "PLATE_26",
+  "samples": [
+    {
+      "plate": "PLATE_23",
+      "run_dir": "../runs/32_C08_smoke",
+      "proposals": "../runs/32_C08_smoke/instance_proposals.json",
+      "package_dir": "../annotation_work/32_C08_smoke"
+    },
+    {
+      "plate": "PLATE_23",
+      "run_dir": "../runs/pilot/PLATE_23/23_B02_ctrl",
+      "proposals": "../runs/pilot/PLATE_23/23_B02_ctrl/instance_proposals.json",
+      "package_dir": "../annotation_work/pilot/PLATE_23/23_B02_ctrl"
+    },
+    {
+      "plate": "PLATE_28",
+      "run_dir": "../runs/pilot/PLATE_28/23_B02_ctrl",
+      "proposals": "../runs/pilot/PLATE_28/23_B02_ctrl/instance_proposals.json",
+      "package_dir": "../annotation_work/pilot/PLATE_28/23_B02_ctrl"
+    },
+    {
+      "plate": "PLATE_28",
+      "run_dir": "../runs/pilot/PLATE_28/58_E10_br223_igf1r",
+      "proposals": "../runs/pilot/PLATE_28/58_E10_br223_igf1r/instance_proposals.json",
+      "package_dir": "../annotation_work/pilot/PLATE_28/58_E10_br223_igf1r"
+    },
+    {
+      "plate": "PLATE_32",
+      "run_dir": "../runs/pilot/PLATE_32/23_B02_ctrl",
+      "proposals": "../runs/pilot/PLATE_32/23_B02_ctrl/instance_proposals.json",
+      "package_dir": "../annotation_work/pilot/PLATE_32/23_B02_ctrl"
+    },
+    {
+      "plate": "PLATE_32",
+      "run_dir": "../runs/pilot/PLATE_32/41_D08_igf1r_br223",
+      "proposals": "../runs/pilot/PLATE_32/41_D08_igf1r_br223/instance_proposals.json",
+      "package_dir": "../annotation_work/pilot/PLATE_32/41_D08_igf1r_br223"
+    }
+  ]
+}

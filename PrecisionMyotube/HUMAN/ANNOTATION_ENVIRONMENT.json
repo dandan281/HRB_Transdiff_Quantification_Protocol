@@ -1,0 +1,31 @@
+{
+  "captured_date": "2026-07-21",
+  "environment": "pm-annotate",
+  "python": "3.11.15 | packaged by conda-forge | MSC v.1944 64 bit (AMD64)",
+  "executable": "C:/Users/liqig/anaconda3/envs/pm-annotate/python.exe",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "source_environment_yml_sha256": "27d5ae9d4fa533c98b5fa3c9f8e8e117b9f427fb748a2043c8027037f73b8b97",
+  "packages": {
+    "precision-myotube": "0.1.0",
+    "precision-myotube-annotation-tools": "0.1.0",
+    "napari": "0.8.0",
+    "magicgui": "0.10.2",
+    "micro-sam": "1.8.5",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "tifffile": "2026.3.3",
+    "qtpy": "2.4.3",
+    "pyqt5": "5.15.11",
+    "torch": "2.13.0"
+  },
+  "cuda": {
+    "available": false,
+    "cuda_version": null,
+    "device_count": 0
+  },
+  "headless_and_model_lab_tests": "18 passed with 16 third-party Pydantic deprecation warnings",
+  "serverless_qc_smoke_test": "passed: built 250 review cards from the 500-proposal C08 package without OpenGL",
+  "serverless_qc_pilot_contract": "incomplete: no pilot-manifest input, exact 100-task navigation, four-status reviewer export, or source-task lineage",
+  "gui_smoke_test": "failed before package load during native napari OpenGL initialization",
+  "environment_repair_note": "Pip Qt bindings conflicted on Windows; the installed environment now uses conda-forge PyQt5. Claude's serverless QC page avoids OpenGL, but the CL01 frozen-pilot contract remains incomplete."
+}

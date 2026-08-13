@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "pilot_manifest": "pilot_manifest.json",
+  "synthetic_overlap_roundtrip_passed": true,
+  "all_pilot_tasks_dual_annotated": false,
+  "disagreements_categorized": false,
+  "disagreements_adjudicated_or_ambiguous": false,
+  "critical_tool_defects_open": 1,
+  "biological_reviewers_approved": false,
+  "schema_validation_passed": false,
+  "human_notes": "One biological reviewer approved the clarified canonical annotation protocol and HUMAN handoff on 2026-07-16. The separate CL04 difficult-case manual still has two pending biological-reviewer signatures and missing worked examples, so biological_reviewers_approved remains false for G1. Claude's serverless package-level QC page builds without OpenGL, but no available interface yet consumes exactly the frozen 100 tasks and exports reviewer identity, source-task lineage, and all four biological statuses under PILOT_REVIEW_CONTRACT.md. This is recorded as one critical G1 workflow defect."
+}

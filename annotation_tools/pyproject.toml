@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "precision-myotube-annotation-tools"
+version = "0.1.0"
+description = "Assisted annotation interface for PrecisionMyotube (Claude Code lane, CL01/CL02)"
+requires-python = ">=3.10"
+# The headless core needs only these; it consumes precision_myotube.schema
+# read-only (found on sys.path or pip-installed, never edited).
+dependencies = [
+  "numpy",
+  "scipy",
+  "tifffile",
+]
+
+[project.optional-dependencies]
+# Interactive GUI lives in its OWN isolated environment (see environment.yml).
+# Never install these into Conversion_Efficiency/cpenv.
+gui = ["napari[all]", "magicgui", "micro-sam"]
+test = ["pytest"]
+
+[project.scripts]
+annotation-tools = "annotation_tools.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["annotation_tools*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

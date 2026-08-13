@@ -1,0 +1,59 @@
+# Isolated Omnipose laboratory environment (CL03 / T02 candidate 2).
+#
+# P0.4 PRIMARY FAILURE TO AVOID: never install Omnipose into
+# Conversion_Efficiency/cpenv. This is a standalone environment; the validated
+# Cellpose/nucleus environment must remain untouched so the known C08 run keeps
+# reproducing 10,114 valid nuclei.
+#
+# SOLVED 2026-07-22 on this workstation. Versions below are the resolved,
+# GPU-verified set -- see `resource_note.md` for the verification transcript.
+#
+# ---------------------------------------------------------------------------
+# ORDER MATTERS. Do not `conda env create -f` this file and assume it is done.
+#
+# `pip install omnipose` pulls a CPU-only torch and will happily *replace* an
+# already-correct CUDA build (observed here: torch 2.11.0+cu128 -> 2.13.0+cpu,
+# silently, exit code 0). Install omnipose FIRST, then force the CUDA torch back
+# on top, then verify with a real kernel launch.
+#
+#   conda create -n pm-omnipose python=3.10 -y
+#   conda activate pm-omnipose
+#   pip install omnipose==1.1.4
+#   pip install --force-reinstall torch==2.11.0 torchvision==0.26.0 \
+#       --index-url https://download.pytorch.org/whl/cu128
+#   pip install -e PrecisionMyotube --no-deps      # schema only (read-only)
+#   python model_labs/omnipose/verify_env.py       # asserts a real sm_120 matmul
+#
+# `torch.cuda.is_available()` alone is NOT sufficient proof on this GPU: an
+# RTX 5070 Ti Laptop is Blackwell / compute capability 12.0 (sm_120), so a torch
+# built only for sm_90 and below reports available and then fails at the first
+# kernel launch with "no kernel image is available for execution on the device".
+# The verifier therefore runs an actual matmul.
+#
+# The cu128 wheel index currently tops out at torch 2.11.0; torch 2.13.0 (which
+# omnipose's resolver wants) has no cu128 build, so 2.11.0 + torchvision 0.26.0
+# is the newest GPU-capable pair.
+#
+# KNOWN, ACCEPTED CONFLICT: installing torch upgrades `fsspec` to a version
+# aicsimageio 4.14.0 and s3fs 2023.6.0 declare as incompatible. This laboratory
+# loads images with `tifffile` directly and never uses aicsimageio's remote/zarr
+# readers, so the conflict is inert here. Do not "fix" it by downgrading fsspec
+# under torch.
+# ---------------------------------------------------------------------------
+name: pm-omnipose
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # installed first (see ORDER MATTERS above)
+      - omnipose==1.1.4              # brings cellpose_omni==1.1.4
+      # then force-reinstalled from https://download.pytorch.org/whl/cu128
+      - torch==2.11.0               # resolved: 2.11.0+cu128
+      - torchvision==0.26.0         # resolved: 0.26.0+cu128
+      # resolved transitively, recorded for reproducibility
+      - numpy==2.2.6
+      - scipy==1.15.3
+      - scikit-image==0.25.2
+      - tifffile==2023.2.28

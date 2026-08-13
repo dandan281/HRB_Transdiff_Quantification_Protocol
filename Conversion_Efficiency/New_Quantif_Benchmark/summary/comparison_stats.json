@@ -1,0 +1,61 @@
+{
+  "mean_nfi": {
+    "inv1": 37.18,
+    "inv2": 47.55,
+    "prog": 35.76,
+    "cl25": 32.29,
+    "cl50": 24.85
+  },
+  "pooled_nfi": {
+    "inv1": 38.95,
+    "inv2": 49.9,
+    "prog": 36.33,
+    "cl25": 29.58,
+    "cl50": 22.11
+  },
+  "pair_stats": {
+    "inv1-inv2": {
+      "pearson_r": 0.915,
+      "spearman_rho": 0.914,
+      "mean_bias_pp": 10.4
+    },
+    "inv1-prog": {
+      "pearson_r": 0.928,
+      "spearman_rho": 0.905,
+      "mean_bias_pp": -1.4
+    },
+    "inv2-prog": {
+      "pearson_r": 0.902,
+      "spearman_rho": 0.891,
+      "mean_bias_pp": -11.8
+    },
+    "inv1-cl25": {
+      "pearson_r": -0.244,
+      "spearman_rho": -0.335,
+      "mean_bias_pp": -4.9
+    },
+    "inv2-cl25": {
+      "pearson_r": -0.2,
+      "spearman_rho": -0.272,
+      "mean_bias_pp": -15.3
+    },
+    "prog-cl25": {
+      "pearson_r": -0.129,
+      "spearman_rho": -0.205,
+      "mean_bias_pp": -3.5
+    }
+  },
+  "claude_deficit_images": [
+    "19",
+    "12",
+    "22",
+    "16",
+    "24",
+    "23"
+  ],
+  "total_nuclei_r": {
+    "inv2_vs_claude": 0.971,
+    "prog_vs_claude": 0.974,
+    "inv1_vs_inv2": 0.962
+  }
+}

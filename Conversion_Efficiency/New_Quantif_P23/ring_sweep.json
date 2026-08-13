@@ -1,0 +1,109 @@
+{
+  "ctrl_target_pct": 20.0,
+  "results": {
+    "6.0": {
+      "ring_px": 9,
+      "threshold": 313.3,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 39.21,
+          "fold": 1.96
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 47.47,
+          "fold": 2.37
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 30.94,
+          "fold": 1.55
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 41.61,
+          "fold": 2.08
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 25.15,
+          "fold": 1.26
+        }
+      }
+    },
+    "10.0": {
+      "ring_px": 15,
+      "threshold": 321.7,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 40.49,
+          "fold": 2.02
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 48.86,
+          "fold": 2.44
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 32.15,
+          "fold": 1.61
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 42.23,
+          "fold": 2.11
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 25.18,
+          "fold": 1.26
+        }
+      }
+    },
+    "15.0": {
+      "ring_px": 23,
+      "threshold": 324.4,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 41.09,
+          "fold": 2.05
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 49.48,
+          "fold": 2.47
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 33.02,
+          "fold": 1.65
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 42.85,
+          "fold": 2.14
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 25.28,
+          "fold": 1.26
+        }
+      }
+    },
+    "20.0": {
+      "ring_px": 31,
+      "threshold": 326.6,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 41.23,
+          "fold": 2.06
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 49.53,
+          "fold": 2.48
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 33.16,
+          "fold": 1.66
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 42.8,
+          "fold": 2.14
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 25.2,
+          "fold": 1.26
+        }
+      }
+    }
+  }
+}

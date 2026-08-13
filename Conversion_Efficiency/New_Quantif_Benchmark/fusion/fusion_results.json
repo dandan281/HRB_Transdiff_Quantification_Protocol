@@ -1,0 +1,741 @@
+{
+  "um_per_px_assumed": 0.521,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "overlap_fracs": [
+    0.25,
+    0.5
+  ],
+  "gates_um": [
+    0.0,
+    50.0
+  ],
+  "per_image": {
+    "1": {
+      "gate0um": {
+        "n_fibres": 246,
+        "territory_cov_pct": 22.11,
+        "overlap_25pct": {
+          "inside": 50,
+          "pct": 41.67
+        },
+        "total_valid": 120,
+        "overlap_50pct": {
+          "inside": 47,
+          "pct": 39.17
+        }
+      },
+      "gate50um": {
+        "n_fibres": 39,
+        "territory_cov_pct": 12.43,
+        "overlap_25pct": {
+          "inside": 28,
+          "pct": 23.33
+        },
+        "total_valid": 120,
+        "overlap_50pct": {
+          "inside": 24,
+          "pct": 20.0
+        }
+      }
+    },
+    "2": {
+      "gate0um": {
+        "n_fibres": 326,
+        "territory_cov_pct": 19.95,
+        "overlap_25pct": {
+          "inside": 49,
+          "pct": 20.08
+        },
+        "total_valid": 244,
+        "overlap_50pct": {
+          "inside": 44,
+          "pct": 18.03
+        }
+      },
+      "gate50um": {
+        "n_fibres": 41,
+        "territory_cov_pct": 11.45,
+        "overlap_25pct": {
+          "inside": 38,
+          "pct": 15.57
+        },
+        "total_valid": 244,
+        "overlap_50pct": {
+          "inside": 31,
+          "pct": 12.7
+        }
+      }
+    },
+    "3": {
+      "gate0um": {
+        "n_fibres": 426,
+        "territory_cov_pct": 20.61,
+        "overlap_25pct": {
+          "inside": 62,
+          "pct": 29.25
+        },
+        "total_valid": 212,
+        "overlap_50pct": {
+          "inside": 53,
+          "pct": 25.0
+        }
+      },
+      "gate50um": {
+        "n_fibres": 46,
+        "territory_cov_pct": 8.78,
+        "overlap_25pct": {
+          "inside": 35,
+          "pct": 16.51
+        },
+        "total_valid": 212,
+        "overlap_50pct": {
+          "inside": 24,
+          "pct": 11.32
+        }
+      }
+    },
+    "4": {
+      "gate0um": {
+        "n_fibres": 516,
+        "territory_cov_pct": 24.39,
+        "overlap_25pct": {
+          "inside": 113,
+          "pct": 24.62
+        },
+        "total_valid": 459,
+        "overlap_50pct": {
+          "inside": 83,
+          "pct": 18.08
+        }
+      },
+      "gate50um": {
+        "n_fibres": 58,
+        "territory_cov_pct": 9.8,
+        "overlap_25pct": {
+          "inside": 49,
+          "pct": 10.68
+        },
+        "total_valid": 459,
+        "overlap_50pct": {
+          "inside": 22,
+          "pct": 4.79
+        }
+      }
+    },
+    "5": {
+      "gate0um": {
+        "n_fibres": 486,
+        "territory_cov_pct": 20.9,
+        "overlap_25pct": {
+          "inside": 80,
+          "pct": 24.02
+        },
+        "total_valid": 333,
+        "overlap_50pct": {
+          "inside": 63,
+          "pct": 18.92
+        }
+      },
+      "gate50um": {
+        "n_fibres": 54,
+        "territory_cov_pct": 8.38,
+        "overlap_25pct": {
+          "inside": 36,
+          "pct": 10.81
+        },
+        "total_valid": 333,
+        "overlap_50pct": {
+          "inside": 24,
+          "pct": 7.21
+        }
+      }
+    },
+    "6": {
+      "gate0um": {
+        "n_fibres": 486,
+        "territory_cov_pct": 30.03,
+        "overlap_25pct": {
+          "inside": 86,
+          "pct": 26.71
+        },
+        "total_valid": 322,
+        "overlap_50pct": {
+          "inside": 60,
+          "pct": 18.63
+        }
+      },
+      "gate50um": {
+        "n_fibres": 67,
+        "territory_cov_pct": 15.36,
+        "overlap_25pct": {
+          "inside": 42,
+          "pct": 13.04
+        },
+        "total_valid": 322,
+        "overlap_50pct": {
+          "inside": 28,
+          "pct": 8.7
+        }
+      }
+    },
+    "7": {
+      "gate0um": {
+        "n_fibres": 339,
+        "territory_cov_pct": 19.26,
+        "overlap_25pct": {
+          "inside": 45,
+          "pct": 45.0
+        },
+        "total_valid": 100,
+        "overlap_50pct": {
+          "inside": 41,
+          "pct": 41.0
+        }
+      },
+      "gate50um": {
+        "n_fibres": 36,
+        "territory_cov_pct": 8.1,
+        "overlap_25pct": {
+          "inside": 19,
+          "pct": 19.0
+        },
+        "total_valid": 100,
+        "overlap_50pct": {
+          "inside": 12,
+          "pct": 12.0
+        }
+      }
+    },
+    "8": {
+      "gate0um": {
+        "n_fibres": 403,
+        "territory_cov_pct": 20.73,
+        "overlap_25pct": {
+          "inside": 42,
+          "pct": 47.73
+        },
+        "total_valid": 88,
+        "overlap_50pct": {
+          "inside": 37,
+          "pct": 42.05
+        }
+      },
+      "gate50um": {
+        "n_fibres": 30,
+        "territory_cov_pct": 6.39,
+        "overlap_25pct": {
+          "inside": 10,
+          "pct": 11.36
+        },
+        "total_valid": 88,
+        "overlap_50pct": {
+          "inside": 7,
+          "pct": 7.95
+        }
+      }
+    },
+    "9": {
+      "gate0um": {
+        "n_fibres": 529,
+        "territory_cov_pct": 27.0,
+        "overlap_25pct": {
+          "inside": 92,
+          "pct": 55.76
+        },
+        "total_valid": 165,
+        "overlap_50pct": {
+          "inside": 78,
+          "pct": 47.27
+        }
+      },
+      "gate50um": {
+        "n_fibres": 49,
+        "territory_cov_pct": 10.67,
+        "overlap_25pct": {
+          "inside": 47,
+          "pct": 28.48
+        },
+        "total_valid": 165,
+        "overlap_50pct": {
+          "inside": 34,
+          "pct": 20.61
+        }
+      }
+    },
+    "10": {
+      "gate0um": {
+        "n_fibres": 604,
+        "territory_cov_pct": 21.76,
+        "overlap_25pct": {
+          "inside": 73,
+          "pct": 31.6
+        },
+        "total_valid": 231,
+        "overlap_50pct": {
+          "inside": 59,
+          "pct": 25.54
+        }
+      },
+      "gate50um": {
+        "n_fibres": 48,
+        "territory_cov_pct": 9.0,
+        "overlap_25pct": {
+          "inside": 37,
+          "pct": 16.02
+        },
+        "total_valid": 231,
+        "overlap_50pct": {
+          "inside": 28,
+          "pct": 12.12
+        }
+      }
+    },
+    "11": {
+      "gate0um": {
+        "n_fibres": 710,
+        "territory_cov_pct": 31.84,
+        "overlap_25pct": {
+          "inside": 128,
+          "pct": 44.44
+        },
+        "total_valid": 288,
+        "overlap_50pct": {
+          "inside": 98,
+          "pct": 34.03
+        }
+      },
+      "gate50um": {
+        "n_fibres": 75,
+        "territory_cov_pct": 11.79,
+        "overlap_25pct": {
+          "inside": 40,
+          "pct": 13.89
+        },
+        "total_valid": 288,
+        "overlap_50pct": {
+          "inside": 25,
+          "pct": 8.68
+        }
+      }
+    },
+    "12": {
+      "gate0um": {
+        "n_fibres": 493,
+        "territory_cov_pct": 13.08,
+        "overlap_25pct": {
+          "inside": 59,
+          "pct": 20.92
+        },
+        "total_valid": 282,
+        "overlap_50pct": {
+          "inside": 28,
+          "pct": 9.93
+        }
+      },
+      "gate50um": {
+        "n_fibres": 42,
+        "territory_cov_pct": 5.23,
+        "overlap_25pct": {
+          "inside": 18,
+          "pct": 6.38
+        },
+        "total_valid": 282,
+        "overlap_50pct": {
+          "inside": 7,
+          "pct": 2.48
+        }
+      }
+    },
+    "13": {
+      "gate0um": {
+        "n_fibres": 557,
+        "territory_cov_pct": 19.91,
+        "overlap_25pct": {
+          "inside": 93,
+          "pct": 35.23
+        },
+        "total_valid": 264,
+        "overlap_50pct": {
+          "inside": 64,
+          "pct": 24.24
+        }
+      },
+      "gate50um": {
+        "n_fibres": 52,
+        "territory_cov_pct": 7.41,
+        "overlap_25pct": {
+          "inside": 36,
+          "pct": 13.64
+        },
+        "total_valid": 264,
+        "overlap_50pct": {
+          "inside": 19,
+          "pct": 7.2
+        }
+      }
+    },
+    "14": {
+      "gate0um": {
+        "n_fibres": 637,
+        "territory_cov_pct": 19.19,
+        "overlap_25pct": {
+          "inside": 60,
+          "pct": 37.5
+        },
+        "total_valid": 160,
+        "overlap_50pct": {
+          "inside": 40,
+          "pct": 25.0
+        }
+      },
+      "gate50um": {
+        "n_fibres": 49,
+        "territory_cov_pct": 6.57,
+        "overlap_25pct": {
+          "inside": 21,
+          "pct": 13.12
+        },
+        "total_valid": 160,
+        "overlap_50pct": {
+          "inside": 9,
+          "pct": 5.62
+        }
+      }
+    },
+    "15": {
+      "gate0um": {
+        "n_fibres": 540,
+        "territory_cov_pct": 24.12,
+        "overlap_25pct": {
+          "inside": 62,
+          "pct": 37.13
+        },
+        "total_valid": 167,
+        "overlap_50pct": {
+          "inside": 42,
+          "pct": 25.15
+        }
+      },
+      "gate50um": {
+        "n_fibres": 51,
+        "territory_cov_pct": 10.83,
+        "overlap_25pct": {
+          "inside": 31,
+          "pct": 18.56
+        },
+        "total_valid": 167,
+        "overlap_50pct": {
+          "inside": 16,
+          "pct": 9.58
+        }
+      }
+    },
+    "16": {
+      "gate0um": {
+        "n_fibres": 365,
+        "territory_cov_pct": 10.53,
+        "overlap_25pct": {
+          "inside": 62,
+          "pct": 20.13
+        },
+        "total_valid": 308,
+        "overlap_50pct": {
+          "inside": 37,
+          "pct": 12.01
+        }
+      },
+      "gate50um": {
+        "n_fibres": 34,
+        "territory_cov_pct": 4.1,
+        "overlap_25pct": {
+          "inside": 28,
+          "pct": 9.09
+        },
+        "total_valid": 308,
+        "overlap_50pct": {
+          "inside": 11,
+          "pct": 3.57
+        }
+      }
+    },
+    "17": {
+      "gate0um": {
+        "n_fibres": 585,
+        "territory_cov_pct": 22.59,
+        "overlap_25pct": {
+          "inside": 114,
+          "pct": 34.13
+        },
+        "total_valid": 334,
+        "overlap_50pct": {
+          "inside": 83,
+          "pct": 24.85
+        }
+      },
+      "gate50um": {
+        "n_fibres": 64,
+        "territory_cov_pct": 9.56,
+        "overlap_25pct": {
+          "inside": 51,
+          "pct": 15.27
+        },
+        "total_valid": 334,
+        "overlap_50pct": {
+          "inside": 31,
+          "pct": 9.28
+        }
+      }
+    },
+    "18": {
+      "gate0um": {
+        "n_fibres": 425,
+        "territory_cov_pct": 17.93,
+        "overlap_25pct": {
+          "inside": 64,
+          "pct": 35.36
+        },
+        "total_valid": 181,
+        "overlap_50pct": {
+          "inside": 49,
+          "pct": 27.07
+        }
+      },
+      "gate50um": {
+        "n_fibres": 38,
+        "territory_cov_pct": 7.82,
+        "overlap_25pct": {
+          "inside": 25,
+          "pct": 13.81
+        },
+        "total_valid": 181,
+        "overlap_50pct": {
+          "inside": 15,
+          "pct": 8.29
+        }
+      }
+    },
+    "19": {
+      "gate0um": {
+        "n_fibres": 321,
+        "territory_cov_pct": 7.03,
+        "overlap_25pct": {
+          "inside": 25,
+          "pct": 7.86
+        },
+        "total_valid": 318,
+        "overlap_50pct": {
+          "inside": 14,
+          "pct": 4.4
+        }
+      },
+      "gate50um": {
+        "n_fibres": 19,
+        "territory_cov_pct": 1.87,
+        "overlap_25pct": {
+          "inside": 5,
+          "pct": 1.57
+        },
+        "total_valid": 318,
+        "overlap_50pct": {
+          "inside": 0,
+          "pct": 0.0
+        }
+      }
+    },
+    "20": {
+      "gate0um": {
+        "n_fibres": 436,
+        "territory_cov_pct": 22.56,
+        "overlap_25pct": {
+          "inside": 57,
+          "pct": 39.31
+        },
+        "total_valid": 145,
+        "overlap_50pct": {
+          "inside": 43,
+          "pct": 29.66
+        }
+      },
+      "gate50um": {
+        "n_fibres": 59,
+        "territory_cov_pct": 11.9,
+        "overlap_25pct": {
+          "inside": 32,
+          "pct": 22.07
+        },
+        "total_valid": 145,
+        "overlap_50pct": {
+          "inside": 22,
+          "pct": 15.17
+        }
+      }
+    },
+    "21": {
+      "gate0um": {
+        "n_fibres": 579,
+        "territory_cov_pct": 28.93,
+        "overlap_25pct": {
+          "inside": 86,
+          "pct": 52.12
+        },
+        "total_valid": 165,
+        "overlap_50pct": {
+          "inside": 74,
+          "pct": 44.85
+        }
+      },
+      "gate50um": {
+        "n_fibres": 62,
+        "territory_cov_pct": 12.54,
+        "overlap_25pct": {
+          "inside": 39,
+          "pct": 23.64
+        },
+        "total_valid": 165,
+        "overlap_50pct": {
+          "inside": 32,
+          "pct": 19.39
+        }
+      }
+    },
+    "22": {
+      "gate0um": {
+        "n_fibres": 614,
+        "territory_cov_pct": 14.64,
+        "overlap_25pct": {
+          "inside": 47,
+          "pct": 18.08
+        },
+        "total_valid": 260,
+        "overlap_50pct": {
+          "inside": 27,
+          "pct": 10.38
+        }
+      },
+      "gate50um": {
+        "n_fibres": 32,
+        "territory_cov_pct": 4.3,
+        "overlap_25pct": {
+          "inside": 15,
+          "pct": 5.77
+        },
+        "total_valid": 260,
+        "overlap_50pct": {
+          "inside": 3,
+          "pct": 1.15
+        }
+      }
+    },
+    "23": {
+      "gate0um": {
+        "n_fibres": 574,
+        "territory_cov_pct": 16.73,
+        "overlap_25pct": {
+          "inside": 69,
+          "pct": 23.08
+        },
+        "total_valid": 299,
+        "overlap_50pct": {
+          "inside": 51,
+          "pct": 17.06
+        }
+      },
+      "gate50um": {
+        "n_fibres": 45,
+        "territory_cov_pct": 6.29,
+        "overlap_25pct": {
+          "inside": 23,
+          "pct": 7.69
+        },
+        "total_valid": 299,
+        "overlap_50pct": {
+          "inside": 16,
+          "pct": 5.35
+        }
+      }
+    },
+    "24": {
+      "gate0um": {
+        "n_fibres": 409,
+        "territory_cov_pct": 16.17,
+        "overlap_25pct": {
+          "inside": 58,
+          "pct": 27.49
+        },
+        "total_valid": 211,
+        "overlap_50pct": {
+          "inside": 43,
+          "pct": 20.38
+        }
+      },
+      "gate50um": {
+        "n_fibres": 45,
+        "territory_cov_pct": 7.37,
+        "overlap_25pct": {
+          "inside": 22,
+          "pct": 10.43
+        },
+        "total_valid": 211,
+        "overlap_50pct": {
+          "inside": 15,
+          "pct": 7.11
+        }
+      }
+    },
+    "25": {
+      "gate0um": {
+        "n_fibres": 597,
+        "territory_cov_pct": 17.04,
+        "overlap_25pct": {
+          "inside": 56,
+          "pct": 28.0
+        },
+        "total_valid": 200,
+        "overlap_50pct": {
+          "inside": 37,
+          "pct": 18.5
+        }
+      },
+      "gate50um": {
+        "n_fibres": 35,
+        "territory_cov_pct": 5.15,
+        "overlap_25pct": {
+          "inside": 18,
+          "pct": 9.0
+        },
+        "total_valid": 200,
+        "overlap_50pct": {
+          "inside": 9,
+          "pct": 4.5
+        }
+      }
+    }
+  },
+  "pooled": {
+    "gate0um": {
+      "total_valid_nuclei": 5856,
+      "overlap_25pct": {
+        "inside": 1732,
+        "pct": 29.58
+      },
+      "overlap_50pct": {
+        "inside": 1295,
+        "pct": 22.11
+      }
+    },
+    "gate50um": {
+      "total_valid_nuclei": 5856,
+      "overlap_25pct": {
+        "inside": 745,
+        "pct": 12.72
+      },
+      "overlap_50pct": {
+        "inside": 464,
+        "pct": 7.92
+      }
+    }
+  }
+}

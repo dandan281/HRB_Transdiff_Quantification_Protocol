@@ -1,0 +1,5 @@
+*/_smoke/
+_smoke/
+__pycache__/
+*.egg-info/
+.pytest_cache/

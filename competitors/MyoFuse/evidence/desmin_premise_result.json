@@ -1,0 +1,32 @@
+{
+  "well": "32_C08_br223_igf1r",
+  "n_nuclei_measured": 10560,
+  "conversion_rule": "nucleus counted converted if >=50% of its area overlaps Desmin territory",
+  "n_converted": 701,
+  "converted_pct": 6.638,
+  "converted": {
+    "n": 701,
+    "median_ratio": 1.597,
+    "p10": 0.942,
+    "p90": 3.435,
+    "fraction_showing_a_hole_ratio_lt_0.8": 0.049
+  },
+  "not_converted": {
+    "n": 9859,
+    "median_ratio": 1.027,
+    "p10": 0.943,
+    "p90": 1.133,
+    "fraction_showing_a_hole_ratio_lt_0.8": 0.029
+  },
+  "median_ring_fraction_in_territory": 0.42,
+  "bimodality": {
+    "bic_1_component": 999.6,
+    "bic_2_component": 986.2,
+    "two_components_preferred": true,
+    "component_means": [
+      1.241,
+      2.025
+    ]
+  },
+  "verdict": "MyoFuse premise DOES NOT HOLD: Desmin is ENRICHED at the nucleus (perinuclear cage), the opposite of the MyHC dark hole their classifier keys on. Their pretrained model cannot transfer to our images."
+}

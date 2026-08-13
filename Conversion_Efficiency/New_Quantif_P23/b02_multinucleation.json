@@ -1,0 +1,270 @@
+{
+  "well": "23_B02_ctrl",
+  "n_individual_myotubes_traced": 5507,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "primary": {
+    "length_gate_um": 50.0,
+    "overlap_frac": 0.5
+  },
+  "results": {
+    "frac25_gate0": {
+      "overlap_frac": 0.25,
+      "length_gate_um": 0.0,
+      "n_myotubes": 5507,
+      "n_myotubes_with_nuclei": 1405,
+      "counts_bins": {
+        "0": 4102,
+        "1": 1189,
+        "2": 159,
+        "3": 39,
+        "4": 13,
+        "5plus": 5
+      },
+      "pct_of_all": {
+        "0": 74.5,
+        "1": 21.6,
+        "2": 2.9,
+        "3": 0.7,
+        "4": 0.2,
+        "5plus": 0.1
+      },
+      "pct_of_nucleated": {
+        "1": 84.6,
+        "2": 11.3,
+        "3": 2.8,
+        "4": 0.9,
+        "5plus": 0.4
+      },
+      "mean_nuclei_per_myotube": 0.31,
+      "mean_nuclei_per_nucleated": 1.21,
+      "pct_ge2_of_nucleated": 15.4
+    },
+    "frac25_gate30": {
+      "overlap_frac": 0.25,
+      "length_gate_um": 30.0,
+      "n_myotubes": 715,
+      "n_myotubes_with_nuclei": 458,
+      "counts_bins": {
+        "0": 257,
+        "1": 291,
+        "2": 112,
+        "3": 37,
+        "4": 13,
+        "5plus": 5
+      },
+      "pct_of_all": {
+        "0": 35.9,
+        "1": 40.7,
+        "2": 15.7,
+        "3": 5.2,
+        "4": 1.8,
+        "5plus": 0.7
+      },
+      "pct_of_nucleated": {
+        "1": 63.5,
+        "2": 24.5,
+        "3": 8.1,
+        "4": 2.8,
+        "5plus": 1.1
+      },
+      "mean_nuclei_per_myotube": 0.99,
+      "mean_nuclei_per_nucleated": 1.54,
+      "pct_ge2_of_nucleated": 36.5
+    },
+    "frac25_gate50": {
+      "overlap_frac": 0.25,
+      "length_gate_um": 50.0,
+      "n_myotubes": 317,
+      "n_myotubes_with_nuclei": 218,
+      "counts_bins": {
+        "0": 99,
+        "1": 102,
+        "2": 65,
+        "3": 33,
+        "4": 13,
+        "5plus": 5
+      },
+      "pct_of_all": {
+        "0": 31.2,
+        "1": 32.2,
+        "2": 20.5,
+        "3": 10.4,
+        "4": 4.1,
+        "5plus": 1.6
+      },
+      "pct_of_nucleated": {
+        "1": 46.8,
+        "2": 29.8,
+        "3": 15.1,
+        "4": 6.0,
+        "5plus": 2.3
+      },
+      "mean_nuclei_per_myotube": 1.3,
+      "mean_nuclei_per_nucleated": 1.89,
+      "pct_ge2_of_nucleated": 53.2
+    },
+    "frac25_gate100": {
+      "overlap_frac": 0.25,
+      "length_gate_um": 100.0,
+      "n_myotubes": 83,
+      "n_myotubes_with_nuclei": 68,
+      "counts_bins": {
+        "0": 15,
+        "1": 15,
+        "2": 23,
+        "3": 19,
+        "4": 7,
+        "5plus": 4
+      },
+      "pct_of_all": {
+        "0": 18.1,
+        "1": 18.1,
+        "2": 27.7,
+        "3": 22.9,
+        "4": 8.4,
+        "5plus": 4.8
+      },
+      "pct_of_nucleated": {
+        "1": 22.1,
+        "2": 33.8,
+        "3": 27.9,
+        "4": 10.3,
+        "5plus": 5.9
+      },
+      "mean_nuclei_per_myotube": 2.04,
+      "mean_nuclei_per_nucleated": 2.49,
+      "pct_ge2_of_nucleated": 77.9
+    },
+    "frac50_gate0": {
+      "overlap_frac": 0.5,
+      "length_gate_um": 0.0,
+      "n_myotubes": 5507,
+      "n_myotubes_with_nuclei": 630,
+      "counts_bins": {
+        "0": 4877,
+        "1": 549,
+        "2": 62,
+        "3": 13,
+        "4": 6,
+        "5plus": 0
+      },
+      "pct_of_all": {
+        "0": 88.6,
+        "1": 10.0,
+        "2": 1.1,
+        "3": 0.2,
+        "4": 0.1,
+        "5plus": 0.0
+      },
+      "pct_of_nucleated": {
+        "1": 87.1,
+        "2": 9.8,
+        "3": 2.1,
+        "4": 1.0,
+        "5plus": 0.0
+      },
+      "mean_nuclei_per_myotube": 0.13,
+      "mean_nuclei_per_nucleated": 1.17,
+      "pct_ge2_of_nucleated": 12.9
+    },
+    "frac50_gate30": {
+      "overlap_frac": 0.5,
+      "length_gate_um": 30.0,
+      "n_myotubes": 715,
+      "n_myotubes_with_nuclei": 311,
+      "counts_bins": {
+        "0": 404,
+        "1": 239,
+        "2": 53,
+        "3": 13,
+        "4": 6,
+        "5plus": 0
+      },
+      "pct_of_all": {
+        "0": 56.5,
+        "1": 33.4,
+        "2": 7.4,
+        "3": 1.8,
+        "4": 0.8,
+        "5plus": 0.0
+      },
+      "pct_of_nucleated": {
+        "1": 76.8,
+        "2": 17.0,
+        "3": 4.2,
+        "4": 1.9,
+        "5plus": 0.0
+      },
+      "mean_nuclei_per_myotube": 0.57,
+      "mean_nuclei_per_nucleated": 1.31,
+      "pct_ge2_of_nucleated": 23.2
+    },
+    "frac50_gate50": {
+      "overlap_frac": 0.5,
+      "length_gate_um": 50.0,
+      "n_myotubes": 317,
+      "n_myotubes_with_nuclei": 159,
+      "counts_bins": {
+        "0": 158,
+        "1": 107,
+        "2": 33,
+        "3": 13,
+        "4": 6,
+        "5plus": 0
+      },
+      "pct_of_all": {
+        "0": 49.8,
+        "1": 33.8,
+        "2": 10.4,
+        "3": 4.1,
+        "4": 1.9,
+        "5plus": 0.0
+      },
+      "pct_of_nucleated": {
+        "1": 67.3,
+        "2": 20.8,
+        "3": 8.2,
+        "4": 3.8,
+        "5plus": 0.0
+      },
+      "mean_nuclei_per_myotube": 0.74,
+      "mean_nuclei_per_nucleated": 1.48,
+      "pct_ge2_of_nucleated": 32.7
+    },
+    "frac50_gate100": {
+      "overlap_frac": 0.5,
+      "length_gate_um": 100.0,
+      "n_myotubes": 83,
+      "n_myotubes_with_nuclei": 59,
+      "counts_bins": {
+        "0": 24,
+        "1": 34,
+        "2": 16,
+        "3": 6,
+        "4": 3,
+        "5plus": 0
+      },
+      "pct_of_all": {
+        "0": 28.9,
+        "1": 41.0,
+        "2": 19.3,
+        "3": 7.2,
+        "4": 3.6,
+        "5plus": 0.0
+      },
+      "pct_of_nucleated": {
+        "1": 57.6,
+        "2": 27.1,
+        "3": 10.2,
+        "4": 5.1,
+        "5plus": 0.0
+      },
+      "mean_nuclei_per_myotube": 1.16,
+      "mean_nuclei_per_nucleated": 1.63,
+      "pct_ge2_of_nucleated": 42.4
+    }
+  }
+}

@@ -1,0 +1,933 @@
+{
+  "schema_version": "1.0",
+  "pilot_manifest_sha256": "a3a9eb26b407d09d6d0006ec167224cad5033f316774ae16c5ade1d7c1ca5b71",
+  "reviewer": "REPLACE_WITH_ANNOTATOR_B_ID",
+  "field_exports": {
+    "PLATE_23::32_C08_br223_igf1r": {
+      "instances": "PLATE_23__32_C08_br223_igf1r.instances.json",
+      "review_log": "PLATE_23__32_C08_br223_igf1r.instances.review_log.jsonl"
+    },
+    "PLATE_23::23_B02_ctrl": {
+      "instances": "PLATE_23__23_B02_ctrl.instances.json",
+      "review_log": "PLATE_23__23_B02_ctrl.instances.review_log.jsonl"
+    },
+    "PLATE_28::23_B02_ctrl": {
+      "instances": "PLATE_28__23_B02_ctrl.instances.json",
+      "review_log": "PLATE_28__23_B02_ctrl.instances.review_log.jsonl"
+    },
+    "PLATE_28::58_E10_br223_igf1r": {
+      "instances": "PLATE_28__58_E10_br223_igf1r.instances.json",
+      "review_log": "PLATE_28__58_E10_br223_igf1r.instances.review_log.jsonl"
+    },
+    "PLATE_32::23_B02_ctrl": {
+      "instances": "PLATE_32__23_B02_ctrl.instances.json",
+      "review_log": "PLATE_32__23_B02_ctrl.instances.review_log.jsonl"
+    },
+    "PLATE_32::41_D08_igf1r_br223": {
+      "instances": "PLATE_32__41_D08_igf1r_br223.instances.json",
+      "review_log": "PLATE_32__41_D08_igf1r_br223.instances.review_log.jsonl"
+    }
+  },
+  "tasks": [
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0110",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0110",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0364",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0364",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0431",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0431",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0538",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0538",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0187",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0187",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0186",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0186",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0867",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0867",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0190",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0190",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0190",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0190",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0190",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0190",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0095",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0095",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0980",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0980",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0895",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0895",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0266",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0266",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0502",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0502",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0801",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0801",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0327",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0327",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0403",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0403",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0760",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0760",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0572",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0572",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0195",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0195",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0499",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0499",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0488",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0488",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0488",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0488",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0488",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0488",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0385",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0385",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0348",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0348",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0052",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0052",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0362",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0362",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0359",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0359",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0348",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0348",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0348",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0348",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0700",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0700",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0437",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0437",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0437",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0437",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0437",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0437",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0259",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0259",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0260",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0260",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0259",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0259",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0177",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0177",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0237",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0237",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0390",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0390",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0937",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0937",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0963",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0963",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0276",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0276",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0276",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0276",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0276",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0276",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0132",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0132",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0132",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0132",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0132",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0132",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0350",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0350",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0350",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0350",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0350",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0350",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0150",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0150",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0518",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0518",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0598",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0598",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0956",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0956",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0845",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0845",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0203",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0203",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0203",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0203",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0203",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0203",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0430",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0430",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0430",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0430",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0430",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0430",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0817",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0817",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0326",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0326",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0453",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0453",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_1110",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_1110",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0168",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0168",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0168",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0168",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0168",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0168",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0762",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0762",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_1002",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_1002",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0083",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0083",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0826",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0826",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0671",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0671",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0722",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0722",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0383",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0383",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0013",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0013",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0491",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0491",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0794",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0794",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0424",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0424",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0877",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0877",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0288",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0288",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::32_C08_br223_igf1r::myotube_0194",
+      "field_key": "PLATE_23::32_C08_br223_igf1r",
+      "source_object_id": "myotube_0194",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0428",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0428",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0428",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0428",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0428",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0428",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0138",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0138",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0172",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0172",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0085",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0085",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0085",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0085",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0085",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0085",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_23::23_B02_ctrl::myotube_0189",
+      "field_key": "PLATE_23::23_B02_ctrl",
+      "source_object_id": "myotube_0189",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::23_B02_ctrl::myotube_0189",
+      "field_key": "PLATE_28::23_B02_ctrl",
+      "source_object_id": "myotube_0189",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::23_B02_ctrl::myotube_0189",
+      "field_key": "PLATE_32::23_B02_ctrl",
+      "source_object_id": "myotube_0189",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_32::41_D08_igf1r_br223::myotube_0199",
+      "field_key": "PLATE_32::41_D08_igf1r_br223",
+      "source_object_id": "myotube_0199",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0564",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0564",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_1029",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_1029",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    },
+    {
+      "task_id": "PLATE_28::58_E10_br223_igf1r::myotube_0991",
+      "field_key": "PLATE_28::58_E10_br223_igf1r",
+      "source_object_id": "myotube_0991",
+      "disposition": null,
+      "status": null,
+      "final_instance_ids": [],
+      "notes": ""
+    }
+  ]
+}

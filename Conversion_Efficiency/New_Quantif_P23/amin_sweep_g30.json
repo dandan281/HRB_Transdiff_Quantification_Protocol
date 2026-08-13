@@ -1,0 +1,359 @@
+{
+  "gate_um": 30.0,
+  "amax_um2": 500.0,
+  "amins": [
+    50.0,
+    75.0,
+    100.0,
+    125.0
+  ],
+  "area_percentiles_um2": {
+    "1": 18.5,
+    "5": 57.3,
+    "10": 86.0,
+    "25": 121.8,
+    "50": 152.2
+  },
+  "plate": {
+    "50": {
+      "valid": 51870,
+      "removed": 2359,
+      "inside_25": 6925,
+      "fusion_25_pct": 13.35,
+      "inside_50": 3517,
+      "fusion_50_pct": 6.78
+    },
+    "75": {
+      "valid": 50115,
+      "removed": 4114,
+      "inside_25": 6645,
+      "fusion_25_pct": 13.26,
+      "inside_50": 3321,
+      "fusion_50_pct": 6.63
+    },
+    "100": {
+      "valid": 46420,
+      "removed": 7809,
+      "inside_25": 5938,
+      "fusion_25_pct": 12.79,
+      "inside_50": 2867,
+      "fusion_50_pct": 6.18
+    },
+    "125": {
+      "valid": 39552,
+      "removed": 14677,
+      "inside_25": 4815,
+      "fusion_25_pct": 12.17,
+      "inside_50": 2177,
+      "fusion_50_pct": 5.5
+    }
+  },
+  "per_well": {
+    "19_B06_act104_trka": {
+      "n_raw": 8949,
+      "50": {
+        "overlap_25pct": {
+          "inside": 1220,
+          "total": 8440,
+          "fusion_pct": 14.45
+        },
+        "overlap_50pct": {
+          "inside": 696,
+          "total": 8440,
+          "fusion_pct": 8.25
+        }
+      },
+      "75": {
+        "overlap_25pct": {
+          "inside": 1168,
+          "total": 8136,
+          "fusion_pct": 14.36
+        },
+        "overlap_50pct": {
+          "inside": 657,
+          "total": 8136,
+          "fusion_pct": 8.08
+        }
+      },
+      "100": {
+        "overlap_25pct": {
+          "inside": 1049,
+          "total": 7549,
+          "fusion_pct": 13.9
+        },
+        "overlap_50pct": {
+          "inside": 574,
+          "total": 7549,
+          "fusion_pct": 7.6
+        }
+      },
+      "125": {
+        "overlap_25pct": {
+          "inside": 842,
+          "total": 6496,
+          "fusion_pct": 12.96
+        },
+        "overlap_50pct": {
+          "inside": 433,
+          "total": 6496,
+          "fusion_pct": 6.67
+        }
+      }
+    },
+    "22_B03_act104_egfrc": {
+      "n_raw": 10051,
+      "50": {
+        "overlap_25pct": {
+          "inside": 1274,
+          "total": 9524,
+          "fusion_pct": 13.38
+        },
+        "overlap_50pct": {
+          "inside": 666,
+          "total": 9524,
+          "fusion_pct": 6.99
+        }
+      },
+      "75": {
+        "overlap_25pct": {
+          "inside": 1207,
+          "total": 9115,
+          "fusion_pct": 13.24
+        },
+        "overlap_50pct": {
+          "inside": 614,
+          "total": 9115,
+          "fusion_pct": 6.74
+        }
+      },
+      "100": {
+        "overlap_25pct": {
+          "inside": 1068,
+          "total": 8347,
+          "fusion_pct": 12.8
+        },
+        "overlap_50pct": {
+          "inside": 531,
+          "total": 8347,
+          "fusion_pct": 6.36
+        }
+      },
+      "125": {
+        "overlap_25pct": {
+          "inside": 852,
+          "total": 6959,
+          "fusion_pct": 12.24
+        },
+        "overlap_50pct": {
+          "inside": 389,
+          "total": 6959,
+          "fusion_pct": 5.59
+        }
+      }
+    },
+    "23_B02_ctrl": {
+      "n_raw": 7905,
+      "50": {
+        "overlap_25pct": {
+          "inside": 668,
+          "total": 7635,
+          "fusion_pct": 8.75
+        },
+        "overlap_50pct": {
+          "inside": 275,
+          "total": 7635,
+          "fusion_pct": 3.6
+        }
+      },
+      "75": {
+        "overlap_25pct": {
+          "inside": 650,
+          "total": 7428,
+          "fusion_pct": 8.75
+        },
+        "overlap_50pct": {
+          "inside": 260,
+          "total": 7428,
+          "fusion_pct": 3.5
+        }
+      },
+      "100": {
+        "overlap_25pct": {
+          "inside": 587,
+          "total": 6982,
+          "fusion_pct": 8.41
+        },
+        "overlap_50pct": {
+          "inside": 230,
+          "total": 6982,
+          "fusion_pct": 3.29
+        }
+      },
+      "125": {
+        "overlap_25pct": {
+          "inside": 469,
+          "total": 5951,
+          "fusion_pct": 7.88
+        },
+        "overlap_50pct": {
+          "inside": 177,
+          "total": 5951,
+          "fusion_pct": 2.97
+        }
+      }
+    },
+    "29_C05_br223_egfrc": {
+      "n_raw": 7521,
+      "50": {
+        "overlap_25pct": {
+          "inside": 994,
+          "total": 7210,
+          "fusion_pct": 13.79
+        },
+        "overlap_50pct": {
+          "inside": 502,
+          "total": 7210,
+          "fusion_pct": 6.96
+        }
+      },
+      "75": {
+        "overlap_25pct": {
+          "inside": 975,
+          "total": 7035,
+          "fusion_pct": 13.86
+        },
+        "overlap_50pct": {
+          "inside": 489,
+          "total": 7035,
+          "fusion_pct": 6.95
+        }
+      },
+      "100": {
+        "overlap_25pct": {
+          "inside": 876,
+          "total": 6550,
+          "fusion_pct": 13.37
+        },
+        "overlap_50pct": {
+          "inside": 423,
+          "total": 6550,
+          "fusion_pct": 6.46
+        }
+      },
+      "125": {
+        "overlap_25pct": {
+          "inside": 720,
+          "total": 5634,
+          "fusion_pct": 12.78
+        },
+        "overlap_50pct": {
+          "inside": 330,
+          "total": 5634,
+          "fusion_pct": 5.86
+        }
+      }
+    },
+    "32_C08_br223_igf1r": {
+      "n_raw": 10588,
+      "50": {
+        "overlap_25pct": {
+          "inside": 1609,
+          "total": 10114,
+          "fusion_pct": 15.91
+        },
+        "overlap_50pct": {
+          "inside": 828,
+          "total": 10114,
+          "fusion_pct": 8.19
+        }
+      },
+      "75": {
+        "overlap_25pct": {
+          "inside": 1536,
+          "total": 9698,
+          "fusion_pct": 15.84
+        },
+        "overlap_50pct": {
+          "inside": 781,
+          "total": 9698,
+          "fusion_pct": 8.05
+        }
+      },
+      "100": {
+        "overlap_25pct": {
+          "inside": 1365,
+          "total": 8891,
+          "fusion_pct": 15.35
+        },
+        "overlap_50pct": {
+          "inside": 659,
+          "total": 8891,
+          "fusion_pct": 7.41
+        }
+      },
+      "125": {
+        "overlap_25pct": {
+          "inside": 1131,
+          "total": 7652,
+          "fusion_pct": 14.78
+        },
+        "overlap_50pct": {
+          "inside": 510,
+          "total": 7652,
+          "fusion_pct": 6.66
+        }
+      }
+    },
+    "33_C09_br223_trka": {
+      "n_raw": 9215,
+      "50": {
+        "overlap_25pct": {
+          "inside": 1160,
+          "total": 8947,
+          "fusion_pct": 12.97
+        },
+        "overlap_50pct": {
+          "inside": 550,
+          "total": 8947,
+          "fusion_pct": 6.15
+        }
+      },
+      "75": {
+        "overlap_25pct": {
+          "inside": 1109,
+          "total": 8703,
+          "fusion_pct": 12.74
+        },
+        "overlap_50pct": {
+          "inside": 520,
+          "total": 8703,
+          "fusion_pct": 5.97
+        }
+      },
+      "100": {
+        "overlap_25pct": {
+          "inside": 993,
+          "total": 8101,
+          "fusion_pct": 12.26
+        },
+        "overlap_50pct": {
+          "inside": 450,
+          "total": 8101,
+          "fusion_pct": 5.55
+        }
+      },
+      "125": {
+        "overlap_25pct": {
+          "inside": 801,
+          "total": 6860,
+          "fusion_pct": 11.68
+        },
+        "overlap_50pct": {
+          "inside": 338,
+          "total": 6860,
+          "fusion_pct": 4.93
+        }
+      }
+    }
+  }
+}

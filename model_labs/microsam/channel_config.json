@@ -1,0 +1,9 @@
+{
+  "name": "desmin_only",
+  "channels": [
+    "fiber"
+  ],
+  "norm_low_pct": 1.0,
+  "norm_high_pct": 99.5,
+  "note": "Single myotube-marker channel."
+}

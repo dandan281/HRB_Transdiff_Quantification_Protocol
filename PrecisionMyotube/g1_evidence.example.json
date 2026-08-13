@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "pilot_manifest": "pilot_manifest.json",
+  "synthetic_overlap_roundtrip_passed": true,
+  "all_pilot_tasks_dual_annotated": false,
+  "disagreements_categorized": false,
+  "disagreements_adjudicated_or_ambiguous": false,
+  "critical_tool_defects_open": 0,
+  "biological_reviewers_approved": false,
+  "schema_validation_passed": false
+}

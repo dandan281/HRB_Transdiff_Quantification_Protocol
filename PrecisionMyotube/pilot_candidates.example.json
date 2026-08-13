@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "candidates": [
+    {
+      "image_id": "32_C08_br223_igf1r",
+      "object_id": "proposal_0001",
+      "plate": "PLATE_23",
+      "density": "dense",
+      "intensity": "dim",
+      "length_class": "long",
+      "hard_case": true,
+      "reason": "crossing/contact review target; not a biological label"
+    }
+  ]
+}

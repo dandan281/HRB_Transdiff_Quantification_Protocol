@@ -58,8 +58,39 @@ MyotubePipeline/runs/**
 # --- Large regenerable renders ---
 MyotubePipeline/linker/overlays/
 
+# --- PrecisionMyotube regenerable runs / annotation workspace ---
+PrecisionMyotube/runs/
+PrecisionMyotube/annotation_work/
+PrecisionMyotube/.pytest_tmp/
+
 # --- Nested / experimental temp repo ---
 .codex_tmp_repo/
+
+# --- Cleanup 2026-08 additions (see cleanup_2026-08/ACTION_LOG.md) ---
+# Regenerable Conversion_Efficiency result folders (masks, overlays, run logs)
+Conversion_Efficiency/plate*_nuclei/
+Conversion_Efficiency/plate*_myotube/
+Conversion_Efficiency/plate*_fusion/
+Conversion_Efficiency/plate*_real_fusion/
+Conversion_Efficiency/Plate9_C6C2_QTFCs/
+Conversion_Efficiency/*.zip
+Conversion_Efficiency/New_Quantif_*/dbs_cache/
+Conversion_Efficiency/New_Quantif_*/myotube/
+Conversion_Efficiency/New_Quantif_*/nuclei/
+# well-prefixed per-well overlay renders (regenerable; summary figures are kept)
+Conversion_Efficiency/New_Quantif_*/[0-9]*_*.png
+Conversion_Efficiency/New_Quantif_Benchmark/myotube*/
+# dead proof-of-loop artifacts (quarantine pending user ruling)
+model_labs/_proof/
+# Binary array dumps (regenerable masks/caches)
+*.npy
+*.npz
+# Scratch trees and build artifacts
+tmp/
+output/
+model_labs/**/_runs/
+# Nested git clone — pin upstream by commit SHA in competitors/MyoFuse/NOTICE.md instead
+competitors/MyoFuse/upstream/
 
 # --- Logs ---
 *.log

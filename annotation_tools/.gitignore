@@ -1,0 +1,13 @@
+_roundtrip/
+_smoke/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+# cleanup 2026-08: patterns were mis-anchored — real paths live at
+# annotation_tools/annotation_tools/qc_review/{data,models}/, which a
+# slash-containing pattern anchored here never matched.
+**/qc_review/data/
+**/qc_review/models/
+.pytest_tmp/
+**/review.html
+_launch.*.log

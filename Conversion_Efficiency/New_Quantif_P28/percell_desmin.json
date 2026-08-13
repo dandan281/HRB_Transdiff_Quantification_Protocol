@@ -1,0 +1,46 @@
+{
+  "ring_um": 10.0,
+  "ring_px": 15,
+  "otsu_threshold_raw": 365.5987832505482,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "per_well": {
+    "17_B08_BMPR2_HER2mb": {
+      "cells": 12391,
+      "desmin_pos": 1896,
+      "conversion_pct": 15.3,
+      "ring_median": 192.8,
+      "fold_vs_ctrl": 0.88
+    },
+    "21_B04_br223_egfrc": {
+      "cells": 11593,
+      "desmin_pos": 1477,
+      "conversion_pct": 12.74,
+      "ring_median": 179.0,
+      "fold_vs_ctrl": 0.74
+    },
+    "23_B02_ctrl": {
+      "cells": 14121,
+      "desmin_pos": 2446,
+      "conversion_pct": 17.32,
+      "ring_median": 191.3,
+      "fold_vs_ctrl": 1.0
+    },
+    "56_E08_br223_egfrc": {
+      "cells": 11598,
+      "desmin_pos": 1559,
+      "conversion_pct": 13.44,
+      "ring_median": 178.2,
+      "fold_vs_ctrl": 0.78
+    },
+    "58_E10_br223_igf1r": {
+      "cells": 9347,
+      "desmin_pos": 895,
+      "conversion_pct": 9.58,
+      "ring_median": 165.4,
+      "fold_vs_ctrl": 0.55
+    }
+  }
+}

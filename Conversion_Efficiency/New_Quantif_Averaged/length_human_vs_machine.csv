@@ -1,0 +1,17 @@
+source,condition,n_wells,pct_0_300,pct_300_600,pct_gt600
+human,control,4,63.76,29.93,6.31
+human,BMPR2 + EGFRC,3,76.08,18.87,5.05
+human,BMPR2 + IGF1R,5,62.52,32.58,4.90
+human,BMPR2 + TRKA,3,67.96,27.73,4.31
+human,BMPR2 + HER2mb,3,78.88,20.10,1.02
+human,ACT104 + EGFRC,2,56.62,33.75,9.63
+human,ACT104 + TRKA,3,46.92,38.42,14.66
+human,ACT104 + FGFR,1,79.33,19.33,1.34
+machine,control,4,98.40,1.60,0.00
+machine,BMPR2 + EGFRC,3,97.98,2.02,0.00
+machine,BMPR2 + IGF1R,5,97.83,2.17,0.00
+machine,BMPR2 + TRKA,3,97.66,2.24,0.10
+machine,BMPR2 + HER2mb,3,99.45,0.55,0.00
+machine,ACT104 + EGFRC,2,96.88,3.12,0.00
+machine,ACT104 + TRKA,3,95.72,4.28,0.00
+machine,ACT104 + FGFR,1,98.31,1.69,0.00

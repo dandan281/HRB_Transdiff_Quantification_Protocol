@@ -1,0 +1,169 @@
+{
+  "ctrl_target_pct": 20.0,
+  "threshold_raw": 317.3273058667174,
+  "calibrated": {
+    "19_B06_act104_trka": {
+      "cells": 8440,
+      "desmin_pos": 3063,
+      "conversion_pct": 36.29,
+      "fold_vs_ctrl": 1.81
+    },
+    "22_B03_act104_egfrc": {
+      "cells": 9524,
+      "desmin_pos": 4295,
+      "conversion_pct": 45.1,
+      "fold_vs_ctrl": 2.25
+    },
+    "23_B02_ctrl": {
+      "cells": 7635,
+      "desmin_pos": 1527,
+      "conversion_pct": 20.0,
+      "fold_vs_ctrl": 1.0
+    },
+    "29_C05_br223_egfrc": {
+      "cells": 7210,
+      "desmin_pos": 2074,
+      "conversion_pct": 28.77,
+      "fold_vs_ctrl": 1.44
+    },
+    "32_C08_br223_igf1r": {
+      "cells": 10113,
+      "desmin_pos": 3956,
+      "conversion_pct": 39.12,
+      "fold_vs_ctrl": 1.96
+    },
+    "33_C09_br223_trka": {
+      "cells": 8947,
+      "desmin_pos": 2128,
+      "conversion_pct": 23.78,
+      "fold_vs_ctrl": 1.19
+    }
+  },
+  "sweep": {
+    "10": {
+      "threshold": 698.1670301996655,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 19.21,
+          "fold": 1.92
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 24.4,
+          "fold": 2.44
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 13.94,
+          "fold": 1.39
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 20.04,
+          "fold": 2.0
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 10.45,
+          "fold": 1.05
+        }
+      }
+    },
+    "15": {
+      "threshold": 393.1143624713772,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 30.84,
+          "fold": 2.06
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 38.06,
+          "fold": 2.54
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 23.65,
+          "fold": 1.58
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 32.42,
+          "fold": 2.16
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 19.18,
+          "fold": 1.28
+        }
+      }
+    },
+    "20": {
+      "threshold": 317.3273058667174,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 36.29,
+          "fold": 1.81
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 45.1,
+          "fold": 2.25
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 28.77,
+          "fold": 1.44
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 39.12,
+          "fold": 1.96
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 23.78,
+          "fold": 1.19
+        }
+      }
+    },
+    "25": {
+      "threshold": 281.3174078454912,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 39.79,
+          "fold": 1.59
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 50.5,
+          "fold": 2.02
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 32.04,
+          "fold": 1.28
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 44.63,
+          "fold": 1.79
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 26.6,
+          "fold": 1.06
+        }
+      }
+    },
+    "30": {
+      "threshold": 257.40437948028665,
+      "wells": {
+        "19_B06_act104_trka": {
+          "conversion_pct": 43.53,
+          "fold": 1.45
+        },
+        "22_B03_act104_egfrc": {
+          "conversion_pct": 55.49,
+          "fold": 1.85
+        },
+        "29_C05_br223_egfrc": {
+          "conversion_pct": 34.81,
+          "fold": 1.16
+        },
+        "32_C08_br223_igf1r": {
+          "conversion_pct": 49.84,
+          "fold": 1.66
+        },
+        "33_C09_br223_trka": {
+          "conversion_pct": 29.44,
+          "fold": 0.98
+        }
+      }
+    }
+  }
+}

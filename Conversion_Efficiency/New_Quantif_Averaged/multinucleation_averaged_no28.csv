@@ -1,0 +1,9 @@
+condition,n_replicates,pct_1_mean,pct_1_sem,pct_2_mean,pct_2_sem,pct_ge3_mean,pct_ge3_sem,pct_ge2_mean,member_wells
+control,3,64.73,11.47,20.67,4.16,14.63,7.42,35.30,P23:23_B02_ctrl;P26:23_B02_ctrl;P32:23_B02_ctrl
+BMPR2 + HER2mb,2,63.70,4.10,25.90,2.80,10.50,1.30,36.40,P32:38_D11_her2mb_br223;P32:45_D04_her2mb_br223m2
+ACT104 + FGFR,1,62.90,0.00,21.60,0.00,15.50,0.00,37.10,P32:26_C02_fgfr_act104
+ACT104 + TRKA,3,59.77,4.20,21.57,1.23,18.63,3.04,40.20,P23:19_B06_act104_trka;P26:19_B06_actv104_trka;P32:29_C05_trka_act104
+BMPR2 + EGFRC,1,58.50,0.00,22.20,0.00,19.40,0.00,41.60,P23:29_C05_br223_egfrc
+BMPR2 + TRKA,3,58.47,1.81,25.33,2.16,16.27,1.20,41.60,P23:33_C09_br223_trka;P32:40_D09_trka_br223;P32:47_D02_trka_bmpr211m2
+BMPR2 + IGF1R,4,57.45,1.38,23.82,0.19,18.82,1.32,42.65,P23:32_C08_br223_igf1r;P26:32_C08_br223_igf1r;P32:35_C11_igf1r_bmpr211m2;P32:41_D08_igf1r_br223
+ACT104 + EGFRC,2,50.05,2.05,29.35,0.85,20.65,1.15,50.00,P23:22_B03_act104_egfrc;P32:27_C03_egfrc_act104

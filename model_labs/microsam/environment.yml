@@ -1,0 +1,24 @@
+# Isolated micro-sam laboratory environment (CL03).
+#
+# P0.4 PRIMARY FAILURE TO AVOID: never install micro-sam into
+# Conversion_Efficiency/cpenv. Keep the validated nucleus environment untouched.
+#
+#   conda env create -f model_labs/microsam/environment.yml
+#   conda activate pm-microsam
+#   pip install -e PrecisionMyotube --no-deps      # schema only (read-only)
+#   python model_labs/microsam/smoke_test.py --out model_labs/microsam/_smoke
+#
+# micro-sam also provides the interactive annotation UI used by CL01; its
+# automatic (no-prompt) inference is what enters the bake-off (M05).
+name: pm-microsam
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - micro-sam           # PIN exact version after first solve
+      - torch               # PIN to the CUDA build matching the GPU
+      - numpy
+      - scipy
+      - tifffile

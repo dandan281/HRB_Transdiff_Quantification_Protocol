@@ -1,0 +1,14 @@
+{
+  "model": "omnipose_myotube_v1",
+  "required_plates": ["PLATE_26"],
+  "required_densities": ["sparse", "medium", "dense"],
+  "samples": [
+    {
+      "image_id": "plate26_field01",
+      "plate": "PLATE_26",
+      "density": "dense",
+      "ground_truth": "locked_test/field01.gt.instances.json",
+      "prediction": "predictions/field01.instances.json"
+    }
+  ]
+}

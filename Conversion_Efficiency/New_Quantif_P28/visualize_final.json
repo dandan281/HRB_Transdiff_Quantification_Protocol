@@ -1,0 +1,38 @@
+{
+  "plate": "PLATE_28",
+  "ring_um": 10.0,
+  "threshold_raw": 365.5987832505482,
+  "threshold_method": "pooled_otsu_log_uniform",
+  "per_well": {
+    "23_B02_ctrl": {
+      "desmin_pos": 2446,
+      "valid": 14121,
+      "conversion_pct": 17.32,
+      "fold": 1.0
+    },
+    "17_B08_BMPR2_HER2mb": {
+      "desmin_pos": 1896,
+      "valid": 12392,
+      "conversion_pct": 15.3,
+      "fold": 0.88
+    },
+    "21_B04_br223_egfrc": {
+      "desmin_pos": 1477,
+      "valid": 11594,
+      "conversion_pct": 12.74,
+      "fold": 0.74
+    },
+    "56_E08_br223_egfrc": {
+      "desmin_pos": 1559,
+      "valid": 11599,
+      "conversion_pct": 13.44,
+      "fold": 0.78
+    },
+    "58_E10_br223_igf1r": {
+      "desmin_pos": 895,
+      "valid": 9347,
+      "conversion_pct": 9.58,
+      "fold": 0.55
+    }
+  }
+}

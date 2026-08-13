@@ -1,0 +1,93 @@
+{
+  "plate": "PLATE_26",
+  "length_gate_um": 50.0,
+  "overlap_frac": 0.5,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "per_well": {
+    "19_B06_actv104_trka": {
+      "n_myotubes": 326,
+      "n_myotubes_with_nuclei": 183,
+      "counts_bins": {
+        "0": 143,
+        "1": 124,
+        "2": 35,
+        "3": 20,
+        "4": 2,
+        "5plus": 2
+      },
+      "pct_of_nucleated": {
+        "1": 67.8,
+        "2": 19.1,
+        "3": 10.9,
+        "4": 1.1,
+        "5plus": 1.1
+      },
+      "mean_nuclei_per_nucleated": 1.49,
+      "pct_ge2_of_nucleated": 32.2
+    },
+    "23_B02_ctrl": {
+      "n_myotubes": 281,
+      "n_myotubes_with_nuclei": 119,
+      "counts_bins": {
+        "0": 162,
+        "1": 99,
+        "2": 16,
+        "3": 3,
+        "4": 1,
+        "5plus": 0
+      },
+      "pct_of_nucleated": {
+        "1": 83.2,
+        "2": 13.4,
+        "3": 2.5,
+        "4": 0.8,
+        "5plus": 0.0
+      },
+      "mean_nuclei_per_nucleated": 1.21,
+      "pct_ge2_of_nucleated": 16.8
+    },
+    "32_C08_br223_igf1r": {
+      "n_myotubes": 467,
+      "n_myotubes_with_nuclei": 276,
+      "counts_bins": {
+        "0": 191,
+        "1": 163,
+        "2": 65,
+        "3": 25,
+        "4": 8,
+        "5plus": 15
+      },
+      "pct_of_nucleated": {
+        "1": 59.1,
+        "2": 23.6,
+        "3": 9.1,
+        "4": 2.9,
+        "5plus": 5.4
+      },
+      "mean_nuclei_per_nucleated": 1.79,
+      "pct_ge2_of_nucleated": 40.9
+    }
+  },
+  "pooled": {
+    "n_myotubes": 1074,
+    "n_nucleated": 578,
+    "counts_bins": {
+      "0": 496,
+      "1": 386,
+      "2": 116,
+      "3": 48,
+      "4": 11,
+      "5plus": 17
+    },
+    "pct_of_nucleated": {
+      "1": 66.8,
+      "2": 20.1,
+      "3": 8.3,
+      "4": 1.9,
+      "5plus": 2.9
+    }
+  }
+}

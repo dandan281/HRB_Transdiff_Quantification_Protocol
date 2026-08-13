@@ -1,0 +1,13 @@
+warning: garbage found: .git/objects/3a/tmp_obj_ADcjig
+warning: garbage found: .git/objects/41/tmp_obj_CaGzCr
+warning: garbage found: .git/objects/72/tmp_obj_rYa7wb
+warning: garbage found: .git/objects/9a/tmp_obj_zyOVaR
+warning: garbage found: .git/objects/f1/tmp_obj_TIRtuh
+count: 9475
+size: 21.69 GiB
+in-pack: 0
+packs: 0
+size-pack: 0 bytes
+prune-packable: 0
+garbage: 5
+size-garbage: 375.73 KiB

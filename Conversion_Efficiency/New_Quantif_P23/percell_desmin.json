@@ -1,0 +1,53 @@
+{
+  "ring_um": 3.0,
+  "ring_px": 5,
+  "otsu_threshold_raw": 468.5615562974382,
+  "nucleus_area_um2": [
+    50.0,
+    500.0
+  ],
+  "per_well": {
+    "19_B06_act104_trka": {
+      "cells": 8440,
+      "desmin_pos": 2282,
+      "conversion_pct": 27.04,
+      "ring_median": 230.0,
+      "fold_vs_ctrl": 2.11
+    },
+    "22_B03_act104_egfrc": {
+      "cells": 9524,
+      "desmin_pos": 3215,
+      "conversion_pct": 33.76,
+      "ring_median": 283.5,
+      "fold_vs_ctrl": 2.63
+    },
+    "23_B02_ctrl": {
+      "cells": 7635,
+      "desmin_pos": 979,
+      "conversion_pct": 12.82,
+      "ring_median": 206.2,
+      "fold_vs_ctrl": 1.0
+    },
+    "29_C05_br223_egfrc": {
+      "cells": 7210,
+      "desmin_pos": 1439,
+      "conversion_pct": 19.96,
+      "ring_median": 193.7,
+      "fold_vs_ctrl": 1.56
+    },
+    "32_C08_br223_igf1r": {
+      "cells": 10113,
+      "desmin_pos": 2859,
+      "conversion_pct": 28.27,
+      "ring_median": 257.0,
+      "fold_vs_ctrl": 2.2
+    },
+    "33_C09_br223_trka": {
+      "cells": 8947,
+      "desmin_pos": 1436,
+      "conversion_pct": 16.05,
+      "ring_median": 178.2,
+      "fold_vs_ctrl": 1.25
+    }
+  }
+}

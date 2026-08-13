@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "label": "validated-cellpose-c08",
+  "captured_utc": "2026-07-22T00:00:23.385303+00:00",
+  "environment_sha256": "0d7b327dc409982c43e473b3dbcf1df6fa14017b2ec952646d47a8961d802ab8",
+  "python": {
+    "version": "3.13.9",
+    "implementation": "CPython",
+    "executable": "C:\\Users\\liqig\\Documents\\HRB_Transdiff\\Conversion_Efficiency\\cpenv\\Scripts\\python.exe"
+  },
+  "system": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "system": "Windows",
+    "release": "11",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel"
+  },
+  "accelerator": {
+    "imported": true,
+    "torch_version": "2.11.0+cu128",
+    "compiled_cuda_version": "12.8",
+    "cuda_available": true,
+    "device_count": 1,
+    "devices": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+        "capability": [
+          12,
+          0
+        ]
+      }
+    ],
+    "cuda_visible_devices": null
+  },
+  "package_count": 62,
+  "requirements_file": "requirements.freeze.txt",
+  "requirements_sha256": "783b5697234a61ace6cf9787565566107c38e0108499111d110e2bcc8babdd02",
+  "validation": {
+    "analysis_summary": "C:\\Users\\liqig\\Documents\\HRB_Transdiff\\PrecisionMyotube\\runs\\32_C08_smoke\\analysis_summary.json",
+    "analysis_summary_sha256": "ea5a0d73f6b5648fcae05c358376567c2cb258421992bddda32fa079188a3848",
+    "image_id": "32_C08_br223_igf1r",
+    "expected_total_nuclei": 10114,
+    "observed_total_nuclei": 10114,
+    "passed": true
+  }
+}
