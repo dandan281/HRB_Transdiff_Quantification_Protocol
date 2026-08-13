@@ -53,7 +53,7 @@ sparse reviewed GT, and never will be with this reference set.
 | | setting | source |
 |---|---|---|
 | architecture | `CellposeModel(omni=True, dim=2, nchan=1, nclasses=2)` | `train_fold.py` |
-| **initialisation** | **`pretrained_model=False` — from scratch** | `train_fold.py:141` |
+| **initialisation** | **fine-tuned from `bact_phase_affinity`** — see §5(f) and `claude_omnipose_initialisation_decision_2026-08-06.md`. *(Corrected 2026-08-12: this row previously said "`pretrained_model=False` — from scratch", stale against the 2026-08-10 §5(f) predeclaration; a reader of this table alone got the wrong candidate definition.)* | `train_fold.py` `DEFAULTS["init_model"]` |
 | optimiser | SGD, lr 0.1, weight decay 1e-5 | `DEFAULTS` |
 | epochs | 300 | `DEFAULTS` |
 | batch / crop | 8 / 384² | `DEFAULTS` |
@@ -126,6 +126,11 @@ after the probe would be a design change made mid-run. Resolve it before Stage 2
 of two ways — either establish that from-scratch is intended and amend the plan's
 wording, or add fine-tuning and let the probe compare the two. This is a question for
 the integrator, not something to settle silently.
+
+*Resolution note (2026-08-12): the discrepancy above is historical. It was resolved
+2026-08-10 in favour of fine-tuning from `bact_phase_affinity` — predeclared as §5(f)
+before Stage 2 and before any held-out metric — and the §3 table now reflects that.
+"I have not changed it" was true when written and is no longer the case.*
 
 ## 4. The design
 
@@ -224,6 +229,12 @@ Preemption is not an edge case: `iscrm` owns no GPUs (`hyakalloc` reports GPUS: 
 three of its partitions), so every GPU job runs on checkpoint and will be requeued
 roughly every 8–9 hours without notice. Per-fold sidecars plus `--requeue` make that cost
 one fold, not one arm.
+
+*Corrected 2026-08-12: both sentences above were measured false on 2026-08-12
+(`claude_session_state_2026-08-06.md` §4). Observed uninterrupted windows on `ckpt-g2`
+under load were 34 s – 37 min, not 8–9 h — shorter than any fold — and `--requeue` does
+not cover `TIMEOUT`. The sizing that rested on this cadence is void; see the session
+state for the resume-based and paid-allocation alternatives.*
 
 ### Stage 3 — seal and hand over
 Sealed predictions, hash-bound, unreviewed, exported through the canonical adapter. Then

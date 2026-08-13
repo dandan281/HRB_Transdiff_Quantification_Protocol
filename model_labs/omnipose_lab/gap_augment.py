@@ -14,7 +14,10 @@ of each reviewed-complete mask geodesically and reading Desmin along it:
 
 * **173 of 374 instances (46%) contain at least one internal gap** -- a stretch
   where the fibre's own signal collapses toward background *inside* a mask the
-  operator certified as one myotube;
+  operator certified as one myotube. (374, not the 375 trainable masks:
+  `corpus_gap_distribution` skips masks under 50 px and masks whose skeleton
+  profile fails, so its denominator is the measurement population after those
+  guards. The two counts describe different populations; neither is an error.)
 * 157 such gaps are at least 5 um long, 56 at least 10 um, 18 at least 20 um, and
   the longest is **79.2 um** -- which is the scale the fragment linker's 80 um
   candidate window was built for;

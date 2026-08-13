@@ -65,4 +65,10 @@ Before any commit the integrator should decide whether to keep it as-is,
 `.gitignore` it, or convert it to a submodule. Nothing here has been staged or
 committed — no such authorisation exists.
 
+*Resolved 2026-08-12 (cleanup, ACTION_LOG #002): `competitors/MyoFuse/upstream/` is
+now in the root `.gitignore`, so the clone stays on disk for evaluation but can never
+enter this repository's history as a phantom submodule. Provenance survives via the
+pinned commit above; re-obtain with
+`git clone https://github.com/BenLair/MyoFuse && git checkout 273a2f4dafdf`.*
+
 Size: `Models/Svetlana/MyoFuse.pth` is 284 KB, so vendoring is cheap either way.

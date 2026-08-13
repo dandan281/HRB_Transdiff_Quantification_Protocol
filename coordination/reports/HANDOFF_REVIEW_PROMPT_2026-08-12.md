@@ -130,11 +130,18 @@ this candidate cannot fix it and neither can any 2-D successor.
   **2026-08-19**; this says acquire ≥2 fields per well, not 1
 
 **Verify rather than trust**
-```bash
-python -m pytest model_labs/tests annotation_tools/tests PrecisionMyotube -q   # 496 expected
+```powershell
+# Corrected 2026-08-12: the previous single-line combined command
+# (`pytest model_labs/tests annotation_tools/tests PrecisionMyotube -q`) does NOT
+# work — it yields 342 passed / 154 collection errors. Only this two-invocation
+# form (DEVELOPMENT_PLAN.md §13) reproduces the full suite: 57 + 439 = 496.
+$env:PYTHONPATH = "PrecisionMyotube;annotation_tools;model_labs"
+python -m pytest PrecisionMyotube/tests -q --basetemp tmp/pytest_pm      # 57 expected
+python -m pytest annotation_tools/tests model_labs/tests -q --basetemp tmp/pytest_labs  # 439 expected
 ```
-Run in the `pm-annotate` conda env. Nothing is committed; HEAD is `0322ebf` with a dirty
-tree, which is deliberate — **do not commit without asking.**
+Run in the `pm-annotate` conda env. *(Updated 2026-08-12: work is now committed on the
+`cleanup-2026-08` branch — see `cleanup_2026-08/ACTION_LOG.md`; `main` remains at
+`0322ebf`.)* **Do not commit without asking.**
 
 ## 5. What the review should attack
 

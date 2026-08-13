@@ -81,7 +81,13 @@ of exactly 0.000 is the tell. `circularity_audit.py` explains it:
 | subset | n | recall | median IoU | |
 |---|---|---|---|---|
 | unedited GT | 335 | 0.979 | 1.000 | **circular** |
-| edited GT (real correction pairs) | 40 | **0.500** | **0.648** | **meaningful** |
+| edited GT (real correction pairs) | ~~40~~ **25** | ~~0.500~~ **0.8000** | ~~0.648~~ **0.6667 (mean)** | **meaningful** |
+
+*Corrected 2026-08-12: the 40/0.500/0.648 row came from `circularity_audit.json`, whose
+denominator counted all 40 correction records even though 15 ended `ambiguous` — which
+also produced an impossible per-well recall above 1.0. `DEVELOPMENT_PLAN.md` v2.7
+(§ "supersedes") fixes the denominator at the 25 accepted correction masks: recall
+0.8000, mean IoU 0.6667, false_split_rate 0.1200, length MdAPE 0.3169.*
 
 Only 40 of the 375 reviewed masks were ever edited, so **89.3% of the ground truth
 is a verbatim accepted proposal**, and this candidate re-derives its instances from
@@ -89,9 +95,10 @@ the same deterministic recipe that produced those proposals — **47.4% of match
 pairs are pixel-identical (IoU = 1.000)**. On the unedited majority the pipeline is
 scoring against its own output.
 
-**The honest floor is recall 0.500 at median IoU 0.648**, measured on the 40 pairs
-where ground truth and proposal genuinely differ. That is the number a learned
-candidate has to beat.
+**The honest floor is recall 0.8000 at mean IoU 0.6667** *(corrected 2026-08-12 — see
+the note above; previously misstated as 0.500 / 0.648 from the superseded 40-pair
+denominator)*, measured on the 25 accepted correction masks where ground truth and
+proposal genuinely differ. That is the number a learned candidate has to beat.
 
 This matters for T03: a learned candidate does **not** share the proposal generator
 and so gets none of this structural advantage. Comparing it to this floor on the
