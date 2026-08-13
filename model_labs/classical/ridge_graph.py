@@ -245,6 +245,15 @@ def trace_fibers_parameterised(territory: np.ndarray, pixel_um: float,
 
     fiber_id = np.zeros((height, width), dtype=np.int32)
     lengths = [0.0]
+    # KNOWN, INTENTIONALLY UNCHANGED DIVERGENCE (documented 2026-08-12): the
+    # length accumulated here is the SUM of all branch lengths in the connected
+    # component, and it feeds the min_length_um selection gate. The benchmark and
+    # all scientific reporting instead measure LONGEST-GEODESIC length
+    # (precision_myotube.geometry.measure_mask). The two agree on simple fibres
+    # and diverge exactly on branched/crossing objects. This candidate is SEALED:
+    # changing the gate's length definition would change its output and void the
+    # sealed T03 assessment, so any reconciliation is a Codex-lane decision for a
+    # future candidate version, not an edit here.
     for component in nx.connected_components(graph):
         subgraph = graph.subgraph(component)
         branch_ids: set[int] = set()

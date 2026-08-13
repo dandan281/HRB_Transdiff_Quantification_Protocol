@@ -271,6 +271,45 @@ def train_one_fold(held_out: str, *, policy: str, include_round2: bool,
     return record
 
 
+def add_training_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
+    """Training knobs shared by the train_fold and run_folds CLIs.
+
+    One definition on purpose. Stage 2 once ran a different configuration from
+    the probe that sized it because `--dataloader`/`--num-workers` existed on
+    this parser but not on run_folds' (16 GPU-hours, zero folds; session state
+    2026-08-12). Any new training knob goes here, never on one script's parser.
+    """
+    parser.add_argument("--epochs", type=int, default=DEFAULTS["n_epochs"])
+    parser.add_argument("--batch-size", type=int, default=DEFAULTS["batch_size"])
+    parser.add_argument("--tyx", type=int, default=DEFAULTS["tyx"])
+    parser.add_argument("--lr", type=float, default=DEFAULTS["learning_rate"])
+    parser.add_argument("--seed", type=int, default=DEFAULTS["seed"])
+    parser.add_argument("--num-workers", type=int, default=DEFAULTS["num_workers"])
+    parser.add_argument("--dataloader", action="store_true",
+                        help="use Omnipose's worker dataloader; REQUIRED on Linux "
+                             "for the epoch times the probe measured (fails on "
+                             "Windows: fork)")
+    parser.add_argument("--autocast", action="store_true",
+                        help="mixed precision (broken upstream against torch 2.11)")
+    parser.add_argument("--init-model", default=DEFAULTS["init_model"],
+                        help="pretrained Omnipose model to fine-tune from, or "
+                             "'scratch' for random initialisation. Must be a model "
+                             "in neither C2_MODEL_NAMES nor BD_MODEL_NAMES or the "
+                             "architecture check will reject it (default: "
+                             f"{DEFAULTS['init_model']})")
+    return parser
+
+
+def config_from_args(args: argparse.Namespace) -> dict:
+    """The one mapping from shared CLI args to a training config dict."""
+    return {**DEFAULTS, "n_epochs": args.epochs, "batch_size": args.batch_size,
+            "tyx": args.tyx, "learning_rate": args.lr, "seed": args.seed,
+            "num_workers": args.num_workers,
+            "dataloader": args.dataloader,
+            "autocast": args.autocast,
+            "init_model": None if args.init_model == "scratch" else args.init_model}
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--held-out", required=True)
@@ -282,30 +321,10 @@ def main(argv=None) -> int:
                              "the gap distribution is measured from the training "
                              "wells of this fold only (see gap_augment)")
     parser.add_argument("--out", default="model_labs/omnipose_lab/_runs/v1")
-    parser.add_argument("--epochs", type=int, default=DEFAULTS["n_epochs"])
-    parser.add_argument("--batch-size", type=int, default=DEFAULTS["batch_size"])
-    parser.add_argument("--tyx", type=int, default=DEFAULTS["tyx"])
-    parser.add_argument("--lr", type=float, default=DEFAULTS["learning_rate"])
-    parser.add_argument("--seed", type=int, default=DEFAULTS["seed"])
-    parser.add_argument("--num-workers", type=int, default=DEFAULTS["num_workers"])
-    parser.add_argument("--dataloader", action="store_true",
-                        help="use Omnipose's worker dataloader (fails on Windows: fork)")
-    parser.add_argument("--autocast", action="store_true",
-                        help="mixed precision (broken upstream against torch 2.11)")
-    parser.add_argument("--init-model", default=DEFAULTS["init_model"],
-                        help="pretrained Omnipose model to fine-tune from, or "
-                             "'scratch' for random initialisation. Must be a model "
-                             "in neither C2_MODEL_NAMES nor BD_MODEL_NAMES or the "
-                             "architecture check will reject it (default: "
-                             f"{DEFAULTS['init_model']})")
+    add_training_args(parser)
     args = parser.parse_args(argv)
 
-    config = {**DEFAULTS, "n_epochs": args.epochs, "batch_size": args.batch_size,
-              "tyx": args.tyx, "learning_rate": args.lr, "seed": args.seed,
-              "num_workers": args.num_workers,
-              "dataloader": args.dataloader,
-              "autocast": args.autocast,
-              "init_model": None if args.init_model == "scratch" else args.init_model}
+    config = config_from_args(args)
     out_dir = Path(args.out) if Path(args.out).is_absolute() else ROOT / args.out
     out_dir.mkdir(parents=True, exist_ok=True)
 

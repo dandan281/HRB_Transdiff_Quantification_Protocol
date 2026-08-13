@@ -302,7 +302,13 @@ def run(out_dir: Path, arms: list[str], config: dict, include_round2: bool,
 
 
 def main(argv=None) -> int:
-    from omnipose_lab.train_fold import DEFAULTS
+    # Training knobs come from train_fold.add_training_args — ONE definition for
+    # both CLIs. This file once redeclared them by hand and drifted: the full run
+    # silently used the in-process path while the probe that sized it used the
+    # worker dataloader (16 GPU-hours, zero folds; session state 2026-08-12), and
+    # --autocast was settable on train_fold but not here. Only run-level flags
+    # (--arms/--wells/--no-resume/...) belong on this parser.
+    from omnipose_lab.train_fold import add_training_args, config_from_args
 
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--out", default="model_labs/omnipose_lab/_runs/v1")
@@ -314,31 +320,12 @@ def main(argv=None) -> int:
                         help="train on synthetically gapped copies as well as the "
                              "originals; a separate axis from --arms, which selects "
                              "the ignore policy")
-    parser.add_argument("--epochs", type=int, default=DEFAULTS["n_epochs"])
-    parser.add_argument("--batch-size", type=int, default=DEFAULTS["batch_size"])
-    parser.add_argument("--tyx", type=int, default=DEFAULTS["tyx"])
-    parser.add_argument("--lr", type=float, default=DEFAULTS["learning_rate"])
-    parser.add_argument("--seed", type=int, default=DEFAULTS["seed"])
     parser.add_argument("--no-resume", action="store_true",
                         help="ignore per-fold sidecars and re-run every fold")
-    parser.add_argument("--init-model", default=DEFAULTS["init_model"],
-                        help="pretrained Omnipose model to fine-tune from, or "
-                             "'scratch' for random initialisation "
-                             f"(default: {DEFAULTS['init_model']})")
-    # These existed on train_fold.py but not here, so the full run silently used the
-    # in-process path while the probe that sized it used the worker dataloader. That
-    # cost 16 GPU-hours and produced nothing; see the 2026-08-12 note in the session
-    # state doc. Timing measured on one path does not describe the other.
-    parser.add_argument("--dataloader", action="store_true",
-                        help="use Omnipose's worker dataloader; REQUIRED on Linux for "
-                             "the epoch times the probe measured (fails on Windows: fork)")
-    parser.add_argument("--num-workers", type=int, default=DEFAULTS["num_workers"])
+    add_training_args(parser)
     args = parser.parse_args(argv)
 
-    config = {**DEFAULTS, "n_epochs": args.epochs, "batch_size": args.batch_size,
-              "tyx": args.tyx, "learning_rate": args.lr, "seed": args.seed,
-              "init_model": None if args.init_model == "scratch" else args.init_model,
-              "dataloader": args.dataloader, "num_workers": args.num_workers}
+    config = config_from_args(args)
     out_dir = Path(args.out) if Path(args.out).is_absolute() else ROOT / args.out
 
     manifest = run(out_dir, args.arms, config, args.include_round2, args.wells,

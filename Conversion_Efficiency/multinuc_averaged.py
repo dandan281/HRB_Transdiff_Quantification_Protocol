@@ -33,26 +33,20 @@ SRC = {  # plate -> multinucleation json
     "32": "New_Quantif_P32/multinucleation.json",
 }
 OUTDIR = "New_Quantif_Averaged"
-CANON = {
-    "ctrl": "CONTROL",
-    "br223": "BMPR2", "bmpr2": "BMPR2", "bmpr211m2": "BMPR2", "br223m2": "BMPR2",
-    "her2mb": "HER2mb",
-    "act104": "ACT104", "actv104": "ACT104",
-    "trka": "TRKA", "egfrc": "EGFRC", "igf1r": "IGF1R", "fgfr": "FGFR",
-}
+
+# One receptor-canonicalisation source. This file used to carry its own exact-match
+# CANON dict while length_human_vs_machine used prefix matching; the two agreed on
+# every token seen so far but could silently diverge on the next new well name,
+# making the multinucleation and length figures disagree about the same treatment.
+from length_human_vs_machine import canon  # noqa: E402
 
 
 def condition_of(stem):
     toks = stem.split("_")[2:]                 # drop plate-number + well-position
-    canon = []
-    for t in toks:
-        key = t.lower()
-        if key not in CANON:
-            raise ValueError(f"unknown receptor token '{t}' in '{stem}'")
-        canon.append(CANON[key])
-    if canon == ["CONTROL"]:
+    names = [canon(t) for t in toks]
+    if names == ["CONTROL"]:
         return "control"
-    return " + ".join(sorted(canon))
+    return " + ".join(sorted(names))
 
 
 def main():
