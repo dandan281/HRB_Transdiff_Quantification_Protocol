@@ -1,0 +1,48 @@
+{
+  "stem": "32_C08_br223_igf1r",
+  "ground_truth_complete_masks": 54,
+  "training_export": {
+    "image_id": "32_C08_br223_igf1r",
+    "image_shape": [
+      3636,
+      3636
+    ],
+    "n_trainable_instances": 54,
+    "n_overlap_pixels": 0,
+    "channels": [
+      "fiber",
+      "dapi"
+    ],
+    "note": "labels.tif = reviewed-complete instances only; ignore.tif marks overlaps."
+  },
+  "predictions": {
+    "baseline_proposals": 500,
+    "qc_model_filtered": 217
+  },
+  "benchmark": {
+    "baseline": {
+      "n_gt": 54,
+      "n_pred": 500,
+      "tp": 54,
+      "precision": 0.108,
+      "recall": 1.0,
+      "f1": 0.195,
+      "false_split_rate": 0.0,
+      "over_merge_rate": 0.0,
+      "length_mdape": 0.0,
+      "width_mdape": 0.0
+    },
+    "qc_filtered": {
+      "n_gt": 54,
+      "n_pred": 217,
+      "tp": 44,
+      "precision": 0.203,
+      "recall": 0.815,
+      "f1": 0.325,
+      "false_split_rate": 0.0,
+      "over_merge_rate": 0.0,
+      "length_mdape": 0.0,
+      "width_mdape": 0.0
+    }
+  }
+}

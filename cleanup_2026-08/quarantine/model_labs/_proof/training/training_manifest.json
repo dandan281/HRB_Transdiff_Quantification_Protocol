@@ -1,0 +1,14 @@
+{
+  "image_id": "32_C08_br223_igf1r",
+  "image_shape": [
+    3636,
+    3636
+  ],
+  "n_trainable_instances": 54,
+  "n_overlap_pixels": 0,
+  "channels": [
+    "fiber",
+    "dapi"
+  ],
+  "note": "labels.tif = reviewed-complete instances only; ignore.tif marks overlaps."
+}
