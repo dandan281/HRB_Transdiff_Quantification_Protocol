@@ -53,7 +53,11 @@ ARMS = ("paint_out", "ambiguous_as_background")
 
 METRIC_KEYS = ("precision", "recall", "f1", "precision_weighted_score",
                "mean_matched_iou", "length_mdape", "width_mdape",
-               "false_split_rate", "over_merge_rate")
+               "false_split_rate", "over_merge_rate",
+               # The predeclared T03 primary is false_split_count POOLED across
+               # wells (training plan §5(b)); the counts were previously dropped
+               # from every aggregate even though infer_fold returns them.
+               "false_split_count", "over_merge_count")
 
 
 def sha256_file(path: str | Path) -> str:
@@ -80,6 +84,13 @@ def aggregate(folds: list[dict]) -> dict:
     out["n_folds"] = len(folds)
     for total in ("n_gt", "n_pred", "tp"):
         out[f"total_{total}"] = sum(f["metrics"][total] for f in folds)
+    # Pooled counts, the form the T03 primary is stated in (classical floor: 52).
+    # None (not 0) when any fold lacks the key, so a missing metric can never
+    # masquerade as a perfect score.
+    for total in ("false_split_count", "over_merge_count"):
+        values = [f["metrics"].get(total) for f in folds]
+        out[f"total_{total}"] = (sum(values) if all(v is not None for v in values)
+                                 else None)
     micro_p = out["total_tp"] / out["total_n_pred"] if out["total_n_pred"] else 0.0
     micro_r = out["total_tp"] / out["total_n_gt"] if out["total_n_gt"] else 0.0
     out["micro_precision"] = _fmt(micro_p)

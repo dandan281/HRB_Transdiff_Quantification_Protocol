@@ -138,6 +138,18 @@ def infer_one_fold(held_out: str, checkpoint: Path, out_dir: Path, *,
     from precision_myotube.benchmark import benchmark_instances
     from precision_myotube.schema import InstanceSet
 
+    # The training manifest is not optional: nclasses, data_hash and the held-out
+    # leakage assertion all derive from it. A missing manifest used to fall back to
+    # `{}`, which made the leakage guard vacuously true — a guard that silently
+    # disarms is worse than none.
+    if not train_manifest:
+        raise ValueError(
+            "train_manifest is required: refusing to score a checkpoint without "
+            "training provenance (nclasses, dataset_sha256, train_wells)")
+    train_wells = train_manifest["train_wells"]
+    if not train_wells:
+        raise ValueError("train_manifest lists no training wells")
+
     environment = verify()
     manifest_path = ROOT / BOOTSTRAP
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -151,26 +163,32 @@ def infer_one_fold(held_out: str, checkpoint: Path, out_dir: Path, *,
     # Inference deliberately uses the raw field, never the painted training copy.
     image = tifffile.imread(
         ROOT / "PrecisionMyotube/annotation_work/bootstrap_v1" / held_out / "image_fiber.tif")
-    model = load_model(checkpoint, nclasses=(train_manifest or {}).get("config", {})
-                       .get("nclasses", 2))
+    model = load_model(checkpoint, nclasses=train_manifest["config"]["nclasses"])
     labels, debug = predict_field(model, image, thresholds)
     print(f"  {held_out}: {debug['n_predicted']} instances in "
           f"{debug['inference_seconds']}s, peak GPU {debug['peak_gpu_gb']} GB")
 
     tag = f"{MODEL_VERSION}-fold-{held_out}-{policy}" + ("-r2" if include_round2 else "")
+    # Initialisation is part of what the candidate IS (training plan §5(f)); the
+    # sealed manifest must say so. This string previously hardcoded "trained from
+    # scratch" regardless of the actual initialisation.
+    init_model = train_manifest.get("init_model")
     provenance = ModelProvenance(
         model=MODEL_NAME, version=tag,
         architecture=f"omnipose (cellpose_omni {environment['cellpose_omni']}) "
-                     f"nchan=1 dim=2 nclasses="
-                     f"{(train_manifest or {}).get('config', {}).get('nclasses', 2)}, "
-                     f"rescale=False, trained from scratch",
+                     f"nchan=1 dim=2 nclasses={train_manifest['config']['nclasses']}, "
+                     f"rescale=False, "
+                     + (f"fine-tuned from {init_model}" if init_model
+                        else "trained from scratch"),
         checkpoint_hash=sha256_file(checkpoint),
         environment_hash=environment["environment_hash"],
-        data_hash=(train_manifest or {}).get("dataset_sha256", ""),
+        data_hash=train_manifest["dataset_sha256"],
         seed=seed,
         thresholds={**thresholds, "ignore_policy": policy,
                     "include_round2": include_round2,
-                    "trained_on_wells": (train_manifest or {}).get("train_wells", [])},
+                    "trained_on_wells": train_wells,
+                    "init_model": init_model,
+                    "init_model_sha256": train_manifest.get("init_model_sha256")},
         channels="desmin_only", used_prompts=False)
 
     exported = export_prediction(
@@ -185,8 +203,7 @@ def infer_one_fold(held_out: str, checkpoint: Path, out_dir: Path, *,
     exported_set = InstanceSet.load(exported["instances"])
     assert exported_set.image_id == gt["image_id"], "prediction image_id mismatch"
     assert all(not r.reviewed for r in exported_set.instances), "predictions must be unreviewed"
-    assert held_out not in (train_manifest or {}).get("train_wells", []), \
-        "held-out well was in the training set"
+    assert held_out not in train_wells, "held-out well was in the training set"
 
     return {
         "held_out_well": held_out, "ignore_policy": policy,
@@ -225,8 +242,12 @@ def main(argv=None) -> int:
     out_dir = Path(args.out) if Path(args.out).is_absolute() else ROOT / args.out
     checkpoint = Path(args.checkpoint)
     train_manifest_path = checkpoint.parent.parent / "train_manifest.json"
-    train_manifest = (json.loads(train_manifest_path.read_text(encoding="utf-8"))
-                      if train_manifest_path.is_file() else None)
+    if not train_manifest_path.is_file():
+        raise SystemExit(
+            f"FAIL: {train_manifest_path} not found. Scoring requires the training "
+            "manifest written by train_fold.py next to the checkpoint; without it "
+            "the leakage guard and data provenance cannot be established.")
+    train_manifest = json.loads(train_manifest_path.read_text(encoding="utf-8"))
 
     thresholds = {**DEFAULT_THRESHOLDS, "mask_threshold": args.mask_threshold,
                   "flow_threshold": args.flow_threshold}
