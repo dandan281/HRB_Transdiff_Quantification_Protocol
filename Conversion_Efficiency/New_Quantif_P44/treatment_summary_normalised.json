@@ -1,0 +1,295 @@
+{
+  "plate": "PLATE_44",
+  "method": "ring Desmin / per-well p99",
+  "status": "NOT ADOPTED \u2014 fails the null-well criterion",
+  "control_mean_pct": 14.55,
+  "control_sd_pct": 0.51,
+  "null_well_absolute_pct": 4.51,
+  "null_well_normalised_pct": 98.05,
+  "backbone_contrast": {
+    "c6_mean": 16.62,
+    "c6_n": 14,
+    "c2_mean": 15.32,
+    "c2_n": 12,
+    "difference_pp": 1.3,
+    "fold": 1.085,
+    "p_welch": 0.01728,
+    "p_welch_absolute_threshold": 0.42463
+  },
+  "per_condition": [
+    {
+      "condition": "No mb",
+      "n": 3,
+      "wells": [
+        "B02",
+        "B03",
+        "B04"
+      ],
+      "values_pct": [
+        14.42,
+        15.11,
+        14.12
+      ],
+      "mean_pct": 14.55,
+      "sd_pct": 0.51,
+      "sem_pct": 0.29,
+      "fold": 1.0,
+      "p_welch": null,
+      "p_holm": null
+    },
+    {
+      "condition": "C6",
+      "n": 3,
+      "wells": [
+        "B05",
+        "B06",
+        "B07"
+      ],
+      "values_pct": [
+        17.16,
+        16.7,
+        16.17
+      ],
+      "mean_pct": 16.68,
+      "sd_pct": 0.5,
+      "sem_pct": 0.29,
+      "fold": 1.146,
+      "p_welch": 0.0066,
+      "p_holm": 0.0853
+    },
+    {
+      "condition": "C2",
+      "n": 3,
+      "wells": [
+        "B08",
+        "B09",
+        "B10"
+      ],
+      "values_pct": [
+        14.86,
+        14.9,
+        12.57
+      ],
+      "mean_pct": 14.11,
+      "sd_pct": 1.33,
+      "sem_pct": 0.77,
+      "fold": 0.97,
+      "p_welch": 0.6361,
+      "p_holm": 1.0
+    },
+    {
+      "condition": "Alk1",
+      "n": 2,
+      "wells": [
+        "C02",
+        "C03"
+      ],
+      "values_pct": [
+        15.89,
+        14.61
+      ],
+      "mean_pct": 15.25,
+      "sd_pct": 0.91,
+      "sem_pct": 0.64,
+      "fold": 1.048,
+      "p_welch": 0.4582,
+      "p_holm": 1.0
+    },
+    {
+      "condition": "TGFb",
+      "n": 3,
+      "wells": [
+        "C04",
+        "C05",
+        "C06"
+      ],
+      "values_pct": [
+        15.04,
+        14.34,
+        14.26
+      ],
+      "mean_pct": 14.55,
+      "sd_pct": 0.43,
+      "sem_pct": 0.25,
+      "fold": 1.0,
+      "p_welch": 0.9935,
+      "p_holm": 1.0
+    },
+    {
+      "condition": "C6+Alk1",
+      "n": 3,
+      "wells": [
+        "C07",
+        "C08",
+        "C09"
+      ],
+      "values_pct": [
+        16.57,
+        17.83,
+        16.44
+      ],
+      "mean_pct": 16.95,
+      "sd_pct": 0.77,
+      "sem_pct": 0.44,
+      "fold": 1.165,
+      "p_welch": 0.0148,
+      "p_holm": 0.1632
+    },
+    {
+      "condition": "C2+Alk1",
+      "n": 3,
+      "wells": [
+        "C10",
+        "C11",
+        "D02"
+      ],
+      "values_pct": [
+        15.14,
+        13.31,
+        15.33
+      ],
+      "mean_pct": 14.59,
+      "sd_pct": 1.12,
+      "sem_pct": 0.64,
+      "fold": 1.003,
+      "p_welch": 0.9553,
+      "p_holm": 1.0
+    },
+    {
+      "condition": "C6+TGFb",
+      "n": 3,
+      "wells": [
+        "D03",
+        "D04",
+        "D05"
+      ],
+      "values_pct": [
+        15.33,
+        15.71,
+        15.43
+      ],
+      "mean_pct": 15.49,
+      "sd_pct": 0.2,
+      "sem_pct": 0.11,
+      "fold": 1.065,
+      "p_welch": 0.07,
+      "p_holm": 0.5637
+    },
+    {
+      "condition": "C2+TGFb",
+      "n": 3,
+      "wells": [
+        "D06",
+        "D07",
+        "D08"
+      ],
+      "values_pct": [
+        15.2,
+        16.39,
+        16.86
+      ],
+      "mean_pct": 16.15,
+      "sd_pct": 0.86,
+      "sem_pct": 0.49,
+      "fold": 1.11,
+      "p_welch": 0.0626,
+      "p_holm": 0.5637
+    },
+    {
+      "condition": "Alk1+TGFb",
+      "n": 3,
+      "wells": [
+        "D09",
+        "D10",
+        "D11"
+      ],
+      "values_pct": [
+        14.76,
+        13.35,
+        14.63
+      ],
+      "mean_pct": 14.25,
+      "sd_pct": 0.78,
+      "sem_pct": 0.45,
+      "fold": 0.979,
+      "p_welch": 0.6069,
+      "p_holm": 1.0
+    },
+    {
+      "condition": "C6 full",
+      "n": 3,
+      "wells": [
+        "E02",
+        "E03",
+        "E04"
+      ],
+      "values_pct": [
+        17.05,
+        17.99,
+        15.99
+      ],
+      "mean_pct": 17.01,
+      "sd_pct": 1.0,
+      "sem_pct": 0.58,
+      "fold": 1.169,
+      "p_welch": 0.0327,
+      "p_holm": 0.3271
+    },
+    {
+      "condition": "C2 full",
+      "n": 3,
+      "wells": [
+        "E05",
+        "E06",
+        "E07"
+      ],
+      "values_pct": [
+        14.48,
+        17.08,
+        17.73
+      ],
+      "mean_pct": 16.43,
+      "sd_pct": 1.72,
+      "sem_pct": 0.99,
+      "fold": 1.129,
+      "p_welch": 0.192,
+      "p_holm": 1.0
+    },
+    {
+      "condition": "C6+TNFalpha",
+      "n": 2,
+      "wells": [
+        "E08",
+        "E09"
+      ],
+      "values_pct": [
+        17.22,
+        17.04
+      ],
+      "mean_pct": 17.13,
+      "sd_pct": 0.13,
+      "sem_pct": 0.09,
+      "fold": 1.177,
+      "p_welch": 0.0083,
+      "p_holm": 0.0995
+    },
+    {
+      "condition": "TNFalpha",
+      "n": 2,
+      "wells": [
+        "E10",
+        "E11"
+      ],
+      "values_pct": [
+        14.94,
+        15.78
+      ],
+      "mean_pct": 15.36,
+      "sd_pct": 0.59,
+      "sem_pct": 0.42,
+      "fold": 1.056,
+      "p_welch": 0.256,
+      "p_holm": 1.0
+    }
+  ]
+}

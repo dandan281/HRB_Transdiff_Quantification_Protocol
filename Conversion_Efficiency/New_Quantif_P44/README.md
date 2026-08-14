@@ -90,6 +90,33 @@ null-well criterion is what caught it. **Not adopted.**
   validated independently (+3.0 % native-vs-resampled) and the artifact is
   confined to the Desmin channel.
 
+### The normalised bar graph, for comparison
+`treatment_summary_normalised.py` → `treatment_summary_normalised.png`
+
+![gain-normalised conversion](treatment_summary_normalised.png)
+
+Same layout as the main figure, with each well divided by its own Desmin p99.
+Replicates tighten dramatically (SD 2.03 → **0.77 pp**; C6+TNFalpha's two wells
+now agree to 0.13 pp) and the staining correlation is gone. **Still 0 of 13
+significant** after Holm.
+
+The right-hand panel is why it is not adopted: B11, which has no Desmin, goes
+from 5 % to **98 %**.
+
+**One pattern is worth recording as a hypothesis.** After normalisation the four
+highest conditions are all C6-containing, and the plate's own factorial design
+supports pooling by backbone:
+
+| backbone | wells | mean | |
+|---|--:|--:|---|
+| C6-containing | 14 | **16.62 %** | |
+| C2-containing | 12 | 15.32 % | +1.30 pp, 1.08×, Welch p = **0.017** |
+
+The same contrast on the absolute threshold gives p = 0.42 — the staining noise
+was hiding it. **This is not a result:** it was chosen after seeing the data, it
+is uncorrected, and it rests on a method that fails its own null-well check.
+It is a specific, cheap thing to test on a properly stained plate.
+
 ### What would fix it
 1. **Re-stain with a single matched master mix** across all 40 wells, and image
    at **fixed exposure** — this is the actual fix; everything else is mitigation.
