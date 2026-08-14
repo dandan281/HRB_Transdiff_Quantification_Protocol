@@ -1,0 +1,55 @@
+{
+  "plate": "PLATE_44",
+  "threshold_raw": 118.90987359820369,
+  "null_well": "14_B11",
+  "false_positive_floor_pct": 4.51,
+  "control_mean_pct": 14.84,
+  "control_minus_floor_pct": 10.33,
+  "background_mode_raw_min": 32.4,
+  "background_mode_raw_max": 52.1,
+  "r_background_vs_conversion": 0.074,
+  "p_background_vs_conversion": 0.6528400401306546,
+  "valley_found": false,
+  "artifact_morphology": {
+    "23_B02": {
+      "saturated_frac": 0.0,
+      "n_objects": 55302,
+      "px_fibrelike": 175045.0,
+      "px_blobby": 118355.0,
+      "px_specks": 79778.0,
+      "pct_fibrelike": 46.9,
+      "pct_blobby": 31.7,
+      "pct_specks": 21.4
+    },
+    "22_B03": {
+      "saturated_frac": 0.0,
+      "n_objects": 58391,
+      "px_fibrelike": 172441.0,
+      "px_blobby": 114229.0,
+      "px_specks": 86392.0,
+      "pct_fibrelike": 46.2,
+      "pct_blobby": 30.6,
+      "pct_specks": 23.2
+    },
+    "57_E09": {
+      "saturated_frac": 0.0,
+      "n_objects": 23892,
+      "px_fibrelike": 201520.0,
+      "px_blobby": 76726.0,
+      "px_specks": 32344.0,
+      "pct_fibrelike": 64.9,
+      "pct_blobby": 24.7,
+      "pct_specks": 10.4
+    },
+    "32_C08": {
+      "saturated_frac": 0.0,
+      "n_objects": 33085,
+      "px_fibrelike": 188002.0,
+      "px_blobby": 121616.0,
+      "px_specks": 45189.0,
+      "pct_fibrelike": 53.0,
+      "pct_blobby": 34.3,
+      "pct_specks": 12.7
+    }
+  }
+}

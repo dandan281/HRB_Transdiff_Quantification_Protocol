@@ -1,0 +1,13 @@
+{
+  "plate": "PLATE_44",
+  "n_wells": 39,
+  "relative_coverage_level": 0.5,
+  "r_brightness": 0.917,
+  "r_coverage_normalised": 0.876,
+  "r_coverage_absolute": 0.733,
+  "partial_r_brightness_given_coverage": 0.83,
+  "partial_p_brightness": 6.582399444285979e-11,
+  "partial_r_coverage_given_brightness": 0.738,
+  "partial_p_coverage": 8.091083440185801e-08,
+  "verdict": "TECHNICAL: with the amount of myotube held constant, wells that merely stained brighter still score higher. The absolute threshold is converting staining gain into apparent conversion."
+}

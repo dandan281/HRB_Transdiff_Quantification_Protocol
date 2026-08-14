@@ -1,0 +1,13 @@
+{
+  "plate": "PLATE_44",
+  "r_all_wells": 0.853,
+  "spearman_all_wells": 0.829,
+  "r_within_condition": 0.917,
+  "p_within_condition": 2.5893461798644477e-16,
+  "variance_explained_within_condition_pct": 84.0,
+  "slope_pp_per_1000_p99": 7.327,
+  "r_between_conditions": 0.81,
+  "dbs_p99_min": 1066.0,
+  "dbs_p99_max": 2331.0,
+  "verdict": "STAINING-LIMITED: replicate wells that stained brighter score higher, with biology held constant"
+}

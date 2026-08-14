@@ -16,11 +16,10 @@ cpenv/Scripts/python.exe New_Quantif_P44/treatment_summary.py   # needs the plat
 
 ## Headline
 
-**No condition differs from the `No mb` control after correction for multiple
-comparisons (0 of 13).** One candidate is worth a follow-up rather than a claim:
-**C6+TNFalpha, 19.6 % vs 14.8 % control (1.32×)** — both of its wells sit above
-*every* control well, but it has **n = 2** and does not survive Holm correction
-(p = 0.31).
+**No condition differs from the `No mb` control after correction (0 of 13) — and
+troubleshooting has since shown the readout is staining-limited, so the ranking
+should not be used at all.** See the section immediately below. The earlier
+C6+TNFalpha candidate is very likely a staining artifact and is **withdrawn**.
 
 | check | result | verdict |
 |---|---|---|
@@ -37,6 +36,68 @@ because P44 had no declared replicate structure). **The limiting factor is not
 the control and not the segmentation; it is that several treatment conditions
 disagree with themselves across replicate wells by more than any treatment
 differs from control.**
+
+---
+
+## ⚠ Troubleshooting result — the conversion readout is staining-limited
+
+**Root cause found: the Desmin antibody stain varies up to 2.19× between wells
+(1.60× between biologically identical replicates), and the fixed absolute
+threshold converts that variation directly into apparent conversion.** It is not
+repairable in software. Full evidence in `diagnose_*.json`; scripts are read-only
+and change no result.
+
+### The evidence chain
+
+| step | test | result |
+|---|---|---|
+| 1 | empirical null — B11 has no Desmin | **4.5 %** of its cells still score Desmin+ → a false-positive floor every well pays |
+| 2 | background drift | r = **+0.07** — not the cause |
+| 2 | saturation | **0.0000 %** of Desmin pixels — not the cause |
+| 2 | debris / specks (the first hypothesis) | in *control* wells only **47 %** of above-threshold pixels are fibre-like; 31 % blobby, 22 % sub-resolution specks — **real, but see below** |
+| 3 | despeckling up to 200 µm² | floor 4.51 → **4.10 %**, replicate SD 2.03 → **1.91** — *marginal; debris is not the driver* |
+| 4 | **Desmin signal strength, within condition** | **r = +0.917** (p = 3e-16) — with biology held constant, brighter-stained replicates score higher. Explains **84 %** of replicate scatter |
+| 5 | brightness vs coverage, partial correlations | brightness \| coverage held: **r = +0.830**; coverage \| brightness held: r = +0.738 → **technical gain, not just more myotube** |
+| 6 | is the gain optical or antibody? | r(DAPI p99, Desmin p99) = **+0.045** — DAPI does **not** track Desmin → **the Desmin stain itself varied**, not the exposure |
+
+### Why there is no valley
+The pooled per-cell distribution is **unimodal with a shoulder, not bimodal**. The
+Otsu cut lands where the histogram is still **11 % of peak height** — inside the
+background's own right flank. A ±10 % threshold move changes plate conversion by
+**16 % relative**. There is no threshold that separates two populations, because
+there are not two populations to separate at this signal quality.
+
+### The fix that was tried and rejected
+Normalising each well by its own Desmin brightness (`gain_normalised_test.py`)
+**removes the artifact** — brightness correlation r = +0.917 → **−0.06**, replicate
+SD 2.03 → **0.77 (−62 %)**. But it fails the null-well check catastrophically:
+**B11, which has no Desmin, scores 98 %**, because dividing by a tiny p99 inflates
+everything. Gain and abundance are not separable from one channel. This is the
+same failure mode as the project's earlier flat-fold-change bug, and the
+null-well criterion is what caught it. **Not adopted.**
+
+### What this means for the results below
+- **The conditions cannot be ranked from this plate.** ~83 % of the observed
+  between-condition spread (5.9 of 7.1 pp) is reproducible from staining
+  brightness alone.
+- **The C6+TNFalpha candidate flagged earlier is very likely an artifact.** Its
+  two wells have the **highest** condition-mean Desmin brightness on the plate
+  (2,188 vs the control's 1,832). At the measured slope of 7.33 pp per 1,000
+  units, staining alone accounts for **≈2.6 of its 4.8 pp** apparent effect —
+  more than half. The residual is well inside noise. **Do not follow it up on
+  this evidence.**
+- **Nuclei counts are unaffected** and remain trustworthy — DAPI segmentation was
+  validated independently (+3.0 % native-vs-resampled) and the artifact is
+  confined to the Desmin channel.
+
+### What would fix it
+1. **Re-stain with a single matched master mix** across all 40 wells, and image
+   at **fixed exposure** — this is the actual fix; everything else is mitigation.
+2. If re-staining is impossible, add a **Desmin-independent loading control** in
+   a spare channel so gain can be divided out without destroying abundance.
+   DAPI cannot serve: it does not track Desmin (r = +0.05) and is partly
+   **saturated** here (p99 hits the 12-bit ceiling of 4095 in several wells).
+3. Re-image at higher magnification while at it — see the multinucleation note.
 
 ---
 
@@ -147,22 +208,20 @@ estimate, which matters at n = 2–3.
 | **C6+TNFalpha** | **2** | **19.6 %** | 0.92 | 0.65 | **1.32×** | **+5.6** | 0.314 | **above all controls** |
 | TNFalpha | 2 | 13.6 % | 3.96 | 2.80 | 0.91× | −1.5 | 1.000 | overlaps |
 
-### How to read this
-- **Nothing is significant.** With n = 2–3 wells and 13 comparisons, the design
-  can only detect very large effects. *Absence of significance here is not
-  evidence of absence* — it is mostly evidence of low power.
-- **C6+TNFalpha is the one candidate.** 19.0 % and 20.3 % against controls of
-  15.7 / 14.7 / 14.1 % — no overlap at all, 1.32×, and its two wells agree
-  closely (SD 0.92). It is also the *only* condition with complete separation.
-  That is a hypothesis worth another plate, not a result.
-- **TNFalpha alone does not do it** (13.6 %, 0.91×), so if the C6+TNFalpha signal
-  is real it is not a TNFalpha main effect. But TNFalpha alone has SD 3.96
-  (10.8 % and 16.4 %), so this comparison is weak in both directions.
-- **C6+Alk1 and C2 full both reach 1.16×** (+2.8 control SD) but their replicates
-  straddle the control range — C6+Alk1's wells are 13.5 / 18.0 / 20.2 %.
-- **Beware C2 (0.84×) and TGFb (SD 0.14).** C2's three wells span 9.4–16.0 %;
-  TGFb's three agree to within 0.14 pp. The same protocol produced both, which is
-  the clearest statement of how variable this plate's wells are.
+### How to read this — **superseded by the troubleshooting result above**
+- **Nothing is significant.** With n = 2–3 wells and 13 comparisons the design
+  detects only very large effects. *Absence of significance is not evidence of
+  absence* — it is mostly low power.
+- **The ranking is not usable.** ~83 % of the spread in this table is
+  reproducible from per-well Desmin staining brightness alone (within-condition
+  r = +0.917). Treat the table as a record of what was measured, not as biology.
+- **C6+TNFalpha is withdrawn as a candidate.** It has the highest condition-mean
+  staining brightness on the plate; ≈2.6 of its 4.8 pp apparent effect is
+  attributable to staining.
+- **The within-condition scatter now has an explanation.** C2's wells span
+  9.4–16.0 % while TGFb's agree to 0.14 pp — and C2's Desmin brightness spans
+  1.60× while TGFb's spans 1.08×. The conditions that disagree with themselves
+  are the ones whose wells stained unevenly.
 
 ---
 
