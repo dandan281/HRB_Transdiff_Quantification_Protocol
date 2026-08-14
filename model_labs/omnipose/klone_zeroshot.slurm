@@ -36,9 +36,30 @@ source "$(conda info --base)/etc/profile.d/conda.sh"
 conda activate "$ENV_PREFIX"
 set -u
 
+# Weights live on /gscratch, not in $HOME. Without this, cellpose_omni downloads
+# to ~/.cellpose/models -- which blows the 10 GB $HOME quota and, on a compute
+# node with no outbound network, simply fails. Same line as klone_folds.slurm:76
+# and klone_probe.slurm:76; keep the three in agreement.
+export CELLPOSE_LOCAL_MODELS_PATH="$PROJECT/cellpose_models"
+
 cd "$REPO"
 echo "node $(hostname) | $(nvidia-smi --query-gpu=name --format=csv,noheader)"
 echo "requeue count: ${SLURM_RESTART_COUNT:-0}"
+echo "model cache: $CELLPOSE_LOCAL_MODELS_PATH"
+ls -1 "$CELLPOSE_LOCAL_MODELS_PATH" 2>/dev/null || echo "  (cache dir missing)"
+
+# Fail loudly HERE rather than mid-run: a compute node has no outbound network,
+# so any weight not already in the cache cannot be fetched. Pre-download it from
+# a LOGIN node (which does have network) before submitting.
+for m in $MODELS; do
+  if ! ls "$CELLPOSE_LOCAL_MODELS_PATH" 2>/dev/null | grep -q "^${m}"; then
+    echo "ERROR: '$m' is not in the model cache and this node cannot download it." >&2
+    echo "  On a LOGIN node run:" >&2
+    echo "    export CELLPOSE_LOCAL_MODELS_PATH=$CELLPOSE_LOCAL_MODELS_PATH" >&2
+    echo "    python -c \"from cellpose_omni import models; models.CellposeModel(gpu=False, omni=True, model_type='$m')\"" >&2
+    exit 1
+  fi
+done
 
 # Discover what this install actually ships before assuming a name exists.
 echo "=== available pretrained models ==="
