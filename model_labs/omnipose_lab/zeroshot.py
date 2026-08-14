@@ -79,14 +79,22 @@ def normalize_field(img: np.ndarray, lo_pct=1.0, hi_pct=99.5) -> np.ndarray:
     return np.clip((img.astype(np.float32) - lo) / max(hi - lo, 1e-6), 0, 1)
 
 
-def prepare_input(norm: np.ndarray, nchan: int, polarity: str) -> np.ndarray:
-    """Adapt a 1-channel normalised field to whatever the checkpoint wants."""
+def prepare_input(norm: np.ndarray, nchan: int, polarity: str):
+    """Adapt a 1-channel normalised field to whatever the checkpoint wants.
+
+    Returns ``(image, channels)`` for ``model.eval``. Every shipped model except
+    `bact_phase_affinity` is the 2-channel boundary variant (u-net config
+    ``[2, 32, 64, 128, 256], 4``), so this path matters for five of six.
+
+    The image stays 2-D in BOTH cases and the channel expansion is handed to
+    Cellpose via ``channels=[0, 0]`` -- grayscale in slot 0, no nuclear channel.
+    Hand-stacking a blank second channel and passing ``channel_axis`` also
+    "works" but is the off-road path through `reshape_and_normalize_data`; this
+    is the one every Omnipose example uses, and `channels=None` is the path
+    `infer_fold.py` already exercises for the 1-channel case.
+    """
     img = 1.0 - norm if polarity == "invert" else norm
-    if nchan <= 1:
-        return img
-    stack = np.zeros((nchan, *img.shape), dtype=np.float32)
-    stack[0] = img                       # blank remaining channels
-    return stack
+    return img, ([0, 0] if nchan >= 2 else None)
 
 
 def measure_instances(labels: np.ndarray, pixel_um: float) -> list[dict]:
@@ -148,13 +156,12 @@ def run_cell(model, model_name: str, well: str, norm: np.ndarray, polarity: str,
     import torch
 
     nchan = int(getattr(model, "nchan", 1) or 1)
-    x = prepare_input(norm, nchan, polarity)
-    channel_axis = 0 if x.ndim == 3 else None
+    x, channels = prepare_input(norm, nchan, polarity)
 
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     t0 = time.time()
-    out = model.eval(x, channels=None, channel_axis=channel_axis,
+    out = model.eval(x, channels=channels, channel_axis=None,
                      normalize=False, omni=True, rescale=None,
                      diameter=diameter, **EVAL_KW)
     secs = time.time() - t0
