@@ -1,0 +1,19 @@
+{
+  "plate": "PLATE_44",
+  "well_level": {
+    "pearson_r": 0.111,
+    "pearson_p": 0.499378635189857,
+    "spearman_r": 0.071,
+    "n": 39
+  },
+  "condition_level": {
+    "pearson_r": 0.258,
+    "n": 14
+  },
+  "reference": {
+    "P28": 0.99,
+    "P23": 0.61,
+    "P32": 0.34,
+    "P9": 0.0
+  }
+}

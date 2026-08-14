@@ -226,22 +226,51 @@ channel, not a dead well. Exclude it, or re-image.
 
 ---
 
-## Files
+## Files — format parity with `New_Quantif_P32`
+
+Every P32 artifact has a P44 equivalent, produced by the same method:
+
+| P32 artifact | P44 | note |
+|---|---|---|
+| `build_dbs.py` → `dbs_cache/` | ✅ | top-hat re-derived: 26 µm = disk(15 px) here |
+| `percell_desmin.py` → `.png`/`.json` | ✅ | ring 10 µm = 6 px here |
+| `percell_values_r10.0.npz` | ✅ | per-cell ring values, cached |
+| `visualize_final.py` → `visualize_final.json` | ✅ | + `per_condition` block, since P44 has replicates |
+| `<well>_percell_classified.png` | ✅ **×40** | same colour code: green Desmin, magenta = Desmin+ nucleus, blue = Desmin− |
+| `conversion_summary_bar.png` | ✅ | same form (control first, treated ascending, %/fold labels) **+ SEM bars and per-well dots**, because P32 had one well per condition and P44 has 2–3 |
+| `density_confound.py` → `.png` | ✅ | reports well-level *and* condition-level r |
+| `multinucleation.json` / `_summary.png` / `<well>_multinuc_overlay.png` | ❌ | **see below** |
+
+P44-only additions (this plate needed them):
 - `p44_layout.py` — **the single source** of channel indices, pixel size, derived
   pixel parameters and the plate map. Import it; never re-type a constant. Run it
   directly to print the map and self-check it against the imaged wells.
-- `pilot_cellprob.py` → `pilot_cellprob.json` — operating-point sweep + the
-  native-vs-resampled resolution cross-check
-- `run_nuclei.py` → `nuclei/` (masks, overlays, `nuclei_results.json`)
-- `build_dbs.py` → `dbs_cache/` (+ `dbs_manifest.json`)
-- `percell_desmin.py` → `percell_desmin.png`, `.json` — per-well conversion
-- `confound_checks.py` → `confound_checks.png`, `.json` — density/position QC
-- `treatment_summary.py` → `treatment_summary.png`, `.json` — **the bar graph**:
-  replicate means, SEM error bars, individual wells, Holm-corrected tests.
-  `--include-failures` puts B11 back in.
+- `pilot_cellprob.py` → `.json` — operating-point sweep + the native-vs-resampled
+  resolution cross-check
+- `run_nuclei.py` → `nuclei/` — P32 reused `../plate32_nuclei/`; P44 keeps its own
+- `confound_checks.py` → `.png`/`.json` — adds the plate-position trend and the
+  spread-vs-noise check to the density test
+- `treatment_summary.py` → `.png`/`.json` — replicate means, SEM, Holm-corrected
+  tests, complete-separation statistic. `--include-failures` puts B11 back in.
 
-Masks, the dbs cache and per-well overlays are gitignored (regenerable, ~1 GB).
-Scripts, JSON and the three summary figures are tracked.
+Masks, the dbs cache and the 40 per-well overlays are gitignored (regenerable,
+~1 GB). Scripts, JSON and the four summary figures are tracked.
+
+### The one gap: multinucleation
+`multinuc_plate.py` needs `plate44_myotube/*_myotube_mask.npy` (ridge detection)
+and traces fibres through `real_fusion.trace_fibres`, which hardcodes the
+PLATE_2x pixel size. Both are fixable, but there is a **resolution limit that is
+not**: `detect_myotubes` uses Sato `sigmas=(1, 2, 4)` px at 0.650 µm/px, i.e.
+ridge scales of ~1.3–5.2 µm. At P44's **1.725 µm/px those scales are 0.75–3.0
+px**, so the finest myotube features the detector was built to find are at or
+below one pixel here.
+
+This does **not** affect the conversion numbers above — nuclei are ~14 µm ≈ 8 px
+and are comfortably resolved, which the +3.0 % native-vs-resampled cross-check
+confirms. But fibre *tracing* would systematically miss thin tendrils, and
+multinucleation depends on traced fibre identity and territory. Running it
+anyway would produce numbers that look fine and undercount. **Say so before
+running it, not after.**
 
 ## What would strengthen this plate
 1. **More replicates on C6+TNFalpha** — it is the only condition with complete
