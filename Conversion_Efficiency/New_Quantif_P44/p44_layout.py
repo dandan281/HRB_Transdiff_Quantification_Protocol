@@ -59,17 +59,63 @@ TOPHAT_UM = 26.0                   # background scale: disk(40 px) at 0.650017 u
 RING_PX = max(1, int(round(RING_UM / UM)))        # 6 px  (15 px on PLATE_2x)
 TOPHAT_PX = max(1, int(round(TOPHAT_UM / UM)))    # 15 px (40 px on PLATE_2x)
 
-# Control well. On PLATE_23/26/28/32 the well at position 23 (B02) is always the
-# control, and P44 has a 23_B02. That is a POSITION CONVENTION, not a label read
-# off this plate's sheet -- P44 filenames carry no treatment token at all.
-# Fold-change is reported against it and flagged as assumed; every absolute
-# per-well number below is independent of this choice.
-CTRL = "23_B02"
-CTRL_IS_ASSUMED = True
+# --- plate map, transcribed from the operator's layout sheet 2026-08-13 ---
+#
+# Rows B-E x columns 02-11. Conditions run in READING ORDER in triplicate and
+# WRAP ACROSS ROWS -- `Alk1` is B11+C02+C03 and `C2+Alk1` is C10+C11+D02, so a
+# row-wise reading of the sheet would mis-assign six wells. The last two
+# conditions are duplicates, not triplicates.
+#
+# 12 conditions x3 + 2 x2 = 40 wells, matching the 40 imaged files exactly.
+#
+# `No mb` (no membrane construct) is the CONTROL, n=3. This supersedes the
+# position-convention guess used before the sheet arrived -- which happened to be
+# right: 23_B02 is one of the three control wells.
+CONDITION_BY_WELL: dict[str, str] = {
+    "B02": "No mb",     "B03": "No mb",     "B04": "No mb",
+    "B05": "C6",        "B06": "C6",        "B07": "C6",
+    "B08": "C2",        "B09": "C2",        "B10": "C2",
+    "B11": "Alk1",      "C02": "Alk1",      "C03": "Alk1",
+    "C04": "TGFb",      "C05": "TGFb",      "C06": "TGFb",
+    "C07": "C6+Alk1",   "C08": "C6+Alk1",   "C09": "C6+Alk1",
+    "C10": "C2+Alk1",   "C11": "C2+Alk1",   "D02": "C2+Alk1",
+    "D03": "C6+TGFb",   "D04": "C6+TGFb",   "D05": "C6+TGFb",
+    "D06": "C2+TGFb",   "D07": "C2+TGFb",   "D08": "C2+TGFb",
+    "D09": "Alk1+TGFb", "D10": "Alk1+TGFb", "D11": "Alk1+TGFb",
+    "E02": "C6 full",   "E03": "C6 full",   "E04": "C6 full",
+    "E05": "C2 full",   "E06": "C2 full",   "E07": "C2 full",
+    # Sheet writes "C6+TNFalpa" at E08 and "C6+TNFalpha" at E09. Transcribed as
+    # one condition -- a one-letter typo, not two treatments. Flagged here rather
+    # than silently merged.
+    "E08": "C6+TNFalpha", "E09": "C6+TNFalpha",
+    "E10": "TNFalpha",  "E11": "TNFalpha",
+}
+SHEET_TYPO_NOTE = ('sheet writes "C6+TNFalpa" at E08 and "C6+TNFalpha" at E09; '
+                   "read as one condition")
 
-# No layout sheet for this plate has been provided, so no condition is invented
-# for any well (the Plate 9 rule for G09/G10). Wells are reported individually by
-# id; treatment grouping is deliberately absent until the sheet arrives.
+CONTROL_CONDITION = "No mb"
+
+# Display order: control first, then singles, pairs, "full", TNFalpha panel --
+# the sheet's own grouping, so the figure is not ordered by result.
+CONDITION_ORDER = [
+    "No mb",
+    "C6", "C2", "Alk1", "TGFb",
+    "C6+Alk1", "C2+Alk1", "C6+TGFb", "C2+TGFb", "Alk1+TGFb",
+    "C6 full", "C2 full",
+    "C6+TNFalpha", "TNFalpha",
+]
+
+# Technical failure, identified from the Desmin channel BEFORE the plate map
+# arrived (dbs p99 = 329 vs 1,066-2,331 plate-wide; nuclei and background
+# normal). Excluded by default from condition means as a staining/acquisition
+# failure, and always reported alongside the included value.
+TECHNICAL_FAILURES = {"B11": "Desmin channel effectively empty (dbs p99=329)"}
+
+# Legacy single-well handle kept so older artifacts stay readable. The control is
+# now a GROUP (`CONTROL_CONDITION`), not this well.
+CTRL = "23_B02"
+CTRL_IS_ASSUMED = False
+
 UNLABELED = "unlabeled"
 
 _STEM = re.compile(r"^(\d+)_([A-H])(\d+)$")
@@ -95,19 +141,46 @@ def well_id(stem: str) -> str:
 
 
 def condition_of(stem: str) -> str:
-    """Always `unlabeled` on this plate -- filenames carry no treatment token.
+    """Condition for a well stem, from the transcribed layout sheet."""
+    wid = well_id(stem)
+    try:
+        return CONDITION_BY_WELL[wid]
+    except KeyError:
+        raise KeyError(f"{stem} ({wid}) is not on the PLATE 44 layout sheet "
+                       "-- no condition is invented for unmapped wells") from None
 
-    Deliberately not inferred. Inventing a condition is the one thing the Plate 9
-    layout module refuses to do, and the same rule applies here.
-    """
-    return UNLABELED
+
+def is_technical_failure(stem: str) -> bool:
+    return well_id(stem) in TECHNICAL_FAILURES
+
+
+def _selfcheck() -> None:
+    """The map must cover the imaged wells exactly -- no gaps, no extras."""
+    imaged = {well_id(w) for w in wells()}
+    mapped = set(CONDITION_BY_WELL)
+    assert imaged == mapped, (f"map/image mismatch: "
+                              f"unmapped={sorted(imaged - mapped)} "
+                              f"unimaged={sorted(mapped - imaged)}")
+    assert set(CONDITION_ORDER) == set(CONDITION_BY_WELL.values()), \
+        "CONDITION_ORDER does not match the map's conditions"
+    assert CONTROL_CONDITION in CONDITION_ORDER
 
 
 if __name__ == "__main__":
     ws = wells()
+    _selfcheck()
     print(f"PLATE 44: {len(ws)} wells, {UM} um/px, DAPI=ch{DAPI_CH}, "
           f"Desmin=ch{DESMIN_CH}")
     print(f"  ring {RING_UM} um = {RING_PX} px | tophat {TOPHAT_UM} um = "
           f"{TOPHAT_PX} px | nucleus {AMIN_UM2}-{AMAX_UM2} um2 = "
           f"{AMIN_UM2/UM2:.0f}-{AMAX_UM2/UM2:.0f} px")
-    print("  " + ", ".join(well_id(w) for w in ws))
+    print(f"  layout self-check PASSED: {len(CONDITION_BY_WELL)} wells mapped, "
+          f"{len(CONDITION_ORDER)} conditions")
+    from collections import Counter
+    n = Counter(CONDITION_BY_WELL.values())
+    for c in CONDITION_ORDER:
+        ids = sorted(w for w, v in CONDITION_BY_WELL.items() if v == c)
+        flag = "  <- CONTROL" if c == CONTROL_CONDITION else ""
+        fail = [w for w in ids if w in TECHNICAL_FAILURES]
+        print(f"    {c:<14} n={n[c]}  {', '.join(ids)}"
+              f"{'  [tech-fail: ' + ','.join(fail) + ']' if fail else ''}{flag}")

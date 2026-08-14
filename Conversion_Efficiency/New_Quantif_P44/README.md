@@ -9,46 +9,54 @@ cpenv/Scripts/python.exe New_Quantif_P44/run_nuclei.py --cellprob 0
 cpenv/Scripts/python.exe New_Quantif_P44/build_dbs.py
 cpenv/Scripts/python.exe New_Quantif_P44/percell_desmin.py
 cpenv/Scripts/python.exe New_Quantif_P44/confound_checks.py
+cpenv/Scripts/python.exe New_Quantif_P44/treatment_summary.py   # needs the plate map
 ```
 
 ---
 
 ## Headline
 
-**The quantification is sound. The conversion readout is NOT interpretable as
-treatment effects on this plate** — the same verdict Plate 9 received, for the
-same reason, plus a missing plate map.
+**No condition differs from the `No mb` control after correction for multiple
+comparisons (0 of 13).** One candidate is worth a follow-up rather than a claim:
+**C6+TNFalpha, 19.6 % vs 14.8 % control (1.32×)** — both of its wells sit above
+*every* control well, but it has **n = 2** and does not survive Holm correction
+(p = 0.31).
 
 | check | result | verdict |
 |---|---|---|
 | density confound | Pearson r = **+0.21** (p = 0.2) | clean — not the P28 artifact (r = 0.99) |
 | plate-position trend | column r = −0.29, row r = +0.27 | mild, below the 0.4 flag |
-| spread across all 40 wells | 4.5 – 20.3 % (**4.5×**); excluding the one dead well, 9.4 – 20.3 % (**2.1×**) | **within noise** |
-| **yardstick** | Plate 9's **six control wells alone** spanned 11.3 – 46.7 % = **4.1×** with no treatment difference | the entire P44 range is *smaller* than that |
-| assumed control 23_B02 | 15.7 %, **rank 27 of 40** (67th percentile) | 26 of 39 other wells fall *below* it |
+| **control reproducibility** | `No mb` n=3: 14.1 / 14.7 / 15.7 % → **14.8 % ± 0.85 SD, CV 5.7 %** | **tight** — far better than Plate 9's 4.1× control spread |
+| treatment reproducibility | replicate SD up to **3.96 pp** (C2: 9.4 / 12.2 / 16.0 %) | **this is what defeats the statistics** |
+| significance | 0 of 13 conditions after Holm (Welch t, well as replicate) | no responder list |
 
-The last row is the decisive one. On PLATE_32 — the plate whose result was
-trusted — the control was the **lowest** well and a clear outlier below the
-density trend. Here the assumed control sits two-thirds of the way up the
-ranking, so either the treatments largely do not work, or well-to-well variance
-dominates, or 23_B02 is not this plate's control. All three mean the same thing:
-**do not report a responder list from this plate.**
+The control is reproducible on this plate — which is a genuinely good result and
+supersedes the provisional "spread is within noise" verdict recorded before the
+plate map arrived (that used Plate 9's control spread as a stand-in yardstick
+because P44 had no declared replicate structure). **The limiting factor is not
+the control and not the segmentation; it is that several treatment conditions
+disagree with themselves across replicate wells by more than any treatment
+differs from control.**
 
 ---
 
-## Two blockers, both external
+## Plate map
 
-1. **No plate map.** P44 filenames carry no treatment token (`23_B02.nd2`, not
-   `23_B02_ctrl.nd2` as on every other plate), and no layout sheet for this plate
-   exists in the repo. **No condition has been invented for any well** — the same
-   rule `Plate9_C6C2_QTFCs` applied to its blank G09/G10. Wells are reported
-   individually by id. Supply the sheet and the treatment grouping, replicate
-   averaging, and fold-changes all follow immediately from the numbers below.
-2. **Control identity is assumed, not known.** `CTRL = "23_B02"` is a *position
-   convention* — position 23 = B02 is the control on PLATE_23/26/28/32. It is
-   flagged `control_is_assumed_by_position: true` in the JSON. Every absolute
-   per-well percentage is independent of this choice; only the `fold` column
-   depends on it.
+Transcribed from the operator's layout sheet into `p44_layout.py`, which
+self-checks that the map covers the 40 imaged wells exactly.
+
+Rows B–E × columns 02–11, **conditions in triplicate running in reading order,
+wrapping across rows** — `Alk1` is B11+C02+C03 and `C2+Alk1` is C10+C11+D02, so a
+naive row-wise reading mis-assigns six wells. The last two conditions are
+duplicates. 12 × 3 + 2 × 2 = 40 ✓
+
+`No mb` (B02, B03, B04) is the **control**, n = 3. The pre-map position guess
+(23_B02 = control) turned out to be right, but it is now read from the sheet
+rather than assumed.
+
+> **Sheet typo, transcribed not silently merged:** E08 reads `C6+TNFalpa`, E09
+> reads `C6+TNFalpha`. Read as one condition; recorded in
+> `SHEET_TYPO_NOTE`. Confirm if that is wrong — it is the top-ranked condition.
 
 ---
 
@@ -107,10 +115,61 @@ tuning is forbidden, and no threshold was chosen to make a number come out.
 
 ---
 
+## Treatment results — replicate-averaged
+
+![conversion efficiency by condition](treatment_summary.png)
+
+The **well is the replicate unit**; means and intervals are across wells, never
+across cells. Pooling ~18,000 cells per well would give absurdly tight intervals
+that describe segmentation noise rather than biology. Conditions are drawn in the
+**sheet's own order, not sorted by result**, so the figure does not manufacture a
+ranking.
+
+`d/ctrlSD` = distance from the control mean in units of the control's own
+well-to-well SD. `separation` = do **all** wells of the condition fall outside the
+full range of the three control wells — a statistic that uses no variance
+estimate, which matters at n = 2–3.
+
+| condition | n | mean | SD | SEM | fold | d/ctrlSD | p (Holm) | separation |
+|---|--:|--:|--:|--:|--:|--:|--:|---|
+| **No mb** (control) | 3 | **14.8 %** | 0.85 | 0.49 | 1.00× | +0.0 | — | — |
+| C6 | 3 | 15.4 % | 0.76 | 0.44 | 1.04× | +0.6 | 1.000 | overlaps |
+| C2 | 3 | 12.5 % | 3.28 | 1.89 | 0.84× | −2.7 | 1.000 | overlaps |
+| Alk1 | 2 | 16.2 % | 3.80 | 2.68 | 1.09× | +1.6 | 1.000 | overlaps |
+| TGFb | 3 | 15.4 % | 0.14 | 0.08 | 1.04× | +0.7 | 1.000 | overlaps |
+| C6+Alk1 | 3 | 17.2 % | 3.42 | 1.98 | 1.16× | +2.8 | 1.000 | overlaps |
+| C2+Alk1 | 3 | 14.1 % | 2.95 | 1.70 | 0.95× | −0.9 | 1.000 | overlaps |
+| C6+TGFb | 3 | 14.5 % | 1.17 | 0.68 | 0.98× | −0.4 | 1.000 | overlaps |
+| C2+TGFb | 3 | 15.9 % | 1.48 | 0.85 | 1.07× | +1.3 | 1.000 | overlaps |
+| Alk1+TGFb | 3 | 13.7 % | 1.47 | 0.85 | 0.92× | −1.3 | 1.000 | overlaps |
+| C6 full | 3 | 13.6 % | 2.13 | 1.23 | 0.92× | −1.4 | 1.000 | overlaps |
+| C2 full | 3 | 17.2 % | 2.07 | 1.20 | 1.16× | +2.8 | 1.000 | overlaps |
+| **C6+TNFalpha** | **2** | **19.6 %** | 0.92 | 0.65 | **1.32×** | **+5.6** | 0.314 | **above all controls** |
+| TNFalpha | 2 | 13.6 % | 3.96 | 2.80 | 0.91× | −1.5 | 1.000 | overlaps |
+
+### How to read this
+- **Nothing is significant.** With n = 2–3 wells and 13 comparisons, the design
+  can only detect very large effects. *Absence of significance here is not
+  evidence of absence* — it is mostly evidence of low power.
+- **C6+TNFalpha is the one candidate.** 19.0 % and 20.3 % against controls of
+  15.7 / 14.7 / 14.1 % — no overlap at all, 1.32×, and its two wells agree
+  closely (SD 0.92). It is also the *only* condition with complete separation.
+  That is a hypothesis worth another plate, not a result.
+- **TNFalpha alone does not do it** (13.6 %, 0.91×), so if the C6+TNFalpha signal
+  is real it is not a TNFalpha main effect. But TNFalpha alone has SD 3.96
+  (10.8 % and 16.4 %), so this comparison is weak in both directions.
+- **C6+Alk1 and C2 full both reach 1.16×** (+2.8 control SD) but their replicates
+  straddle the control range — C6+Alk1's wells are 13.5 / 18.0 / 20.2 %.
+- **Beware C2 (0.84×) and TGFb (SD 0.14).** C2's three wells span 9.4–16.0 %;
+  TGFb's three agree to within 0.14 pp. The same protocol produced both, which is
+  the clearest statement of how variable this plate's wells are.
+
+---
+
 ## Per-well results
 
 739,400 valid nuclei segmented → 739,280 with a measurable cytoplasmic ring.
-Sorted by conversion. **`fold` is against the *assumed* control.**
+Sorted by conversion; condition from the layout sheet.
 
 | well | id | cells | Desmin+ | conversion | fold |
 |---|---|--:|--:|--:|--:|
@@ -168,22 +227,30 @@ channel, not a dead well. Exclude it, or re-image.
 ---
 
 ## Files
-- `p44_layout.py` — **the single source** of channel indices, pixel size and
-  derived pixel parameters. Import it; never re-type a constant.
+- `p44_layout.py` — **the single source** of channel indices, pixel size, derived
+  pixel parameters and the plate map. Import it; never re-type a constant. Run it
+  directly to print the map and self-check it against the imaged wells.
 - `pilot_cellprob.py` → `pilot_cellprob.json` — operating-point sweep + the
   native-vs-resampled resolution cross-check
 - `run_nuclei.py` → `nuclei/` (masks, overlays, `nuclei_results.json`)
 - `build_dbs.py` → `dbs_cache/` (+ `dbs_manifest.json`)
-- `percell_desmin.py` → `percell_desmin.png`, `.json`
-- `confound_checks.py` → `confound_checks.png`, `.json`
+- `percell_desmin.py` → `percell_desmin.png`, `.json` — per-well conversion
+- `confound_checks.py` → `confound_checks.png`, `.json` — density/position QC
+- `treatment_summary.py` → `treatment_summary.png`, `.json` — **the bar graph**:
+  replicate means, SEM error bars, individual wells, Holm-corrected tests.
+  `--include-failures` puts B11 back in.
 
-Masks, the dbs cache and per-well overlays are gitignored (regenerable, ~GB).
-Scripts, JSON and the two summary figures are tracked.
+Masks, the dbs cache and per-well overlays are gitignored (regenerable, ~1 GB).
+Scripts, JSON and the three summary figures are tracked.
 
-## What would make this plate interpretable
-1. **The layout sheet** — enables treatment grouping and replicate averaging,
-   which is the only way to separate effect from well-to-well variance.
-2. **Confirmation of which well is the control**, and ideally **several control
-   wells** — with one control there is no estimate of control variability, which
-   is precisely what sank the Plate 9 conversion readout.
-3. **Re-image or exclude 14_B11.**
+## What would strengthen this plate
+1. **More replicates on C6+TNFalpha** — it is the only condition with complete
+   separation from control, and it has n = 2. A third and fourth well would
+   settle it either way. Confirm the `C6+TNFalpa`/`C6+TNFalpha` typo first.
+2. **Explain the treatment-replicate variance.** C2 spans 9.4–16.0 % while TGFb's
+   three wells agree to 0.14 pp, under one protocol. If that is positional or
+   handling-related it is fixable and would make the whole plate readable; the
+   plate-position correlations are mild (|r| ≤ 0.29) so it is not a simple
+   gradient.
+3. **Re-image or formally drop 14_B11** (Desmin staining failure). It currently
+   costs the Alk1 condition a third of its replicates.
