@@ -29,6 +29,9 @@ def main(argv=None) -> int:
     sub.add_parser("apply", add_help=False,
                    help="fold traces into a new corpus version "
                         "(see `apply --help`)")
+    sub.add_parser("import-fiji", add_help=False,
+                   help="convert a Fiji ROI set into coloured instances and "
+                        "relabel traces (see `import-fiji --help`)")
 
     args, rest = ap.parse_known_args(argv)
 
@@ -55,6 +58,10 @@ def main(argv=None) -> int:
     if args.cmd == "apply":
         from .apply_traces import main as apply_main
         return apply_main(rest)
+
+    if args.cmd == "import-fiji":
+        from .import_fiji import main as import_main
+        return import_main(rest)
 
     return 1
 
