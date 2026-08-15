@@ -32,6 +32,9 @@ def main(argv=None) -> int:
     sub.add_parser("import-fiji", add_help=False,
                    help="convert a Fiji ROI set into coloured instances and "
                         "relabel traces (see `import-fiji --help`)")
+    sub.add_parser("import-plate", add_help=False,
+                   help="import a whole plate's ROI sets straight from its nd2 "
+                        "files (see `import-plate --help`)")
 
     args, rest = ap.parse_known_args(argv)
 
@@ -62,6 +65,10 @@ def main(argv=None) -> int:
     if args.cmd == "import-fiji":
         from .import_fiji import main as import_main
         return import_main(rest)
+
+    if args.cmd == "import-plate":
+        from .import_plate import main as plate_main
+        return plate_main(rest)
 
     return 1
 

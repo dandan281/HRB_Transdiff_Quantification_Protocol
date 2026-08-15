@@ -124,12 +124,42 @@ def snap_mask(points, image: np.ndarray, width_px: float, *,
 
 
 def rasterize_trace(trace: dict, image: np.ndarray) -> tuple[np.ndarray, dict]:
-    """One stored trace -> boolean mask."""
-    pts = [(float(p[0]), float(p[1])) for p in trace["points"]]
+    """One stored trace -> full-field boolean mask."""
+    mask, info, (r0, c0, r1, c1) = rasterize_trace_local(trace, image)
+    full = np.zeros(image.shape, dtype=bool)
+    full[r0:r1, c0:c1] = mask
+    return full, info
+
+
+def rasterize_trace_local(trace: dict, image: np.ndarray, *, pad: int = 24
+                          ) -> tuple[np.ndarray, dict, tuple[int, int, int, int]]:
+    """Rasterise inside the trace's own bounding box.
+
+    A myotube occupies a tiny fraction of a 3636x3636 field, but the distance
+    transforms behind `ribbon_mask` cost the WHOLE field every time. At ~500
+    traces per well that is thousands of 13-megapixel transforms and the import
+    never finishes. Cropping first makes the cost proportional to the object
+    instead of the field; the result is identical because every operation here
+    is local to the polyline.
+    """
+    pts = np.asarray([(float(p[0]), float(p[1])) for p in trace["points"]])
     width = float(trace.get("width_px", 8.0))
+    margin = int(np.ceil(width * 2.2 / 2 + pad))
+    h, w = image.shape
+    r0 = max(int(pts[:, 0].min()) - margin, 0)
+    c0 = max(int(pts[:, 1].min()) - margin, 0)
+    r1 = min(int(pts[:, 0].max()) + margin + 1, h)
+    c1 = min(int(pts[:, 1].max()) + margin + 1, w)
+    if r1 <= r0 or c1 <= c0:
+        return np.zeros((0, 0), dtype=bool), {"mode": "empty"}, (0, 0, 0, 0)
+
+    local_pts = [(p[0] - r0, p[1] - c0) for p in pts]
+    sub = image[r0:r1, c0:c1]
     if trace.get("mode", "snap") == "ribbon":
-        return ribbon_mask(pts, image.shape, width), {"mode": "ribbon"}
-    return snap_mask(pts, image, width)
+        return (ribbon_mask(local_pts, sub.shape, width), {"mode": "ribbon"},
+                (r0, c0, r1, c1))
+    mask, info = snap_mask(local_pts, sub, width)
+    return mask, info, (r0, c0, r1, c1)
 
 
 def unlabelled_fibre_ignore(territory: np.ndarray, labels: np.ndarray, *,
@@ -198,14 +228,21 @@ def compose_labels(base_labels: np.ndarray, traces: list[dict],
         next_id += 1
 
     for t in traces:
-        mask, info = rasterize_trace(t, image)
-        mask &= out == 0                      # existing certified masks win
+        # Local rasterisation: the cost follows the object, not the field.
+        sub, info, (r0, c0, r1, c1) = rasterize_trace_local(t, image)
+        if sub.size == 0:
+            provenance.append({"label": None, "origin": "relabel",
+                               "trace_id": t.get("trace_id"),
+                               "skipped": "degenerate trace"})
+            continue
+        view = out[r0:r1, c0:c1]
+        mask = sub & (view == 0)              # existing certified masks win
         if mask.sum() < 4:
             provenance.append({"label": None, "origin": "relabel",
                                "trace_id": t.get("trace_id"),
                                "skipped": "fully overlapped or empty"})
             continue
-        out[mask] = next_id
+        view[mask] = next_id
         provenance.append({"label": next_id, "origin": "relabel",
                            "trace_id": t.get("trace_id"),
                            "reviewer": t.get("reviewer"),
