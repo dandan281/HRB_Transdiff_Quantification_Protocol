@@ -35,6 +35,9 @@ def main(argv=None) -> int:
     sub.add_parser("import-plate", add_help=False,
                    help="import a whole plate's ROI sets straight from its nd2 "
                         "files (see `import-plate --help`)")
+    sub.add_parser("build-corpus", add_help=False,
+                   help="build a training corpus from traced ROIs alone "
+                        "(see `build-corpus --help`)")
 
     args, rest = ap.parse_known_args(argv)
 
@@ -69,6 +72,10 @@ def main(argv=None) -> int:
     if args.cmd == "import-plate":
         from .import_plate import main as plate_main
         return plate_main(rest)
+
+    if args.cmd == "build-corpus":
+        from .build_corpus import main as corpus_main
+        return corpus_main(rest)
 
     return 1
 
