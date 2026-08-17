@@ -128,6 +128,65 @@ def sha256_file(path: str | Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def build_dense_fold(corpus: Path, held_out: str | None, *, window_px: int,
+                     overlap: float, seed: int) -> dict:
+    """Fold from a traced corpus: window tiles plus Omnipose links.
+
+    Separate from `data.build_fold`, which reads the sealed bootstrap layout and
+    must keep reproducing the old runs byte-for-byte. This one consumes
+    `relabel.build_corpus` output, where `ignore.tif` is already complete.
+
+    The links are the point. A fibre crossed by another is physically broken in
+    a flat raster -- one pixel cannot carry two identities -- and Omnipose builds
+    a distance field per connected region, so the pieces would otherwise become
+    two attractors, two instances, and a false split. Each piece gets its own
+    label and a links pair declaring them one myotube.
+    """
+    from omnipose_lab.tile_corpus import load_traced_well, window_tiles
+
+    wells = sorted(p.name for p in Path(corpus).iterdir() if p.is_dir())
+    train_wells = [w for w in wells if w != held_out]
+    if held_out and held_out not in wells:
+        raise ValueError(f"{held_out} is not a well of {corpus}")
+
+    images, labels, links, prov = [], [], [], []
+    n_frag = n_link = n_cut = 0
+    for well in train_wells:
+        img, lab, ign = load_traced_well(Path(corpus), well)
+        for t in window_tiles(img, lab, ign, window_px=window_px,
+                              overlap=overlap, seed=seed):
+            images.append(t["image"].astype(np.float32))
+            labels.append(t["labels"].astype(np.int32))
+            # Omnipose wants a set of pairs per image, or None where there is
+            # nothing to join.
+            links.append(set(t["links"]) if t["links"] else None)
+            n_frag += t["n_fragmented"]; n_link += len(t["links"])
+            n_cut += t["n_cut"]
+            prov.append({"well": well, "row": t["row"], "col": t["col"],
+                         "size": list(t["size"]), "n_whole": t["n_whole"],
+                         "n_cut": t["n_cut"], "n_pieces": t["n_pieces"],
+                         "n_links": len(t["links"])})
+    return {"held_out": held_out, "train_wells": train_wells,
+            "images": images, "labels": labels, "links": links,
+            "tiles": prov, "n_tiles": len(images),
+            "n_instances": sum(p["n_whole"] for p in prov),
+            "n_pieces": sum(p["n_pieces"] for p in prov),
+            "n_fragmented": n_frag, "n_links": n_link,
+            "n_cut_ignored": n_cut,
+            "config": {"corpus": str(corpus), "window_px": window_px,
+                       "overlap": overlap, "seed": seed}}
+
+
+def dense_dataset_hash(fold: dict) -> str:
+    """Content hash over images, labels AND links -- links change the target."""
+    d = hashlib.sha256()
+    for img, lab, lk in zip(fold["images"], fold["labels"], fold["links"]):
+        d.update(np.ascontiguousarray(img).tobytes())
+        d.update(np.ascontiguousarray(lab).tobytes())
+        d.update(repr(sorted(lk) if lk else []).encode())
+    return d.hexdigest()
+
+
 def train_one_fold(held_out: str, *, policy: str, include_round2: bool,
                    out_dir: Path, config: dict,
                    augment_gaps: bool = False) -> dict:
@@ -140,24 +199,40 @@ def train_one_fold(held_out: str, *, policy: str, include_round2: bool,
     environment = verify()                     # hard precondition: real GPU kernel
     set_seeds(config["seed"])
 
-    manifest_path = ROOT / BOOTSTRAP
-    wells = sorted(json.loads(manifest_path.read_text(encoding="utf-8"))["per_well"])
-    if held_out not in wells:
-        raise ValueError(f"{held_out} is not a bootstrap well")
-    train_wells = [w for w in wells if w != held_out]
-
+    corpus = config.get("corpus")
     started = time.time()
-    fold = build_fold(train_wells, held_out, policy=policy,
-                      include_round2=include_round2, seed=config["seed"],
-                      augment_gaps=augment_gaps)
-    data_hash = dataset_hash(fold)
-    prep_seconds = time.time() - started
-    print(f"  fold data: {fold['n_tiles']} tiles, {fold['n_instances']} instance slots, "
-          f"hash {data_hash[:12]} ({prep_seconds:.0f}s)")
+    if corpus:
+        fold = build_dense_fold(Path(corpus), held_out,
+                                window_px=config["window_px"],
+                                overlap=config["overlap"], seed=config["seed"])
+        data_hash = dense_dataset_hash(fold)
+        train_wells = fold["train_wells"]
+        prep_seconds = time.time() - started
+        print(f"  fold data: {fold['n_tiles']} tiles, {fold['n_instances']} "
+              f"whole instances -> {fold['n_pieces']} pieces, "
+              f"{fold['n_links']} links ({fold['n_fragmented']} fibres rejoined), "
+              f"{fold['n_cut_ignored']} edge-cut ignored")
+        print(f"  hash {data_hash[:12]} ({prep_seconds:.0f}s)")
+    else:
+        manifest_path = ROOT / BOOTSTRAP
+        wells = sorted(json.loads(manifest_path.read_text(encoding="utf-8"))["per_well"])
+        if held_out not in wells:
+            raise ValueError(f"{held_out} is not a bootstrap well")
+        train_wells = [w for w in wells if w != held_out]
+        fold = build_fold(train_wells, held_out, policy=policy,
+                          include_round2=include_round2, seed=config["seed"],
+                          augment_gaps=augment_gaps)
+        fold["links"] = [None] * len(fold["images"])
+        data_hash = dataset_hash(fold)
+        prep_seconds = time.time() - started
+        print(f"  fold data: {fold['n_tiles']} tiles, {fold['n_instances']} instance slots, "
+              f"hash {data_hash[:12]} ({prep_seconds:.0f}s)")
 
     # Leakage guards. Cheap, and the contract explicitly requires them.
-    assert held_out not in fold["train_wells"], "held-out well in training set"
-    assert all(t["well"] != held_out for t in fold["tiles"]), "held-out tiles present"
+    if held_out:
+        assert held_out not in fold["train_wells"], "held-out well in training set"
+        assert all(t["well"] != held_out for t in fold["tiles"]), "held-out tiles present"
+    assert len(fold["links"]) == len(fold["images"]), "links/images length mismatch"
 
     tag = (f"{MODEL_VERSION}-fold-{held_out}-{policy}"
            + ("-r2" if include_round2 else "")
@@ -202,10 +277,18 @@ def train_one_fold(held_out: str, *, policy: str, include_round2: bool,
         checkpoint = model.train(
             [t.astype(np.float32) for t in fold["images"]],
             [t.astype(np.int32) for t in fold["labels"]],
-            # Upstream defaults `train_links=None` and then iterates it; an
-            # explicit list of Nones is the "no linked labels" case. We have no
-            # self-contact links: each reviewed instance is one connected object.
-            train_links=[None] * len(fold["images"]),
+            # One entry per image: a set of (label_a, label_b) pairs declaring
+            # those pieces are ONE object, or None where there is nothing to
+            # join. Upstream defaults to None and iterates it, so the list must
+            # match `images` in length.
+            #
+            # This was hardcoded to all-None with the comment "each reviewed
+            # instance is one connected object". That was true of the sparse
+            # bootstrap. It is false of the dense traced corpus, where 59.5% of
+            # fibres are broken by a crossing -- passing None there would teach
+            # the model that a myotube ends wherever another crosses it, which
+            # is the false split the whole run exists to remove.
+            train_links=fold["links"],
             # Tiles arrive already percentile-normalised at *field* scope
             # (`omnipose_lab.data.normalize_field`). Letting Omnipose normalise
             # each tile again would restore the per-image scaling that field-level
@@ -243,13 +326,26 @@ def train_one_fold(held_out: str, *, policy: str, include_round2: bool,
         "checkpoint": str(checkpoint.relative_to(ROOT)) if checkpoint.is_relative_to(ROOT)
                       else str(checkpoint),
         "checkpoint_sha256": sha256_file(checkpoint),
-        "input_manifest": BOOTSTRAP,
-        "input_manifest_sha256": sha256_file(manifest_path),
+        "corpus": corpus,
+        "input_manifest": (str(Path(corpus) / "corpus_manifest.json") if corpus
+                           else BOOTSTRAP),
+        "input_manifest_sha256": (
+            sha256_file(Path(corpus) / "corpus_manifest.json") if corpus
+            else sha256_file(ROOT / BOOTSTRAP)),
         "dataset_sha256": data_hash,
         "n_train_tiles": fold["n_tiles"], "n_train_instance_slots": fold["n_instances"],
-        "n_border_painted": sum(t["n_dropped_border"] for t in fold["tiles"]),
-        "per_well": {w: {k: v for k, v in s.items() if k != "round2_promoted_ids"}
-                     for w, s in fold["per_well"].items()},
+        # Links are part of what the target IS: without them 59.5% of fibres
+        # train as two short myotubes. Recorded so a run can never be mistaken
+        # for one that discarded them.
+        "n_links": fold.get("n_links", 0),
+        "n_fibres_rejoined_by_links": fold.get("n_fragmented", 0),
+        "n_pieces": fold.get("n_pieces"),
+        "n_edge_cut_ignored": fold.get("n_cut_ignored"),
+        "n_border_painted": (fold.get("n_cut_ignored", 0) if corpus else
+                             sum(t["n_dropped_border"] for t in fold["tiles"])),
+        "per_well": (None if corpus else
+                     {w: {k: v for k, v in s.items() if k != "round2_promoted_ids"}
+                      for w, s in fold["per_well"].items()}),
         "environment": environment,
         "environment_hash": environment["environment_hash"],
         "timing": {"data_prep_seconds": round(prep_seconds, 1),
@@ -297,6 +393,14 @@ def add_training_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParse
                              "in neither C2_MODEL_NAMES nor BD_MODEL_NAMES or the "
                              "architecture check will reject it (default: "
                              f"{DEFAULTS['init_model']})")
+    parser.add_argument("--corpus", default=None,
+                        help="traced corpus from `relabel build-corpus`. Switches "
+                             "the data source off the sealed bootstrap and ON to "
+                             "window tiling with Omnipose links.")
+    parser.add_argument("--window-px", type=int, default=1280,
+                        help="window tile size (--corpus runs only)")
+    parser.add_argument("--overlap", type=float, default=0.25,
+                        help="window overlap fraction (--corpus runs only)")
     return parser
 
 
@@ -307,7 +411,10 @@ def config_from_args(args: argparse.Namespace) -> dict:
             "num_workers": args.num_workers,
             "dataloader": args.dataloader,
             "autocast": args.autocast,
-            "init_model": None if args.init_model == "scratch" else args.init_model}
+            "init_model": None if args.init_model == "scratch" else args.init_model,
+            "corpus": getattr(args, "corpus", None),
+            "window_px": getattr(args, "window_px", 1280),
+            "overlap": getattr(args, "overlap", 0.25)}
 
 
 def main(argv=None) -> int:
