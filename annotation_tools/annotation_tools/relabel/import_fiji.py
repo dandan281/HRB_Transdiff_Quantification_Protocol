@@ -33,21 +33,37 @@ PIXEL_UM = 0.650017
 
 def colour_overlay(field: np.ndarray, traces: list[dict], *,
                    line_px: float = 3.0, seed: int = 7) -> np.ndarray:
-    """Raw field in grey, one colour per ROI centreline."""
-    from .raster import ribbon_mask
+    """Raw field in grey, one colour per ROI centreline.
+
+    Stamps a small disc along each polyline rather than calling `ribbon_mask`,
+    which would run a full-field distance transform per trace -- fine for one
+    object, minutes per well at 350+ of them.
+    """
+    from .raster import polyline_pixels
 
     lo, hi = np.percentile(field, 1), np.percentile(field, 99.5)
     g = np.clip((field.astype(np.float32) - lo) / max(hi - lo, 1e-6), 0, 1)
     rgb = np.repeat(g[:, :, None], 3, axis=2) * 0.55        # dim the background
+    h, w = field.shape
+
+    r = max(int(round(line_px / 2)), 1)
+    disc = [(dr, dc) for dr in range(-r, r + 1) for dc in range(-r, r + 1)
+            if dr * dr + dc * dc <= r * r]
 
     rng = np.random.default_rng(seed)
     for t in traces:
         pts = [(p[0], p[1]) for p in t["points"]]
         if len(pts) < 2:
             continue
-        m = ribbon_mask(pts, field.shape, line_px)
+        rows, cols = polyline_pixels(pts)
+        rr = np.round(rows).astype(int)
+        cc = np.round(cols).astype(int)
         colour = rng.integers(90, 255, size=3) / 255.0
-        rgb[m] = colour
+        for dr, dc in disc:
+            r2 = rr + dr
+            c2 = cc + dc
+            ok = (r2 >= 0) & (r2 < h) & (c2 >= 0) & (c2 < w)
+            rgb[r2[ok], c2[ok]] = colour
     return np.clip(rgb, 0, 1)
 
 

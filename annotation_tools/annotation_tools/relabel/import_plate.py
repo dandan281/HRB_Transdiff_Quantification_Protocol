@@ -116,7 +116,8 @@ def process_well(code: str, roi_path: Path, nd2_path: Path, out_dir: Path,
     im.save(out_dir / f"{code}__instances.png")
 
     from scipy import ndimage as ndi
-    rows = []
+    h, w = labels.shape
+    rows, n_border = [], 0
     for lid, box in enumerate(ndi.find_objects(labels), start=1):
         if box is None:
             continue
@@ -127,6 +128,14 @@ def process_well(code: str, roi_path: Path, nd2_path: Path, out_dir: Path,
             g = measure_mask(sub, px_um)
         except ValueError:
             continue
+        # A fibre that leaves the field has a length that is a LOWER BOUND, not a
+        # measurement, and must not become a complete training target -- the same
+        # `border_truncated -> ignore` rule bootstrap_v1 already applies. Tracing
+        # runs a few px past the edge on ~0.1% of points, so this is real.
+        ys, xs = box
+        touches = bool(ys.start <= 0 or xs.start <= 0
+                       or ys.stop >= h or xs.stop >= w)
+        n_border += touches
         rows.append({"instance": lid, "area_um2": round(g.area_um2, 2),
                      "length_um": round(g.length_um, 2),
                      "width_median_um": round(g.width_median_um, 3),
@@ -134,7 +143,10 @@ def process_well(code: str, roi_path: Path, nd2_path: Path, out_dir: Path,
                          g.width_area_over_length_um, 3)
                      if np.isfinite(g.width_area_over_length_um) else None,
                      "aspect_ratio": round(g.length_um / g.width_median_um, 2)
-                     if g.width_median_um > 0 else None})
+                     if g.width_median_um > 0 else None,
+                     "bbox_h": int(ys.stop - ys.start),
+                     "bbox_w": int(xs.stop - xs.start),
+                     "touches_border": touches})
     if rows:
         with open(out_dir / f"{code}__instances.csv", "w", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=list(rows[0]))
@@ -142,9 +154,13 @@ def process_well(code: str, roi_path: Path, nd2_path: Path, out_dir: Path,
 
     L = np.array([r["length_um"] for r in rows]) if rows else np.array([0.0])
     W = np.array([r["width_median_um"] for r in rows]) if rows else np.array([0.0])
+    ext = (np.array([max(r["bbox_h"], r["bbox_w"]) for r in rows]) if rows
+           else np.array([0]))
     rec = {"well": code, "roi_file": roi_path.name, "nd2": nd2_path.name,
            "n_rois": info["n_rois"], "by_type": info["by_type"],
            "n_instances": len(rows), "out_of_bounds_points": oob,
+           "n_touching_border": int(n_border),
+           "max_bbox_extent_px": int(ext.max()),
            "acquisition": meta,
            "length_um": {"median": round(float(np.median(L)), 1),
                          "p10": round(float(np.percentile(L, 10)), 1),
@@ -155,8 +171,8 @@ def process_well(code: str, roi_path: Path, nd2_path: Path, out_dir: Path,
     print(f"  {code:<5} {info['n_rois']:>4} ROIs -> {len(rows):>4} instances  "
           f"len_med={rec['length_um']['median']:>6.1f}um  "
           f"wid_med={rec['width_median_um']['median']:>5.2f}um  "
-          f"fg={100*rec['labelled_fraction']:.2f}%"
-          + ("  !! oob pts" if oob else ""), flush=True)
+          f"fg={100*rec['labelled_fraction']:.2f}%  "
+          f"border={n_border:>3}  maxbbox={int(ext.max()):>5}px", flush=True)
     return rec
 
 
@@ -200,6 +216,27 @@ def main(argv=None) -> int:
     tot = sum(r["n_instances"] for r in ok)
     print(f"\n{len(ok)}/{len(recs)} wells   {tot:,} instances total "
           f"(mean {tot/max(len(ok),1):.0f}/well)")
+
+    # Pre-flight for the corpus build. `instance_tiles` RAISES on an instance
+    # that will not fit its tile ceiling, so finding it here -- with the number
+    # needed -- is the difference between a one-line config change and a failed
+    # build several minutes in.
+    border = sum(r["n_touching_border"] for r in ok)
+    print(f"{border:,} instances touch the field border "
+          f"({100*border/max(tot,1):.1f}%) -- these are length LOWER BOUNDS and "
+          f"must be ignored, never trained as complete targets")
+    if ok:
+        try:
+            sys.path.insert(0, str(Path.cwd() / "model_labs"))
+            from omnipose_lab.data import MARGIN_PX, TILE_PX
+        except Exception:
+            TILE_PX, MARGIN_PX = 1792, 96
+        worst = max(r["max_bbox_extent_px"] for r in ok)
+        n_over = sum(1 for r in ok if r["max_bbox_extent_px"] > TILE_PX)
+        print(f"largest bbox extent {worst} px against TILE_PX={TILE_PX}"
+              + (f"  -- OK" if worst <= TILE_PX else
+                 f"\n  !! {n_over} well(s) exceed the ceiling; raise TILE_PX to "
+                 f"{int(np.ceil((worst + 2*MARGIN_PX)/64)*64)} before building"))
 
     (out_dir / "plate_import.json").write_text(json.dumps(
         {"plate_dir": str(plate_dir), "width_px": args.width_px,

@@ -50,10 +50,18 @@ ROOT = Path(__file__).resolve().parents[2]
 BOOTSTRAP = ROOT / "PrecisionMyotube/annotation_work/bootstrap_v1"
 ROUND2 = ROOT / "PrecisionMyotube/annotation_work/retriage_round2"
 
-# Ceiling, not the usual size: every reviewed instance fits, because the maximum
-# observed bbox extent is 965 px and 1024 covers 375/375. Do not shrink without
-# re-measuring. Typical tiles are far smaller -- see `instance_tiles`.
-TILE_PX = 1024
+# Ceiling, not the usual size. Typical tiles are far smaller -- see
+# `instance_tiles`. Do not shrink without re-measuring, and re-measure whenever a
+# new corpus is added: `instance_tiles` raises rather than truncating, so a
+# single over-long fibre stops the whole build.
+#
+#   bootstrap_v1 (PLATE_23, 375 instances)  max bbox extent  965 px -> 1024 held
+#   PLATE_32 dense (5,233 instances)        max bbox extent 1534 px -> 1024 FAILS
+#
+# 1792 = 1534 + 2*96 margin, rounded up for headroom. The cost is bounded: only
+# the handful of very long fibres get a large tile, because every other tile is
+# still sized to its own instance.
+TILE_PX = 1792
 # Real context kept around each instance. Enough for the network to see that a
 # fibre ends rather than leaves the crop.
 MARGIN_PX = 96
