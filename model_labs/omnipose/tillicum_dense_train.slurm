@@ -18,7 +18,10 @@
 #SBATCH --gpus=h200:1
 #SBATCH -c 8
 #SBATCH --mem=96G
-#SBATCH --time=4:00:00
+# Billed on hours REQUESTED, not used. 300 epochs at the measured ~11.5 s/epoch
+# is ~1 h plus ~5 min startup, so 1.5 h is margin without paying for idle
+# headroom. Raise it if you raise --epochs.
+#SBATCH --time=1:30:00
 #SBATCH --output=%x-%j.out
 #SBATCH --error=%x-%j.err
 
@@ -32,12 +35,15 @@ EPOCHS="${EPOCHS:-300}"
 HELD_OUT="${HELD_OUT:-B02}"
 OUT="${OUT:-$PROJECT/runs/dense_v1}"
 
-# Lmod and conda are not `set -u` clean; guard our own code only, after they load.
-set +u
-module load conda 2>/dev/null || true
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate "$ENV_PREFIX"
-set -u
+# Call the environment's interpreter by absolute path -- do NOT `conda activate`.
+# Submitting from an already-activated shell exports CONDA_PREFIX into the job;
+# re-activating on top of that leaves `python` resolving to the wrong
+# interpreter, and because `conda activate` still returns 0 the script sails past
+# it and dies later with ModuleNotFoundError. An absolute path cannot do that.
+PY="$ENV_PREFIX/bin/python"
+[[ -x "$PY" ]] || { echo "ERROR: no interpreter at $PY" >&2; exit 1; }
+"$PY" -c "import cellpose_omni, torch; print('env OK:', torch.__version__)" \
+  || { echo "ERROR: $PY cannot import cellpose_omni" >&2; exit 1; }
 
 # Weights live beside the project, not in $HOME. Compute nodes may be firewalled
 # even where the login node is not, so these are prefetched before submitting.
@@ -52,7 +58,7 @@ echo "out     $OUT"
 
 # 13,619 links carry 59.5% of the fibres. If an upstream change ever drops the
 # parameter, a run would silently train false splits at every crossing.
-python - <<'PY'
+"$PY" - <<'PY'
 import inspect, sys
 from cellpose_omni import models
 if "train_links" not in inspect.signature(models.CellposeModel.train).parameters:
@@ -60,7 +66,7 @@ if "train_links" not in inspect.signature(models.CellposeModel.train).parameters
 print("train_links: present")
 PY
 
-srun python model_labs/omnipose_lab/train_fold.py \
+srun "$PY" model_labs/omnipose_lab/train_fold.py \
   --corpus "$CORPUS" \
   --held-out "$HELD_OUT" \
   --epochs "$EPOCHS" \
