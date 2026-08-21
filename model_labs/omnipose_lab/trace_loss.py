@@ -61,6 +61,9 @@ def main(argv=None) -> int:
     ap.add_argument("--tyx", type=int, default=DEFAULTS["tyx"])
     ap.add_argument("--init-model", default=DEFAULTS["init_model"])
     ap.add_argument("--no-links", action="store_true")
+    ap.add_argument("--no-rescale", action="store_true",
+                    help="neutralise scale_to_tenths, so each loss term keeps "
+                         "its own magnitude in the gradient")
     a = ap.parse_args(argv)
 
     print("----- cellpose_omni CellposeModel.loss_fn " + "-" * 24)
@@ -88,8 +91,23 @@ def main(argv=None) -> int:
 
     # ---- wrap the loss so the live label stack and raw loss are visible ----
     original = ocore.loss
+    original_scale = ocore.scale_to_tenths
     seen: list[tuple[float, float]] = []
     described: list[bool] = []
+
+    # `scale_to_tenths` is applied once per loss term, in source order, so
+    # wrapping it both records every term and gives us the switch to turn the
+    # dynamic rescaling off.
+    TERMS = ["flow_mse", "SSL", "bd_loss", "norm_loss", "dist_loss",
+             "lossA", "lossE", "lossB", "lossDC"]
+    per_step: list[list[float]] = []
+
+    def traced_scale(x, max_gain=1e12):
+        try:
+            per_step[-1].append(float(x.detach()))
+        except (AttributeError, TypeError, RuntimeError):
+            per_step[-1].append(float("nan"))
+        return x if a.no_rescale else original_scale(x, max_gain=max_gain)
 
     def traced(self, lbl, y, ext_loss=0):
         if not described:
@@ -111,6 +129,7 @@ def main(argv=None) -> int:
             print(f"{'step':>6}{'raw loss':>14}{'logged (scaled)':>18}")
             print("-" * 38)
 
+        per_step.append([])
         out = original(self, lbl, y, ext_loss=ext_loss)
         if isinstance(out, tuple) and len(out) == 2:
             scaled, raw = out
@@ -121,6 +140,9 @@ def main(argv=None) -> int:
         return out
 
     ocore.loss = traced
+    ocore.scale_to_tenths = traced_scale
+    if a.no_rescale:
+        print("scale_to_tenths NEUTRALISED: each term keeps its own magnitude\n")
     out_dir = Path(tempfile.mkdtemp(prefix="traceloss_"))
     try:
         model.train(imgs, labs, train_links=links,
@@ -132,6 +154,22 @@ def main(argv=None) -> int:
                     min_train_masks=1, tyx=(a.tyx, a.tyx), netstr="trace")
     finally:
         ocore.loss = original
+        ocore.scale_to_tenths = original_scale
+
+    # ---- which term is big, and which one is stuck? ------------------------
+    full = [t for t in per_step if len(t) >= len(TERMS)]
+    if full:
+        first, last = full[0], full[-1]
+        print("\nPER-TERM RAW VALUES (the nine summed into raw_loss)")
+        print(f"{'term':<12}{'step 1':>14}{'last step':>14}{'change':>12}")
+        print("-" * 52)
+        for i, name in enumerate(TERMS):
+            f, l = first[i], last[i]
+            print(f"{name:<12}{f:>14.6f}{l:>14.6f}"
+                  f"{(l - f) / abs(f) * 100 if f else float('nan'):>11.1f}%")
+        extra = len(first) - len(TERMS)
+        if extra > 0:
+            print(f"({extra} further term(s) recorded: external losses)")
 
     if not seen:
         print("!! the loss was never called through omnipose.core.loss")
