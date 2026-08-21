@@ -112,12 +112,16 @@ def main(argv=None) -> int:
     print()
 
     dev = next(model.net.parameters()).device
+    # `omnipose.core.loss` calls `lbl[:,4].detach()`, so the label stack has to
+    # arrive as a device tensor. It is kept as numpy above for inspection only.
+    lbl_t = torch.as_tensor(np.ascontiguousarray(lbl), dtype=torch.float32,
+                            device=dev)
 
     def score(y_np):
         y = torch.as_tensor(np.ascontiguousarray(y_np), dtype=torch.float32,
                             device=dev)
         with torch.no_grad():
-            return float(model.loss_fn(lbl, y))
+            return float(model.loss_fn(lbl_t, y))
 
     # --- references ---------------------------------------------------------
     x = torch.as_tensor(img[np.newaxis, np.newaxis], dtype=torch.float32,
