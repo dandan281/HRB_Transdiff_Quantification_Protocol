@@ -1,0 +1,12 @@
+{
+  "recall_traces": 0.7093023255813954,
+  "length_mdape": 0.09581954491902508,
+  "n_length_matched": 61,
+  "false_split_count": 27,
+  "false_merge_count": 12,
+  "identity_through_crossing": 0.27419354838709675,
+  "identity_all": 0.37209302325581395,
+  "n_gt": 86,
+  "n_objects": 148,
+  "n_gt_touching_crossing": 62
+}

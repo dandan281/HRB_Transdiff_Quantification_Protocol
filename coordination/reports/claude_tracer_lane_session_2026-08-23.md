@@ -314,3 +314,165 @@ is what produced two unusable answers here.
 | `model_labs/tests/test_oracle_trace.py` | 4 walk-contract tests (15/15 green with targets) |
 | `model_labs/tracer_lab/_runs/oracle/` | oracle JSONs, B02/C05/D04 |
 | `model_labs/tracer_lab/_runs/net_v1/`, `_runs/net_v2/` | checkpoints, logs, manifests, sweeps |
+
+## 8. Day 2 (2026-08-24): the yardstick harness, and the first validated measurement
+
+The open question from §5e -- does the operator's line sit on the image's
+intensity ridge -- now has a validated answer, obtained the way the retraction
+demanded: instrument first, synthetic fibres of known centreline, real data
+only after every condition passes.
+
+**The harness** (`ridge_yardstick.py`) generates fibres with exactly known
+centrelines under six conditions (clean, flat-top, speckle, parallel
+neighbour at 9 px, noise, all-at-once) and requires a yardstick to recover
+injected lateral shifts. It killed four candidates immediately:
+
+- all three wide-window yardsticks (peak, centroid, matched filter) lock
+  onto the neighbouring fibre's ridge (a 2 px shift reported as -6.9 px);
+- the +-3 px basin variant is neighbour-immune but speckle attenuates a
+  2.5 px shift to ~1.2 -- texture bumps capture the argmax.
+
+**The instrument that passed everything**: `trace_mean` -- average the
+perpendicular profiles along the whole trace, then find the peak. Speckle is
+independent along the fibre and cancels; a systematic offset survives. Worst
+error across all conditions and shifts: 0.16 px.
+
+**The measurement**: the operator's traces carry no bias but a per-trace
+lateral offset of SD ~2.1 px against the image ridge (D04 -0.07 +/- 2.10 px,
+B02 +0.07 +/- 2.05 px; D11 was the one well with real bias, -0.71 px). This
+is correlated target error -- unaveragable by any loss -- and accounts for a
+real part of the 12 px FWHM the networks keep producing.
+
+**The fix** (`snap_targets.py`, rewritten): windowed trace_mean offsets,
+interpolated, smoothed, clipped to 3 px, applied along local normals.
+Per-trace opt-in -- a trace reverts to the original unless it individually
+keeps arc length within 1% and steals no identity above raster resolution.
+All 10 wells pass: 55-66% of traces snapped, offset SD 2.1 -> ~1.6-1.75 px,
+worst arc-length change 0.97%, theft 0. Held-out targets stay UNSNAPPED --
+evaluation remains against the annotation as drawn.
+
+net_v7 = the v3 recipe on snapped targets, training now. Also today: the
+re-trace package for the intra-operator ceiling
+(`coordination/retrace_check/`, awaiting the operator), and the
+leave-one-well-out CV planned next.
+
+## 9. The intra-operator ceiling (2026-08-25): "perfect" measured
+
+The operator blind re-traced a 1200x1200 window of D04
+(`coordination/retrace_check/`). Scored with the SAME machinery every tracer
+result uses (original annotation as GT):
+
+| candidate | recall | count ratio | matched length err | identity thru crossings |
+|---|---|---|---|---|
+| operator, blind re-trace | 0.71 | 1.72x | 0.096 | 0.27 |
+| oracle (perfect fields) | 1.00 | 0.87x | 0.085 | 0.97 |
+| tracer nms (plate-wide) | 0.50-0.79 | 1.17x | 0.32 | ~0.27 |
+| tracer raw (plate-wide) | 0.93 | 0.61x | ~22 | 0.78 |
+
+Consequences, in order of weight:
+
+1. Human self-consistency is recall 0.71, count within 1.7x, per-fibre
+   length ~10%, crossing identity 0.27. Any validation against a single
+   annotation pass is bounded by these numbers, for every candidate.
+2. The tracer already sits at human repeatability on identity, count and
+   (roughly) recall. The ONE gap outside human noise is matched per-fibre
+   length: 0.32 vs 0.096 -- a 3x gap, and now the lane's sole target.
+3. The oracle ceiling (0.085) equals human repeatability (0.096): the
+   representation is at the human limit.
+4. The original annotation is selective: fresh eyes on a small field found
+   72% more fibres (148 vs 86, +36% length). Recall-against-original
+   understates every candidate, and "false positives" on unannotated fibres
+   are often real fibres.
+5. Caveats: one window, one repeat; window clipping deflates identity for
+   both sides equally; the re-trace's focused conditions favour
+   thoroughness. A second window on another well would firm the numbers.
+
+Files: `coordination/retrace_check/human_vs_human.{json,png}`.
+
+## 10. Leave-one-well-out cross-validation (2026-08-26): the honest plate table
+
+Ten folds, each well scored by the fold that never saw it (v5 recipe: dice +
+augment, 80 epochs; two RAM-starvation interruptions from a concurrent
+session's 11.7 GB job -- the resumable script absorbed both). Full table in
+`_runs/plate32_cv_report.json`; figure `plate32_cv_final.png`.
+
+Plate-level, all wells never-seen, vs the measured human ceiling:
+
+| metric | tracer nms | tracer raw | human self-consistency |
+|---|---|---|---|
+| total length ratio (mean) | **0.95x** | 1.33x | 1.36x (one window) |
+| length rank rho (10 wells) | +0.903 | +0.976 | -- |
+| count ratio / rank rho | 1.17x / +0.952 | 0.70x / +0.851 | 1.72x / -- |
+| mean trace recall | 0.645 | 0.804 | 0.71 |
+| median per-fibre length err | 0.323 | 1.79 | 0.096 |
+
+Drop-one-well (project rule): nms length rho stays in [+0.87, +0.97], count
+rho in [+0.93, +0.98] -- no single well carries the correlation.
+
+What it means:
+
+1. **Well-level biology is within reach NOW**: never-seen totals track the
+   operator at rank rho 0.90-0.98 with a 0.95x mean ratio (nms). For
+   comparing treatments by per-well totals, that is usable, and the
+   correlations survive drop-one-well.
+2. The raw arm's length inflation fell 2.03x -> 1.33x when the fields came
+   from dice-trained folds -- the v5 loss DID help the walkability of raw
+   fields, which the single-split benchmark obscured.
+3. The one gap outside human noise is unchanged: matched per-fibre length
+   0.32 vs the human 0.096. Fragment stitching remains the targeted next
+   mechanism.
+4. CV loss tracks density (B02 0.73 ... D04 1.25), confirming density -- not
+   memorisation -- as the difficulty axis.
+
+## 11. Endpoint stitching REFUTED; the splits are missing middles (2026-08-27)
+
+The stitcher (`stitcher.py`: end-to-end + co-linear + image support, tuned on
+5 wells, guarded against the 2026-07 linker failure) was a near-no-op across
+its whole grid: mdape 0.314 -> 0.318-0.320, identity flat, looser angles only
+added merges. The geometry diagnosis says why (C05, 114 split GT traces):
+
+- the two pieces of a split fibre have median END-TO-END distance **90 px**
+  (p25 40, p75 176); only 10% fall inside an 18 px stitch window;
+- 92/114 pairs are lateral/far: the walk covered two distant PORTIONS of the
+  fibre and the middle is absent -- crest holes tens of px long where the
+  fibre runs dim or through tangles. "Over-fragmentation" is really
+  **partial within-fibre coverage**.
+
+No local endpoint rule can bridge 90 px blind. The mechanism this points to:
+**orientation-field bridging** -- from each fragment end, a probe walk that
+follows the orientation head (7 deg median error, trustworthy where centre is
+not) for up to ~120 px at weak raw-centre support, accepting only a
+co-linear landing on another fragment. Uses the good head to carry identity
+across the bad head's holes, keeping the follow-gate guard.
+
+## 12. Orientation bridging: selective after guards, still not the answer
+
+v1 (probe follows the orientation head across weak-centre gaps, co-linear
+landing only): ACTIVE but non-selective -- at every config ~100-150 splits
+repaired for ~+160 false merges on the 5 tune wells; the bridge_floor axis
+is dead (827-835 bridges at floor 0.10/0.15/0.25 alike -- the halo keeps
+raw centre above threshold everywhere near fibres).
+
+v2 added two guards, each attributed by its own diagnostic row (len 120):
+
+| config | bridges | splits repaired | merges added | mdape after |
+|---|---|---|---|---|
+| no guards (v1) | 1055 | 131 | +167 | 0.449 |
+| end-landing only | 535 | 58 | +87 | 0.348 |
+| mutual only | 328 | 57 | +36 | 0.332 |
+| both | 286 | 50 | +28 | 0.329 |
+
+Mutuality is the stronger guard; both together reach ~1.8 repairs per false
+merge and saturate by 120 px. But the mechanism touches only ~9% of splits
+(50/568) and **mdape never improves in any configuration** -- bridge paths
+and residual wrong merges add length error at least as fast as reunification
+removes it. NOT deployed. Identity is already at the human ceiling, so
+buying identity at a length cost optimises the wrong metric.
+
+Mechanisms now measured and rejected for the per-fibre-length gap: path
+smoothing, endpoint stitching, orientation bridging (v1, v2), plus the six
+network-side attempts of §5e. The gap (0.32 vs human 0.096) stands. The one
+untried mechanism from the plan is the history-conditioned stepping head
+(DBT's sequential-prediction idea on our backbone). Alternatively the lane
+ships as-is: cross-validated well-level totals at 0.95x / rank rho 0.90+ are
+already inside what single-pass human annotation can certify.

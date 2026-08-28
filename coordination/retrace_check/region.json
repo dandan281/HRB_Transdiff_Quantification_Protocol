@@ -1,0 +1,16 @@
+{
+  "well": "D04",
+  "plate": "PLATE_32",
+  "rows": [
+    900,
+    2100
+  ],
+  "cols": [
+    900,
+    2100
+  ],
+  "source": "PrecisionMyotube/annotation_work/plate32_dense_v1/D04/image_fiber.tif",
+  "pixel_um": 0.650016647553939,
+  "n_fibres_in_original": 65,
+  "purpose": "intra-operator reproducibility; trace BLIND, do not consult the original ROIs"
+}

@@ -48,10 +48,19 @@ PLATE = ROOT / "Q_PLATES/Q_Plates/PLATE_32"
 # data
 # ---------------------------------------------------------------------------
 
-def load_well(well: str):
-    """-> (image float32 [0,1], fields dict) for one well."""
+def load_well(well: str, snapped_dir: str | Path | None = None):
+    """-> (image float32 [0,1], fields dict) for one well.
+
+    ``snapped_dir``: build targets from ridge-snapped traces persisted by
+    `snap_targets.py --all` instead of the raw ROI polylines. The snap is
+    validated per well (see `_runs/snapped_v1/verification.json`) and only
+    changes trace geometry laterally; a missing npz is an ERROR, not a
+    fallback -- silently training half the wells on unsnapped targets would
+    be the kind of quiet inconsistency this project keeps paying for.
+    """
     import tifffile
-    from tracer_lab.centreline_targets import targets_from_roi_zip
+    from tracer_lab.centreline_targets import build_targets, \
+        targets_from_roi_zip
 
     manifest = json.loads((CORPUS / well / "well_manifest.json").read_text())
     zips = sorted(PLATE.glob(f"*{well}*.zip"))
@@ -61,9 +70,21 @@ def load_well(well: str):
     lo, hi = np.percentile(im, [1.0, 99.9])
     im = np.clip((im - lo) / max(hi - lo, 1e-6), 0.0, 1.0).astype(np.float32)
     shape = tuple(manifest["acquisition"]["shape"][-2:])
-    fields = targets_from_roi_zip(zips[0], shape)
-    return im, fields, {"roi_zip": zips[0].name, "norm_lo": float(lo),
-                        "norm_hi": float(hi)}
+    meta = {"roi_zip": zips[0].name, "norm_lo": float(lo),
+            "norm_hi": float(hi), "snapped": False}
+    if snapped_dir is not None:
+        npz_path = Path(snapped_dir) / f"{well}.npz"
+        if not npz_path.exists():
+            raise FileNotFoundError(
+                f"snapped traces missing for {well}: {npz_path}")
+        z = np.load(npz_path)
+        polys = [z[k] for k in sorted(z.files,
+                                      key=lambda s: int(s.split("_")[1]))]
+        fields = build_targets(shape, polys)
+        meta["snapped"] = True
+    else:
+        fields = targets_from_roi_zip(zips[0], shape)
+    return im, fields, meta
 
 
 def augment_crop(crop: dict, k: int, flip: bool) -> dict:
@@ -290,6 +311,11 @@ def main(argv=None) -> int:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--augment", action="store_true",
                     help="random dihedral augmentation on training crops")
+    ap.add_argument("--snap", action="store_true",
+                    help="train on ridge-snapped traces from _runs/snapped_v1 "
+                         "(validated by snap_targets.py); held-out targets "
+                         "stay UNSNAPPED -- evaluation is against the "
+                         "operator's actual annotation")
     ap.add_argument("--ridge-weight", type=float, default=10.0,
                     help="centre MSE per-pixel weight is 1 + w*target")
     ap.add_argument("--augcheck", action="store_true",
@@ -314,7 +340,11 @@ def main(argv=None) -> int:
     print(f"device {device} | train {train_names} | held out {a.held_out}")
 
     t0 = time.time()
-    wells = {w: load_well(w) for w in train_names}
+    snap_dir = (ROOT / "model_labs/tracer_lab/_runs/snapped_v1"
+                if a.snap else None)
+    wells = {w: load_well(w, snapped_dir=snap_dir) for w in train_names}
+    # held-out targets are NEVER snapped: the yardstick is the operator's
+    # annotation as drawn, and evaluation must not inherit the training fix
     held = {a.held_out: load_well(a.held_out)}
     print(f"targets built for {len(wells) + 1} wells "
           f"in {time.time() - t0:.1f} s")
@@ -425,6 +455,7 @@ def main(argv=None) -> int:
 
     manifest = {
         "held_out": a.held_out, "train_wells": train_names,
+        "snapped_targets": bool(a.snap),
         "tile": a.tile, "batch": a.batch, "epochs": a.epochs,
         "steps_per_epoch": a.steps_per_epoch, "lr": a.lr, "base": a.base,
         "seed": a.seed, "params_m": n_par / 1e6,

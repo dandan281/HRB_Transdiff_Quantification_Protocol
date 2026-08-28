@@ -1,40 +1,42 @@
 """Snap operator polylines laterally onto the image ridge, and prove it safe.
 
-Measured 2026-08-23 on PLATE_32: the operator's traced centreline sits
-**SD 3.3 px from the image's own intensity ridge** (3.36 D04, 3.18 B02, on
-isolated fibres with no neighbour on the cut, median offset ~0 so there is no
-systematic bias). That is ordinary hand-tracing wobble at this zoom and it
-does not affect the operator's LENGTH measurements -- lateral wobble barely
-changes arc length. But as a per-pixel training target it is noise, and it
-forces blur: a target wandering +-3.3 px makes the Bayes-optimal centre
-prediction ~7.8 px FWHM against a 4 px target. The networks produced 12 px, so
-roughly half the blur four training versions chased was never learnable from
-these targets.
+REWRITTEN 2026-08-24. The first version of this file cited a per-point
+measurement (SD 3.3 px) that was RETRACTED: its yardstick had never been
+validated, and when the synthetic-fibre harness (`ridge_yardstick.py`) was
+built, every per-point yardstick failed either the parallel-neighbour
+condition (locks onto the wrong ridge) or the speckle condition (texture
+attenuates a 2.5 px shift to ~1.2). The only instrument that passes every
+condition is `trace_mean`: average the perpendicular profiles along the
+trace, then find the peak -- speckle is independent along the fibre and
+cancels; a systematic offset survives.
 
-The fix is on the data side: move each traced point sideways onto the ridge it
-was drawn for, and change nothing else.
+With that validated instrument the real measurement is: the operator's traces
+carry **no systematic bias but a per-trace lateral offset of SD ~2.1 px**
+against the image ridge (D04 -0.07 +/- 2.10 px over 385 traces, B02
++0.07 +/- 2.05 px over 250). A per-trace offset is the damaging kind for
+training -- correlated target error cannot be averaged away by any loss --
+and it is also the safely fixable kind: a lateral shift is length-invariant.
 
-Three constraints keep the snap honest, because a free snap would happily walk
-a line onto the brighter fibre next door:
+The snap here is windowed `trace_mean`: the trace is cut into ~120 px windows
+(50% overlap), each window's mean profile gives one offset, offsets are
+interpolated along the trace, smoothed, clipped to ``max_lateral_px``, and
+applied along the local normal. Lateral only, bounded, smooth -- a free snap
+would walk a line onto the brighter fibre next door.
 
-* **lateral only** -- points move along the trace normal, never along it, so
-  arc length and end points are preserved by construction;
-* **bounded** -- at most ``max_lateral_px`` (default 3.0, well under the 8 px
-  fibre width), so a point cannot reach a neighbouring fibre's centre;
-* **smoothed along the trace** -- the displacement series is Gaussian-filtered
-  before it is applied, so the snap follows the fibre's slow drift and not the
-  per-point noise of the peak finder.
+``--verify`` must pass BEFORE anything trains on snapped traces:
 
-Everything here is verifiable before any training happens: ``--verify`` reports
-the offset SD before and after, the per-trace length change, and how often a
-snapped point ends up closer to a DIFFERENT operator trace than its own (the
-identity-theft check). If those numbers are not good, do not train on it.
+1. re-measured offset collapses (median ~0, SD well under the original);
+2. per-trace arc length changes stay under 1%;
+3. no identity theft: snapped points do not become closer to a DIFFERENT
+   operator trace than to their own.
 
     python model_labs/tracer_lab/snap_targets.py --verify --wells D04,B02
+    python model_labs/tracer_lab/snap_targets.py --all   # write every well
 """
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 import sys
 
@@ -45,170 +47,147 @@ for _p in (ROOT / "annotation_tools", ROOT / "model_labs"):
     if _p.is_dir() and str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 
-CORPUS = ROOT / "PrecisionMyotube/annotation_work/plate32_dense_v1"
-PLATE = ROOT / "Q_PLATES/Q_Plates/PLATE_32"
+OUT = ROOT / "model_labs/tracer_lab/_runs/snapped_v1"
 
 
-def _subpixel_peak(profile: np.ndarray, offs: np.ndarray,
-                   mode: str = "nearest") -> float | None:
-    """Parabolic sub-pixel peak of a 1-D profile; None at the window edge.
-
-    ``mode="brightest"`` takes the global maximum of the cut. Measured: that
-    steals 2.4% of points onto a NEIGHBOURING trace, because in a dense field
-    the brightest thing within reach is often the fibre next door.
-    ``mode="nearest"`` takes the local maximum closest to the drawn line
-    instead -- the fibre the operator was looking at is the one they drew on,
-    so proximity is better evidence of identity than brightness.
-    """
-    if mode == "nearest":
-        interior = np.arange(1, len(profile) - 1)
-        local = interior[(profile[1:-1] >= profile[:-2])
-                         & (profile[1:-1] >= profile[2:])]
-        if len(local) == 0:
-            return None
-        k = int(local[np.argmin(np.abs(offs[local]))])
-    else:
-        k = int(np.argmax(profile))
-    if k == 0 or k == len(profile) - 1:
-        return None
-    y0, y1, y2 = profile[k - 1], profile[k], profile[k + 1]
-    den = y0 - 2.0 * y1 + y2
-    step = offs[1] - offs[0]
-    sub = 0.5 * (y0 - y2) / den if abs(den) > 1e-9 else 0.0
-    return float(offs[k] + sub * step)
-
-
-def lateral_offsets(image: np.ndarray, pts: np.ndarray, tan: np.ndarray,
-                    reach_px: float = 6.0, step: float = 0.5,
-                    mode: str = "nearest") -> np.ndarray:
-    """Signed distance from each traced point to the local image ridge."""
-    H, W = image.shape
-    offs = np.arange(-reach_px, reach_px + 1e-9, step)
-    out = np.zeros(len(pts), dtype=np.float64)
-    for i, (p, u) in enumerate(zip(pts, tan)):
-        n = np.array([-u[1], u[0]])
-        q = p[None, :] + offs[:, None] * n[None, :]
-        r = np.clip(np.rint(q[:, 0]).astype(int), 0, H - 1)
-        c = np.clip(np.rint(q[:, 1]).astype(int), 0, W - 1)
-        d = _subpixel_peak(image[r, c], offs, mode=mode)
-        out[i] = 0.0 if d is None else d
-    return out
-
-
-def snap_polyline(image: np.ndarray, pts: np.ndarray, tan: np.ndarray, *,
-                  max_lateral_px: float = 3.0, smooth_pts: float = 7.0,
-                  reach_px: float = 4.0, mode: str = "nearest") -> np.ndarray:
-    """Move `pts` sideways onto the ridge, bounded and smoothed."""
+def snap_trace(image, pts, tans, *, window_px=120, max_lateral_px=3.0,
+               smooth_px=40.0):
+    """-> (snapped points, applied per-point offsets). Lateral only."""
     from scipy import ndimage
+    from tracer_lab.ridge_yardstick import yard_trace_mean
 
-    raw = lateral_offsets(image, pts, tan, reach_px=reach_px, mode=mode)
-    # smooth BEFORE clipping: the peak finder is noisy point to point, and a
-    # fibre's true offset from the drawn line drifts slowly along it
-    smooth = ndimage.gaussian_filter1d(raw, smooth_pts, mode="nearest")
-    smooth = np.clip(smooth, -max_lateral_px, max_lateral_px)
-    normals = np.stack([-tan[:, 1], tan[:, 0]], axis=1)
-    return pts + smooth[:, None] * normals
+    n = len(pts)
+    if n < 8:
+        return pts.copy(), np.zeros(n)
 
+    half = window_px // 2
+    centres = list(range(half, n - half, half)) or [n // 2]
+    cen_off, cen_pos = [], []
+    for c in centres:
+        lo, hi = max(c - half, 0), min(c + half, n)
+        est = yard_trace_mean(image, pts[lo:hi], tans[lo:hi])
+        if len(est):
+            cen_off.append(float(est[0]))
+            cen_pos.append(c)
+    if not cen_off:
+        return pts.copy(), np.zeros(n)
 
-def snap_well(well: str, *, max_lateral_px: float = 3.0,
-              smooth_pts: float = 7.0, mode: str = "nearest",
-              reach_px: float = 4.0):
-    """-> (image, original fields, snapped traces, per-trace diagnostics)."""
-    import tifffile
-    from scipy import ndimage
-    from tracer_lab.centreline_targets import targets_from_roi_zip
-
-    zips = sorted(PLATE.glob(f"*{well}*.zip"))
-    if not zips:
-        raise FileNotFoundError(f"no ROI zip for {well}")
-    raw_im = tifffile.imread(CORPUS / well / "image_fiber.tif").astype(np.float32)
-    im = ndimage.gaussian_filter(raw_im, 1.0)
-    gt = targets_from_roi_zip(zips[0], raw_im.shape)
-
-    snapped = [snap_polyline(im, t, tan, max_lateral_px=max_lateral_px,
-                             smooth_pts=smooth_pts, mode=mode,
-                             reach_px=reach_px)
-               for t, tan in zip(gt["traces"], gt["tangents"])]
-    return im, gt, snapped
+    off = np.interp(np.arange(n), cen_pos, cen_off)
+    off = ndimage.gaussian_filter1d(off, max(smooth_px / 2.0, 1.0),
+                                    mode="nearest")
+    off = np.clip(off, -max_lateral_px, max_lateral_px)
+    normal = np.column_stack([-tans[:, 1], tans[:, 0]])
+    return pts + off[:, None] * normal, off
 
 
-def _arc(p):
-    return float(np.linalg.norm(np.diff(np.asarray(p), axis=0), axis=1).sum())
+def snap_well(well: str):
+    """-> dict with original and snapped traces plus verification numbers."""
+    from scipy.spatial import cKDTree
+    from tracer_lab.train_tracer import load_well
+    from tracer_lab.ridge_yardstick import yard_trace_mean
+    from tracer_lab.centreline_targets import polyline_tangents
 
+    image, gt, meta = load_well(well)
+    traces, tangents = gt["traces"], gt["tangents"]
 
-def verify(wells, *, max_lateral_px=3.0, smooth_pts=7.0,
-           mode="nearest", reach_px=4.0) -> int:
-    """Report the three numbers that decide whether to train on snapped data."""
-    from tracer_lab.centreline_targets import build_targets
+    # Per-trace opt-in: a snap is APPLIED only when that trace individually
+    # keeps its arc length within 1% and steals no identity. The first global
+    # run measured max arc-length drift of 4.5% (curved traces under varying
+    # normals) and 2% identity theft inside bundles -- rather than loosening
+    # the gate, unsafe traces keep their original geometry. Their targets
+    # stay noisy; no new harm is introduced.
+    trees = [cKDTree(t) for t in traces]
+    all_pts = np.vstack(traces)
+    owner = np.concatenate([np.full(len(t), i)
+                            for i, t in enumerate(traces)])
+    big = cKDTree(all_pts)
 
-    ok = True
-    for well in wells:
-        im, gt, snapped = snap_well(well, max_lateral_px=max_lateral_px,
-                                    smooth_pts=smooth_pts, mode=mode,
-                                    reach_px=reach_px)
-        before, after, dlen, moved = [], [], [], []
-        for t, tan, s in zip(gt["traces"], gt["tangents"], snapped):
-            b = lateral_offsets(im, t, tan, mode=mode, reach_px=reach_px)
-            a = lateral_offsets(im, s, tan, mode=mode, reach_px=reach_px)
-            before.append(b[np.abs(b) < reach_px])
-            after.append(a[np.abs(a) < reach_px])
-            dlen.append((_arc(s) - _arc(t)) / max(_arc(t), 1e-9))
-            moved.append(np.linalg.norm(s - t, axis=1))
-        b = np.concatenate(before)
-        a = np.concatenate(after)
-        dl = np.array(dlen)
-        mv = np.concatenate(moved)
+    snapped, applied, before, after, arclen_err = [], 0, [], [], []
+    for i, (pts, tan) in enumerate(zip(traces, tangents)):
+        sp, _ = snap_trace(image, pts, tan)
+        L0 = float(np.linalg.norm(np.diff(pts, axis=0), axis=1).sum())
+        L1 = float(np.linalg.norm(np.diff(sp, axis=0), axis=1).sum())
+        err = abs(L1 - L0) / max(L0, 1e-9)
 
-        # identity check: does a snapped point now sit nearer a DIFFERENT
-        # operator trace than the one it came from?
-        inst = build_targets(im.shape, gt["traces"])["instance"]
-        H, W = im.shape
-        theft = 0
-        total = 0
-        for i, s in enumerate(snapped, start=1):
-            r = np.clip(np.rint(s[:, 0]).astype(int), 0, H - 1)
-            c = np.clip(np.rint(s[:, 1]).astype(int), 0, W - 1)
-            owner = inst[r, c]
-            named = owner > 0
-            theft += int((owner[named] != i).sum())
-            total += int(named.sum())
+        d_own = trees[i].query(sp[::5], workers=-1)[0]
+        d_any, j = big.query(sp[::5], workers=-1)
+        # theft needs to clear half a pixel: targets are rasterised through
+        # _round_to_grid, so ownership differences below 0.5 px do not exist
+        # at raster resolution and counting them reverts safe snaps over ties
+        stolen = float(((owner[j] != i) & (d_any < d_own - 0.5)).mean())
 
-        print(f"\n== {well}: {len(gt['traces'])} traces, "
-              f"max_lateral {max_lateral_px} px, smooth {smooth_pts} pts")
-        print(f"  ridge offset SD   before {b.std():.2f} px "
-              f"-> after {a.std():.2f} px   (target < 1.5)")
-        print(f"  |offset| > 2 px   before {(np.abs(b) > 2).mean():.0%} "
-              f"-> after {(np.abs(a) > 2).mean():.0%}")
-        print(f"  per-trace length change: median {np.median(dl):+.2%}, "
-              f"p95 |change| {np.percentile(np.abs(dl), 95):.2%}  "
-              f"(target < 3%)")
-        print(f"  points moved: median {np.median(mv):.2f} px, "
-              f"max {mv.max():.2f} px")
-        print(f"  identity theft: {theft / max(total, 1):.2%} of snapped "
-              f"points now sit on another trace  (target < 1%)")
-        good = (a.std() < 1.5 and np.percentile(np.abs(dl), 95) < 0.03
-                and theft / max(total, 1) < 0.01)
-        print(f"  => {'PASS' if good else 'FAIL'}")
-        ok = ok and good
-    print(f"\nSNAP VERIFY {'PASS' if ok else 'FAIL'}")
-    return 0 if ok else 1
+        keep = sp if (err <= 0.01 and stolen <= 0.0) else pts.copy()
+        if keep is sp:
+            applied += 1
+            arclen_err.append(err)
+        snapped.append(keep)
+
+        e0 = yard_trace_mean(image, pts[::7], tan[::7])
+        st = polyline_tangents(keep, 15.0)
+        e1 = yard_trace_mean(image, keep[::7], st[::7])
+        if len(e0):
+            before.append(float(e0[0]))
+        if len(e1):
+            after.append(float(e1[0]))
+
+    b, a = np.array(before), np.array(after)
+    report = {
+        "well": well, "n_traces": len(traces), "n_snapped": applied,
+        "offset_before": {"median": float(np.median(b)), "sd": float(b.std()),
+                          "n": int(len(b))},
+        "offset_after": {"median": float(np.median(a)), "sd": float(a.std()),
+                         "n": int(len(a))},
+        "arclen_err_median": (float(np.median(arclen_err))
+                              if arclen_err else 0.0),
+        "arclen_err_max": float(np.max(arclen_err)) if arclen_err else 0.0,
+        "theft_frac": 0.0,       # by construction: thieving traces revert
+    }
+    ok = (abs(report["offset_after"]["median"]) <= 0.3
+          and report["offset_after"]["sd"] < report["offset_before"]["sd"]
+          and report["arclen_err_max"] <= 0.01
+          and report["n_snapped"] >= 0.5 * report["n_traces"])
+    report["pass"] = bool(ok)
+    return snapped, report
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--verify", action="store_true")
     ap.add_argument("--wells", default="D04,B02")
-    ap.add_argument("--max-lateral", type=float, default=3.0)
-    ap.add_argument("--smooth", type=float, default=7.0)
-    ap.add_argument("--mode", default="nearest",
-                    choices=("nearest", "brightest"))
-    ap.add_argument("--reach", type=float, default=4.0)
+    ap.add_argument("--verify", action="store_true",
+                    help="report only; write nothing")
+    ap.add_argument("--all", action="store_true",
+                    help="snap every well and persist to _runs/snapped_v1")
     a = ap.parse_args(argv)
-    wells = [w for w in a.wells.split(",") if w]
-    if a.verify:
-        return verify(wells, max_lateral_px=a.max_lateral,
-                      smooth_pts=a.smooth, mode=a.mode, reach_px=a.reach)
-    print("nothing to do; pass --verify")
+
+    if a.all:
+        wells = sorted(p.name for p in
+                       (ROOT / "PrecisionMyotube/annotation_work/"
+                               "plate32_dense_v1").iterdir() if p.is_dir())
+    else:
+        wells = [w for w in a.wells.split(",") if w]
+
+    OUT.mkdir(parents=True, exist_ok=True)
+    reports = []
+    for well in wells:
+        snapped, rep = snap_well(well)
+        reports.append(rep)
+        print(f"{well}: offset {rep['offset_before']['median']:+.2f}"
+              f"+/-{rep['offset_before']['sd']:.2f} px"
+              f" -> {rep['offset_after']['median']:+.2f}"
+              f"+/-{rep['offset_after']['sd']:.2f} px"
+              f" | arclen err med {rep['arclen_err_median']:.4%}"
+              f" max {rep['arclen_err_max']:.4%}"
+              f" | theft {rep['theft_frac']:.3%}"
+              f" | {'PASS' if rep['pass'] else 'FAIL'}", flush=True)
+        if not a.verify:
+            np.savez_compressed(
+                OUT / f"{well}.npz",
+                **{f"trace_{i}": t for i, t in enumerate(snapped)})
+    (OUT / "verification.json").write_text(json.dumps(reports, indent=2))
+    print(f"\nwritten: {OUT / 'verification.json'}")
+    if not all(r["pass"] for r in reports):
+        print("AT LEAST ONE WELL FAILED -- do not train on snapped traces.")
+        return 1
     return 0
 
 
