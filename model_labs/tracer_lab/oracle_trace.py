@@ -394,6 +394,137 @@ def trace_field(fields: dict, prm: TraceParams | None = None) -> dict:
             "stop_reasons": reasons, "params": prm.to_dict()}
 
 
+def weld_objects(result: dict, fields: dict, *, weld_dist_px: float,
+                 weld_deg: float = 15.0, crossing_gate_px: float = 12.0,
+                 touch_px: float = 2.0) -> dict:
+    """Post-walk merge of co-linear pieces that meet at a crossing.
+
+    Motivated by the 2026-08-27 break-point attribution: breaks between the
+    pieces of one cut fibre sit at predicted crossings 2-3x above base rate,
+    and ~1/3 of them ABUT (the pieces touch or overlap; only the identity
+    decision failed). The in-walk contact merge misses these because contact
+    requires a LIVE walk stepping onto claimed pixels co-linearly for
+    `colinear_steps` consecutive steps -- a walk that died in the junction, or
+    a duplicate running just outside the claim band, never triggers it.
+
+    A weld joins object A to object B when an ENDPOINT of one of A's paths
+    lies within `weld_dist_px` of any point of B's paths and:
+
+    * **tangents are co-linear** (axial difference <= `weld_deg`) -- same
+      test the walk applies at contact;
+    * **the connector runs along-track** (endpoint->landing direction within
+      `weld_deg` of A's end tangent, tested only when the pieces do not
+      already touch, i.e. distance > `touch_px`). This is the guard the
+      2026-07 linker lacked: two PARALLEL fibres a few px apart are co-linear
+      in tangent, but their connector is lateral -- rejected here;
+    * **the site is at a crossing** (predicted crossing within
+      `crossing_gate_px` of the endpoint). Ungated end-to-end joining across
+      open field is the old fragments-joined error class and stays banned.
+
+    The weld merges IDENTITIES ONLY -- no path is added, so a wrong weld
+    costs a false merge but a correct one adds no fabricated arc length
+    (unlike the refuted orientation bridging, whose probe paths inflated
+    mdape as fast as reunification reduced it).
+
+    Returns a new result dict with updated ``object_of`` and a
+    ``weld_events`` list; the input is not mutated. ``weld_dist_px <= 0``
+    returns the input unchanged (the frozen configuration).
+    """
+    if weld_dist_px <= 0:
+        return result
+    from scipy import ndimage
+    from scipy.spatial import cKDTree
+
+    paths = result["paths"]
+    object_of = result["object_of"]
+    crossing = fields["crossing"]
+    H, W = crossing.shape
+    r = max(int(round(crossing_gate_px)), 1)
+    near_x = ndimage.binary_dilation(
+        crossing, np.ones((2 * r + 1, 2 * r + 1), dtype=bool))
+
+    # dense points of every path, with path id and local tangent
+    all_pts, all_pid, all_theta = [], [], []
+    for pid, path in enumerate(paths, start=1):
+        d = resample_polyline(np.asarray(path), 1.0)
+        if len(d) < 2:
+            continue
+        diffs = np.diff(d, axis=0)
+        theta = np.arctan2(diffs[:, 0], diffs[:, 1])
+        theta = np.append(theta, theta[-1])
+        all_pts.append(d)
+        all_pid.append(np.full(len(d), pid))
+        all_theta.append(theta)
+    if not all_pts:
+        return result
+    P = np.concatenate(all_pts)
+    PID = np.concatenate(all_pid)
+    TH = np.concatenate(all_theta)
+    tree = cKDTree(P)
+
+    welds: list[tuple[int, int, dict]] = []
+    for pid, path in enumerate(paths, start=1):
+        path = np.asarray(path)
+        if len(path) < 2:
+            continue
+        for sign in (0, -1):
+            e = path[sign]
+            # end tangent from the last few points, pointing OUT of the path
+            k = min(4, len(path) - 1)
+            t = (path[-1] - path[-1 - k]) if sign == -1 else \
+                (path[0] - path[k])
+            tn = float(np.linalg.norm(t))
+            if tn < 1e-6:
+                continue
+            t = t / tn
+            er, ec = int(round(e[0])), int(round(e[1]))
+            if not (0 <= er < H and 0 <= ec < W) or not near_x[er, ec]:
+                continue
+            own_obj = object_of[pid]
+            best = None
+            for i in tree.query_ball_point(e, r=weld_dist_px):
+                if object_of.get(int(PID[i]), 0) == own_obj:
+                    continue
+                # co-linear tangents (axial)
+                a_th = math.atan2(float(t[0]), float(t[1]))
+                if _axial_diff(a_th, float(TH[i])) > math.radians(weld_deg):
+                    continue
+                d = P[i] - e
+                dn = float(np.linalg.norm(d))
+                if dn > touch_px:
+                    # connector must run along-track, and forward
+                    if float(d @ t) <= 0.0:
+                        continue
+                    c_th = math.atan2(float(d[0]), float(d[1]))
+                    if _axial_diff(a_th, c_th) > math.radians(weld_deg):
+                        continue
+                if best is None or dn < best[0]:
+                    best = (dn, int(PID[i]))
+            if best is not None:
+                welds.append((pid, best[1],
+                              {"dist_px": round(best[0], 2),
+                               "at": [er, ec]}))
+
+    if not welds:
+        return {**result, "weld_events": []}
+    ids = sorted(set(object_of.values()))
+    parent = {i: i for i in ids}
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for a, b, _info in welds:
+        ra, rb = find(object_of[a]), find(object_of[b])
+        if ra != rb:
+            parent[ra] = rb
+    new_of = {pid: find(oid) for pid, oid in object_of.items()}
+    return {**result, "object_of": new_of,
+            "weld_events": [(a, b, info) for a, b, info in welds]}
+
+
 # ---------------------------------------------------------------------------
 # scoring: traced objects vs the operator's polylines
 # ---------------------------------------------------------------------------
