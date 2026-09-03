@@ -58,6 +58,7 @@ holes are the same problem, and it is not an identity problem (§4, §7a).
 | 7j | the B04 blind re-trace adjudication |
 | 7k | the Omnipose benchmark row |
 | 7l | length-class quantification hardened + tested |
+| 7m | `quantify_new_plate.py` — the product entry point |
 | 8 | artifacts |
 | 9 | open items and how to reproduce |
 
@@ -589,6 +590,55 @@ exactly. The convention is not cosmetic for this metric — on B02 the
 operator's own 50–150 µm share moves 32.8% → 36.2% between conventions,
 which is why both are emitted rather than one chosen quietly.
 
+## 7m. The product entry point: `quantify_new_plate.py` (2026-09-02)
+
+Every earlier runner had its dataset baked in (PLATE_32 corpus paths, an
+explicit P26/P28 well list, a fixed pixel size and channel index). For real
+experimental use there was no "point at a plate and go" command. Now there
+is: a folder of `.nd2` files in, per-well counts / totals / length-class
+mix out (`wells.csv`, `summary.json`, `length_classes.png`), operator
+comparison only if ROI zips exist. Two stages because the nd2 reader and
+torch live in different envs (`--extract` in `base`, tracing in
+`pm-omnipose`).
+
+Acquisition handling from metadata, not constants:
+
+- **channel** via the project's `resolve_roles` (ch1 prior, morphology
+  otherwise; `--fiber-ch` override), with the CHOICE and its basis
+  recorded per well. Found while testing: a **saturated channel scores
+  zero on every morphology feature** and silently derails the role
+  assignment — PLATE_44 B07's DAPI (ch0, p97.5 = 4095) was assigned to
+  ch2, and the fibre channel was decided by the ch1 prior alone (right
+  answer, fragile reason; confirmed by eye). The runner now flags
+  saturated channels and records `fiber_choice` = prior / morphology /
+  override.
+- **pixel size** read from the nd2; a plate off the training scale
+  (0.650 µm) by > 2% is resampled to it before inference and lengths
+  reported in µm. Mechanically correct and **unvalidated** — flagged
+  loudly per well and in the summary; PLATE_44 (1.7246 µm, ×2.65) is the
+  live example. Per the standing rule, such a plate needs its own sweep
+  before its numbers are trusted.
+
+Visuals: per well, `<well>_overlay.png` — the whole field at half
+resolution with every traced object in its own colour (a colour change
+along one fibre is a cut, an uncoloured fibre is a miss), and the
+operator's ROIs as a left panel in the same style where they exist. This
+is the picture that decides whether a well's numbers are believed;
+`--no-overlay` skips it. Plate-level: `length_classes.png` (operator vs
+tracer when ROIs exist, tracer alone otherwise). Caught while wiring it:
+a loop variable named `path` shadowed the output-path argument, so the
+first version handed `imwrite` a polyline — fixed, both branches
+re-verified on real wells.
+
+Verification: PLATE_26 end to end (3 wells, repair mode; human recall
+0.85/0.88/0.88 identical to `eval_unseen_plates`); strict reproduction on
+B02 in weld mode — smoothed total **44.4 mm = the report's 44.4**, raw arc
+44.7 vs 44.9 / 125 vs 126 objects (the runner measures 1 px-resampled
+paths, as the length-distribution report did). PLATE_44 B07 exercised the
+rescaled path end to end. 7 contract tests
+(`test_quantify_new_plate.py`): well-token discovery, collision refusal,
+ROI matching, the rescale trigger.
+
 ## 8. Artifacts
 
 Code (committed; `model_labs/tracer_lab/` unless noted):
@@ -604,6 +654,7 @@ Code (committed; `model_labs/tracer_lab/` unless noted):
 | `length_distribution_report.py` | convention restate + length-class shares (§7e) |
 | `length_classes.py` | the length-class + freeline-smoothing convention, shared (§7d, §7i) |
 | `cv_report.py`, `quantify_plate.py` | plate tables; both now emit `*_length_classes` |
+| `quantify_new_plate.py` | ANY plate: nd2 folder -> per-well counts, totals, length mix; `--extract` then trace (§7m) |
 | `model_labs/omnipose_lab/quantify_plate_omnipose.py` | the Omnipose benchmark row (§7k) |
 | `model_labs/tests/test_oracle_trace.py` | 3 weld contract tests (§7b) |
 | `model_labs/tests/test_length_classes.py` | 8 length-class + smoothing contract tests (§7l); suite 26/26 green |
@@ -655,6 +706,10 @@ Data and coordination:
    tracer length that is on-signal but outside both existing passes (§7j).
 
 **Reproduction** (GPU env `pm-omnipose`; CPU work in `pm-annotate`):
+
+    # a NEW plate, start to finish (the product path)
+    conda run -n base python model_labs/tracer_lab/quantify_new_plate.py --plate <folder of .nd2> --extract
+    conda run -n pm-omnipose python model_labs/tracer_lab/quantify_new_plate.py --plate <folder of .nd2>
 
     # deployed stack, any PLATE_32 well
     python model_labs/tracer_lab/decompose_retrace.py --wells C05 --mode repair
