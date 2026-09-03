@@ -133,9 +133,11 @@ def main(argv=None) -> int:
             um = PIXEL_UM_EXPECTED
             h_len = np.array([_arc(t) * um for t in gt["traces"]])
             h_len = h_len[h_len >= MIN_UM]
+            from tracer_lab.length_classes import class_shares
             rec = {"plate": plate, "well": well, "roi_zip": zp.name,
                    "nd2": nd.name, "human_n": int(len(h_len)),
-                   "human_mm": round(float(h_len.sum() / 1000.0), 2)}
+                   "human_mm": round(float(h_len.sum() / 1000.0), 2),
+                   "human_length_classes": class_shares(h_len)}
             for tag, r in (("base", res), ("weld", welded)):
                 sc = score_against_gt(r, wf)
                 obj_len: dict[int, float] = {}
@@ -146,6 +148,7 @@ def main(argv=None) -> int:
                 rec[tag] = {
                     "n": int(len(lens)),
                     "mm": round(float(lens.sum() / 1000.0), 2),
+                    "length_classes": class_shares(lens),
                     "recall": round(sc["recall_traces"], 3),
                     "mdape": round(sc["length_mdape"], 3),
                     "splits": sc["false_split_count"],

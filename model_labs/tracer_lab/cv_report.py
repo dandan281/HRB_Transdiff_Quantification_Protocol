@@ -74,10 +74,23 @@ def main(argv=None) -> int:
                         .read_text())["pixel_um"]
         h_len = np.array([_arc(t) * um for t in gt["traces"]])
         h_len = h_len[h_len >= a.min_um]
+        # Both conventions, explicitly. Raw arc is the lane's historical
+        # measure (every table before 2026-08-27); smoothed is what Fiji's
+        # freeline `Length` reports, since raw point-to-point arc counts
+        # drawing jitter and inflates freehand traces 10-15% (§7d of the
+        # 2026-08-27 report). Emitting both keeps prior numbers comparable
+        # AND matches the report's figures; adopting one lane-wide is an
+        # open decision, not something this script should make quietly.
+        from tracer_lab.length_classes import class_shares, smooth_polyline
+        h_sm = np.array([_arc(smooth_polyline(t)) * um for t in gt["traces"]])
+        h_sm = h_sm[h_sm >= a.min_um]
         rec = {"well": well,
                "human_n": int(len(h_len)),
                "human_mm": float(h_len.sum() / 1000.0),
-               "human_lengths_um": [round(float(v), 2) for v in h_len]}
+               "human_mm_smoothed": float(h_sm.sum() / 1000.0),
+               "human_lengths_um": [round(float(v), 2) for v in h_len],
+               "human_length_classes": class_shares(h_len),
+               "human_length_classes_smoothed": class_shares(h_sm)}
 
         pred = predict_fields(image, CV / well / "best.pt")
         for tag in ("raw", "nms"):
@@ -101,6 +114,7 @@ def main(argv=None) -> int:
             rec[f"{tag}_n"] = int(len(lens))
             rec[f"{tag}_mm"] = float(lens.sum() / 1000.0)
             rec[f"{tag}_lengths_um"] = [round(float(v), 2) for v in lens]
+            rec[f"{tag}_length_classes"] = class_shares(lens)
             rec[f"{tag}_recall"] = float(sc["recall_traces"])
             rec[f"{tag}_identity"] = float(sc["identity_through_crossing"])
             rec[f"{tag}_mdape"] = float(sc["length_mdape"])

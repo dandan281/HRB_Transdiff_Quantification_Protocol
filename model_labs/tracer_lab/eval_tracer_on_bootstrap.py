@@ -142,6 +142,13 @@ def main(argv=None) -> int:
     ap.add_argument("--out",
                     default="model_labs/tracer_lab/_runs/eval_bootstrap_v1")
     ap.add_argument("--wells", nargs="+", default=None)
+    ap.add_argument("--candidate", type=int, default=1, choices=(1, 2),
+                    help="1 = frozen walk (the 2026-08-27 sealed run). "
+                         "2 = walk + frozen junction weld + frozen "
+                         "decompose-retrace identity repair (configs frozen "
+                         "on PLATE_32 tune wells 2026-08-27/28; nothing "
+                         "tuned on PLATE_23). Candidate 2 runs ONLY under "
+                         "a Codex-authorized submission.")
     args = ap.parse_args(argv)
 
     bootstrap = Path(args.bootstrap)
@@ -149,11 +156,15 @@ def main(argv=None) -> int:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     wells = args.wells or sorted(manifest["per_well"])
     ckpt = ROOT / args.ckpt
+    if args.candidate == 2 and args.out == ap.get_default("out"):
+        args.out = "model_labs/tracer_lab/_runs/eval_bootstrap_candidate2"
     out = ROOT / args.out
     out.mkdir(parents=True, exist_ok=True)
 
     prov = ModelProvenance(
-        model="tracer", version="cv_foldB02_v1",
+        model="tracer",
+        version="cv_foldB02_v1" if args.candidate == 1
+        else "cv_foldB02_weld_repair_v2",
         architecture=("TracerNet 4-head U-Net 1.93M params (centre/orient/"
                       "crossing/offset), v5 recipe, trained on the 9 non-B02 "
                       "wells of the dense PLATE_32 corpus; deterministic walk "
@@ -197,6 +208,12 @@ def main(argv=None) -> int:
                                      valid_thresh=VALID_THRESH, prep="nms")
             t0 = time.time()
             res = trace_field(wf, TraceParams(**WALK))
+            if args.candidate == 2:
+                from tracer_lab.decompose_retrace import (
+                    WELD as REPAIR_WELD, apply_repair)
+                from tracer_lab.oracle_trace import weld_objects
+                res = weld_objects(res, wf, **REPAIR_WELD)
+                res, _info = apply_repair(res, norm, ckpt)
             t_walk = time.time() - t0
             objects = objects_from_walk(res)
             length_um = {oid: sum(_arc(p) for p in paths) * PIXEL_UM

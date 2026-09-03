@@ -1,0 +1,16 @@
+{
+  "plate": "PLATE_28",
+  "well": "B04",
+  "source_nd2": "21_B04_br223_egfrc.nd2",
+  "channel": 1,
+  "rows": [
+    1218,
+    2418
+  ],
+  "cols": [
+    1218,
+    2418
+  ],
+  "pixel_um": 0.649341,
+  "window_choice": "center of the 3636^2 field, predeclared arbitrary"
+}

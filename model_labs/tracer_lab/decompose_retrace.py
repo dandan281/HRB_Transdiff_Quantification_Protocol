@@ -387,6 +387,116 @@ def combine(results):
             "stop_reasons": {}}
 
 
+def apply_repair(base: dict, image: np.ndarray, ckpt) -> tuple[dict, dict]:
+    """The frozen identity-repair pipeline on one field, reusable.
+
+    ``base``: the walked (+welded) result on ``image`` (normalized [0,1]).
+    Returns (repaired result — same paths, merged identities, no new
+    geometry), plus the witness-merge info. All knobs are the module's
+    frozen constants (witness 40 px etc.); callers change nothing.
+    """
+    from tracer_lab.infer_trace import predict_fields, fields_for_walk
+    from tracer_lab.oracle_trace import (
+        TraceParams, trace_field, weld_objects)
+
+    color, k, _nc, _ne = conflict_groups(base)
+    bg = float(np.percentile(image, BG_PCT))
+    subs = []
+    for g in range(k):
+        members = {o for o, c in color.items() if c == g}
+        m = group_mask(base, members, image.shape)
+        sub = np.where(m, image, bg).astype(np.float32)
+        p_g = predict_fields(sub, ckpt)
+        wf_g = fields_for_walk(p_g, crossing_thresh=0.4, valid_thresh=0.2,
+                               prep="nms")
+        res_g = trace_field(wf_g, TraceParams(**WALK))
+        res_g = weld_objects(res_g, wf_g, **WELD)
+        res_g = responsibility_filter(
+            res_g, member_spine_tree(base, members))
+        subs.append(res_g)
+    return identity_repair(base, subs, color)
+
+
+def residual_trace(objects_res: dict, image: np.ndarray, ckpt) -> dict:
+    """Trace what pass 1 never claimed: blank the corridors, walk the rest.
+
+    The complement of the sub-image idea: everything already traced is
+    removed, so the residual image contains ONLY the missed fibres — and
+    is sparse by construction, the regime the tracer handles best. New
+    objects must clear `min residual length` (walk's own min_trace) and
+    must NOT lie along existing spines (edge slivers at corridor borders
+    are discarded).
+    """
+    from scipy.spatial import cKDTree
+    from tracer_lab.centreline_targets import resample_polyline
+    from tracer_lab.infer_trace import predict_fields, fields_for_walk
+    from tracer_lab.oracle_trace import (
+        TraceParams, trace_field, weld_objects)
+
+    from scipy import ndimage as _ndi
+    claimed = group_mask(objects_res,
+                         set(objects_res["object_of"].values()),
+                         image.shape)
+    # Blank GENEROUSLY: the corridor radius alone leaves bright halo rims
+    # at its edges, and rim slivers spawn endless sub-min_trace walks that
+    # never claim pixels (pruned walks suppress nothing) — measured: B02
+    # ground >40 min CPU-bound with zero output. +6 px removes the rims.
+    claimed = _ndi.binary_dilation(claimed, np.ones((13, 13), dtype=bool))
+    bg = float(np.percentile(image, BG_PCT))
+    resid = np.where(claimed, bg, image).astype(np.float32)
+    p = predict_fields(resid, ckpt)
+    wf = fields_for_walk(p, crossing_thresh=0.4, valid_thresh=0.2,
+                         prep="nms")
+    res = trace_field(wf, TraceParams(**WALK))
+    res = weld_objects(res, wf, **WELD)
+
+    spine_pts = []
+    for path in objects_res["paths"]:
+        pp = np.asarray(path, float)
+        if pp.ndim == 2 and len(pp) >= 2:
+            spine_pts.append(resample_polyline(pp, 2.0))
+    tree = cKDTree(np.concatenate(spine_pts)) if spine_pts else None
+    keep = set()
+    obj_pts: dict[int, list] = {}
+    for pid, path in enumerate(res["paths"], start=1):
+        pp = np.asarray(path, float)
+        if pp.ndim != 2 or len(pp) < 2:
+            continue
+        obj_pts.setdefault(res["object_of"][pid], []).append(
+            resample_polyline(pp, 2.0))
+    for oid, chunks in obj_pts.items():
+        P = np.concatenate(chunks)
+        if tree is not None:
+            d, _ = tree.query(P, distance_upper_bound=6.0)
+            if np.isfinite(d).mean() > 0.3:
+                continue                      # edge sliver of an old fibre
+        keep.add(oid)
+    paths, object_of = [], {}
+    for pid, path in enumerate(res["paths"], start=1):
+        if res["object_of"][pid] in keep:
+            paths.append(path)
+            object_of[len(paths)] = res["object_of"][pid]
+    return {"paths": paths, "object_of": object_of, "merge_events": [],
+            "stop_reasons": {}}
+
+
+def loop_pipeline(base: dict, image: np.ndarray, ckpt) -> tuple[dict, dict]:
+    """The operator's '+ ...' taken literally: repair, harvest the
+    residual, fold the new fibres in, repair again across old and new.
+
+    Two rounds — measured elsewhere that unseen material is the sole
+    remaining contamination source, and after one residual harvest the
+    unclaimed set is small; further rounds would chase noise.
+    """
+    s1, info1 = apply_repair(base, image, ckpt)
+    new = residual_trace(s1, image, ckpt)
+    s2 = combine([s1, new])
+    s2p, info2 = apply_repair(s2, image, ckpt)
+    info = {"round1": info1, "residual_objects":
+            len(set(new["object_of"].values())), "round2": info2}
+    return s2p, info
+
+
 def run_well(well: str, render: bool = False, mode: str = "full") -> dict:
     from tracer_lab.infer_trace import predict_fields, fields_for_walk
     from tracer_lab.oracle_trace import (
@@ -417,7 +527,7 @@ def run_well(well: str, render: bool = False, mode: str = "full") -> dict:
     bg = float(np.percentile(image, BG_PCT))
     sub_results = []
     sub_imgs = []
-    for g in range(k):
+    for g in (range(k) if mode != "loop" else ()):
         members = {o for o, c in color.items() if c == g}
         m = group_mask(base, members, image.shape)
         sub = np.where(m, image, bg).astype(np.float32)
@@ -434,6 +544,11 @@ def run_well(well: str, render: bool = False, mode: str = "full") -> dict:
         print(f"  repair: {info['witness_merges']} witness merges, "
               f"objects {info['objects'][0]} -> {info['objects'][1]}",
               flush=True)
+    elif mode == "loop":
+        final, info = loop_pipeline(base, image, CV / well / "best.pt")
+        print(f"  loop: r1 {info['round1']['objects']}  "
+              f"+{info['residual_objects']} residual  "
+              f"r2 {info['round2']['objects']}", flush=True)
     else:
         final = combine(sub_results)
     sc_dec = score_against_gt(final, wf_full)
@@ -489,7 +604,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--wells", nargs="+", default=["C05"])
     ap.add_argument("--render", action="store_true")
-    ap.add_argument("--mode", default="full", choices=("full", "repair"))
+    ap.add_argument("--mode", default="full",
+                    choices=("full", "repair", "loop"))
     a = ap.parse_args(argv)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)

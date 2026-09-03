@@ -1,7 +1,65 @@
-# T04 tracer lane — T03 bootstrap run, 2026-08-27
+# T04 tracer lane — sealed T03 run and the work it opened
+### 2026-08-27 → 2026-09-02 · all local, $0 cluster spend
 
-The trace→mask bridge is built and the sealed PLATE_23 numbers exist. All
-local, $0 cluster spend. Numbers go to Codex; nothing here is a ruling.
+Numbers here are measurements, not rulings; Codex owns the T03 ruling
+(§7h). Section anchors §1–§7k are stable — memory notes and Codex's ruling
+document cite them — so later work was appended under new letters rather
+than renumbering.
+
+## 0. State of the lane (read this first)
+
+**Product status.** The tracer measures a plate at parity with the operator
+and ranks wells reliably: PLATE_32 total-length ratio **1.00×**, length
+rank **ρ +0.90**, count rank **ρ +0.97**, all surviving drop-one-well
+(§7k). Every well is scored by a network that never saw it.
+
+**The deployed stack** is walk → junction weld → decompose-retrace identity
+repair. Against the pre-weld tracer on never-tuned test wells: **fibres cut
+into pieces −24%** (776 → 593) and **identity through crossings 0.379 →
+0.474**, at a cost of +56 merges and +0.037 per-fibre length error
+(§7b, §7g).
+
+**The sealed benchmark** beat two of three predeclared floors by wide
+margins (length error 0.086 vs 0.317; false splits 6 vs 52) and failed the
+third (recall 0.557 vs 0.928). Codex ruled candidate #2 not promoted;
+standing T03 candidate: **none** (§3, §7h).
+
+**Three questions answered by measurement this week:**
+
+1. *Is the tracer over-tracing on new plates?* **No** — the operator's own
+   two blind passes over one window overlap on only ~⅓ of their length, and
+   98.5% of tracer length sits on real fibre signal. The apparent 2.5×
+   excess was annotation selectivity; the honest excess is ~1.3× (§7j).
+2. *Was there a pixel-calibration error?* **No** — the operator's Fiji CSVs
+   were always right; raw arc-length re-measurement of freehand traces
+   inflates 10–15% with drawing jitter (§7d).
+3. *Is Omnipose a viable alternative?* **No** — it reports more objects
+   than the operator but half the length, with 84% of them in the shortest
+   class (median 86 µm vs 210 µm), and its well ranking collapses under
+   drop-one-well (§7k).
+
+**Open front:** coverage. The T03 recall gap and the dim-stretch field
+holes are the same problem, and it is not an identity problem (§4, §7a).
+
+### Contents
+
+| § | subject |
+|---|---|
+| 1–6 | the sealed T03 run: predeclarations, leakage, numbers, recall attribution, caveats |
+| 7a | fragmentation diagnosis (census + per-pixel attribution) |
+| 7b | the junction weld — tuned, frozen, claimed |
+| 7c | never-seen plates PLATE_26 / PLATE_28 |
+| 7d | the freeline length convention (the "calibration" non-bug) |
+| 7e | convention restate + the length-class distribution |
+| 7f | decompose-and-retrace, full-replacement mode |
+| 7g | identity-repair mode — the deployed form |
+| 7h | Codex's ruling on candidate #2 |
+| 7i | the pass-2 loop |
+| 7j | the B04 blind re-trace adjudication |
+| 7k | the Omnipose benchmark row |
+| 7l | length-class quantification hardened + tested |
+| 8 | artifacts |
+| 9 | open items and how to reproduce |
 
 ## 1. Predeclarations (fixed before any PLATE_23 inference)
 
@@ -228,10 +286,14 @@ smooths freehand coordinates before measuring; raw point-to-point arc
 counts the drawing jitter and inflates by 10–15%, more for wigglier
 fibres — which is why the apparent "calibration" varied per fibre and per
 well (0.548–0.594). Under a 5-point moving-average smoothing the fitted
-scale collapses to **0.657 ± 0.003 across all eight wells** — one
-constant, ≈ the nd2 metadata 0.6493 (residual ~1.3% = my smoother vs
+scale collapses to **0.6568 ± 0.0011 across all eight wells** — one
+constant, ≈ the nd2 metadata 0.6493 (residual ~1.2% = our smoother vs
 ImageJ's exact freehand algorithm). **The operator's CSVs were correct all
 along.**
+
+(First reported as 0.657 ± 0.003; re-measured 2026-09-02 with the
+corrected symmetric-window smoother in `length_classes.py` — see §7l. The
+headline is unchanged and the between-well spread tightened.)
 
 Consequences:
 
@@ -278,8 +340,10 @@ fragmentation bias is visible; on the sparser-annotated plates the tracer's
 length mix matches the operator's closely, with the long tail (over-merges/
 extensions) as the main distortion.
 
-## 7f. Decompose-and-retrace (operator's sketch, 2026-08-28): built, six
-iterations on the tune well, promising and not yet net-positive
+## 7f. Decompose-and-retrace (operator's sketch, 2026-08-28)
+
+Six iterations on the tune well: promising, not net-positive as a
+full replacement.
 
 `decompose_retrace.py`: first pass (frozen walk+weld) → transverse-conflict
 graph → graph coloring into K sparse groups → per-group masked sub-image
@@ -318,8 +382,7 @@ What was learned, each by its own measurement:
 Status of the full-replacement mode: not deployed; results in
 `_runs/decompose_v1/`.
 
-## 7g. Identity-repair mode (v7): the deployable form — tuned, frozen,
-claimed
+## 7g. Identity-repair mode (v7) — the deployed form: tuned, frozen, claimed
 
 Option 2 implemented (`--mode repair`): the sparse re-traces are WITNESSES
 only — a re-traced object touching ≥ 2 first-pass members for
@@ -345,11 +408,280 @@ well. Cumulative vs the pre-weld frozen tracer: splits 776→593 (−24%),
 identity 0.379→0.474, merges 437→493, mdape 0.359→0.396. Cost: ~5-6
 network inferences + walks per well (~80 s/well GPU).
 
-## 7. Artifacts
+## 7h. Codex ruling on candidate #2 (2026-09-01)
+
+Codex authorized and executed the one-shot candidate-2 run
+(`--candidate 2`: walk + frozen weld + frozen identity repair) and ruled
+(`coordination/reports/codex_t03_candidate2_ruling_2026-09-01.md`):
+
+| metric | cand 2 | cand 1 | floor |
+|---|---|---|---|
+| length_mdape | 0.0864 | 0.0864 | 0.3169 |
+| false_split_count | 4 | 6 | 52 |
+| pooled recall | 0.5493 | 0.5573 | 0.928 |
+
+Ruling: passes length/split floors, fails recall; every cand-1-vs-2
+whole-well bootstrap interval includes zero; with the 2-of-2 multiplicity
+accounted, **candidate 2 is not promoted; standing T03 candidate: none;
+neither authorized for automatic measurement.** Codex disclosed the
+concurrent (unrelated) `decompose_retrace.py` loop-mode edits and
+confirmed the repair function and results were unaffected.
+
+Interpretation, for the record and not as re-litigation: the weld+repair
+stack targets crossing cuts, and the bootstrap's certified fibres barely
+cross (predicted-crossing contact on their spines 0.4–1%, vs 11.7% on the
+dense PLATE_32 well where the stack was validated). T03 was structurally
+insensitive to this mechanism; its measured value lives on dense plates
+(PLATE_32 test wells: splits −24%, identity +0.095). The T03 recall gap
+(0.55 vs 0.93) remains the lane's real open front and is a coverage
+problem, not an identity problem.
+
+## 7i. The pass-2 loop (2026-09-01) — built and measured, not the default
+
+`--mode loop` in `decompose_retrace.py`: repair → residual harvest (blank
+all claimed corridors +6 px — the rim-sliver guard; un-dilated, B02 ground
+>40 min in never-claiming sub-min walks — trace what remains) → fold new
+objects in → second identity repair across old and new. All constants
+inherited frozen; nothing swept.
+
+Tune pooled (base = walk+weld): splits 521→462, merges 307→355, recall
+0.650→0.684, idx 0.440→0.501, mdape 0.313→0.344.
+
+Test-well claim (one shot): splits 707→703 (FLAT — worse on the densest
+wells D04/D11), merges 449→514, **recall 0.641→0.690, idx 0.417→0.485**,
+mdape 0.374→0.428.
+
+Verdict: the loop's coverage and identity gains generalize (+0.05 recall,
++0.07 identity); its split reduction does NOT, and it costs +65 merges and
++0.054 mdape. **Repair-only stays the deployed operating point; the loop
+is an available coverage-oriented mode**, to be preferred only where
+recall matters more than merge/length fidelity (e.g., feeding the
+length-class distribution on sparse-annotated plates). Runtime ~2.5-9
+min/well.
+
+Also this date: `length_classes.py` — the operator's metric (share of
+myotubes per 50-150/150-300/300-500/500-800/>800 µm class) is now a
+standard per-well output of `cv_report.py`, `quantify_plate.py`, and
+`eval_unseen_plates.py`, alongside the freeline smoothing convention
+helpers.
+
+## 7j. B04 blind re-trace (2026-09-01): the 1.78× question ADJUDICATED
+
+The operator blind-retraced the predeclared center 1200² window of
+PLATE_28 B04 (`coordination/retrace_check_p28b04/`, 52 fibres). Frame
+verified (transform test: identity wins, on-bright 0.815 vs ~0.30 for
+every flip/transpose). In-window, smoothed convention, ≥50 µm:
+
+| source | n | mm | on-bright (bg rate 0.302) |
+|---|---|---|---|
+| original ROIs | 30 | 5.1 | 0.939 |
+| fresh blind re-trace | 52 | 6.4 | 0.815 |
+| union of both passes | — | 11.5 | — |
+| tracer (walk+weld) | 57 | 12.8 | **0.985** |
+
+Findings:
+
+1. **The annotation is strongly selective**: the two passes overlap on only
+   ~1/3 of their length — each pass samples a DIFFERENT subset — and their
+   union is 1.9× the original alone. Single-pass totals on this plate
+   under-count by roughly half.
+2. **The tracer's surplus is largely real fibre**: 98.5% of tracer length
+   sits on bright signal (vs 30% chance) — cleaner than either human pass
+   — and 75% of it lies on the union of the two passes. Tracer/union
+   ratio: **1.27** (was 2.5× vs the original alone).
+3. Residual ~25% of tracer length is on-signal but outside both passes —
+   most plausibly fibre neither pass traced (the union would likely keep
+   growing with a third pass), but not certified.
+4. **The human ceiling is plate-dependent**: point-level agreement between
+   the operator's own passes here (~0.28–0.36 at 6 px) is far below the
+   D04 window's trace-level 0.71 — the sparse-annotation practice on
+   these plates is a sampling, not a census. Comparisons of the tracer
+   against single-pass ROIs on P26/P28 must be read accordingly.
+
+Ruling for the standing question: on the never-seen plates, the tracer's
+extra length is predominantly REAL — annotation selectivity, not
+over-tracing. The honest tracer-vs-truth excess is ~1.3× against a
+two-pass union, with the remainder unadjudicated.
+
+## 7k. Omnipose benchmark row (2026-09-02) — checkpoint rescued, plate-32 comparison done
+
+The fine-tuned Omnipose checkpoint was copied off the purge-scheduled
+`/gpfs/scrubbed` to `/gpfs/home/danlovuw/rescued_checkpoints/` and then to
+`model_labs/omnipose/checkpoints/` — sha256 `5250ee87…` verified at all
+three locations. (One fix needed for local inference:
+`rescale=False` is read as 0.0 and resizes the field to nothing —
+`rescale=None` + the `eval_on_bootstrap` keyword set, so the numbers are
+commensurable with the T03 Omnipose path.) 10 wells, ~16 min total,
+`model_labs/omnipose_lab/_runs/plate32_omnipose.json`.
+
+All three measured against the same operator column (smoothed convention):
+
+| metric | tracer (walk+weld) | Omnipose |
+|---|---|---|
+| total length ratio (plate) | **1.004** | 0.513 |
+| length Pearson r | **0.806** | 0.512 |
+| length Spearman ρ | **+0.903** | +0.297 |
+| count ratio (plate) | 1.116 | 1.181 |
+| count Spearman ρ | **+0.967** | +0.888 |
+| drop-one-well length ρ | +0.867…+0.967 | **+0.033…+0.567** |
+
+Length mix (pooled shares ≥50 µm; figure
+`_runs/three_way_length_classes.png`):
+
+| | 50-150 | 150-300 | 300-500 | 500-800 | >800 | median |
+|---|---|---|---|---|---|---|
+| operator | 29.4% | 44.5% | 21.2% | 4.7% | 0.2% | 210 µm |
+| tracer | 50.7% | 29.1% | 13.1% | 5.0% | 2.1% | 148 µm |
+| Omnipose | **84.4%** | 14.1% | 1.5% | 0.0% | 0.0% | **86 µm** |
+
+Reading: Omnipose finds MORE objects than the operator (6137 vs 5196) but
+half the length (632 vs 1231 mm) and essentially nothing above 300 µm — it
+fragments myotubes into short pieces, the one-label-per-pixel failure this
+lane was created to escape, now quantified on the operator's own metric.
+Its per-well length ranking does not survive drop-one-well (ρ falls to
++0.03 without B02), so it cannot rank wells. The tracer is the better
+candidate on every axis. Omnipose stays benchmark-only (user decision); no
+further development.
+
+## 7l. Length-class quantification hardened (2026-09-02)
+
+The operator's metric (share of myotubes per length band) was wired into
+the plate scripts on 2026-09-01 but only exercised end-to-end by
+`quantify_plate_omnipose.py`. Completing it surfaced two defects:
+
+1. **The human column used a different convention from the report.**
+   `cv_report.py` and `quantify_plate.py` measured operator traces by raw
+   arc while every figure in this report uses smoothed (§7d), so the
+   standard output would have disagreed with the published numbers by
+   10-15% on the human side. Both now emit BOTH, explicitly keyed
+   (`human_length_classes` raw, `human_length_classes_smoothed`, plus
+   `human_mm_smoothed`). Adopting one convention lane-wide remains the
+   open decision in §9 — the script does not make it quietly.
+2. **`smooth_polyline` bent the ends of every trace.** Edge-padding plus a
+   fixed window replicates the first point, so on a straight line the
+   second point moved 1 -> 1.2 (w=5), putting a small kink at both ends.
+   Replaced with a symmetric window that shrinks near the boundaries,
+   which reproduces straight lines exactly and leaves endpoints untouched
+   by construction. Caught by a new contract test, not by inspection.
+
+Re-measured after the fix: the §7d fitted scale is **0.6568 ± 0.0011**
+across the eight P26/P28 wells (first reported 0.657 ± 0.003) — the
+finding is unchanged at reported precision and the between-well spread
+tightened. No other reported number depends on the smoother at the
+precision quoted.
+
+`model_labs/tests/test_length_classes.py` (8 tests) now pins: bin edges
+and the right-open boundary rule, shares summing to 1 *within their 4-dp
+rounding* (the first version of this assertion passed only because its
+inputs rounded exactly — worst real deviation is 1e-4), the <50 µm gate,
+empty-well safety (no NaN), endpoint/straight-line invariance of the
+smoother, short-polyline pass-through, µm scaling, and the §7d
+raw-inflates-freehand finding itself. Suite: **26/26 green**.
+
+**End-to-end verification** (all four consumers executed after the edits,
+not merely compiled): `eval_unseen_plates.py` (8 wells),
+`cv_report.py` (10 wells), `quantify_plate_omnipose.py` (10 wells) and
+`quantify_plate.py` share the same helper; every well record now carries
+`*_length_classes`, and the CV table also carries both human conventions.
+Cross-check: the plate human total is 1325.2 mm raw vs **1231.3 mm
+smoothed (raw inflates 7.6%)**, the smoothed figure matching §7e's restate
+exactly. The convention is not cosmetic for this metric — on B02 the
+operator's own 50–150 µm share moves 32.8% → 36.2% between conventions,
+which is why both are emitted rather than one chosen quietly.
+
+## 8. Artifacts
+
+Code (committed; `model_labs/tracer_lab/` unless noted):
 
 | path | what |
 |---|---|
-| `model_labs/tracer_lab/eval_tracer_on_bootstrap.py` | the bridge + sealed run (committed) |
-| `_runs/eval_bootstrap_v1/eval_summary.json` | per-well + pooled numbers (local, untracked) |
-| `_runs/eval_bootstrap_v1/width_cap_diagnostic.json` | GT width distribution + ribbon ceiling |
-| `_runs/eval_bootstrap_v1/predictions/` | exported InstanceSets per config |
+| `oracle_trace.py` | the walk; `weld_objects` = the junction weld (§7b) |
+| `decompose_retrace.py` | decomposition: `--mode full` / `repair` (deployed) / `loop`; `apply_repair` is the reusable entry point (§7f, §7g, §7i) |
+| `eval_tracer_on_bootstrap.py` | trace→mask bridge + sealed T03 run; `--candidate 1\|2` (§1–3, §7h) |
+| `weld_rescue_sweep.py` | weld/rescue tune sweep + test claim (§7b) |
+| `frag_census.py`, `frag_attribution.py` | fragmentation diagnostics (§7a) |
+| `eval_unseen_plates.py` | PLATE_26/28 vs operator ROIs (§7c) |
+| `length_distribution_report.py` | convention restate + length-class shares (§7e) |
+| `length_classes.py` | the length-class + freeline-smoothing convention, shared (§7d, §7i) |
+| `cv_report.py`, `quantify_plate.py` | plate tables; both now emit `*_length_classes` |
+| `model_labs/omnipose_lab/quantify_plate_omnipose.py` | the Omnipose benchmark row (§7k) |
+| `model_labs/tests/test_oracle_trace.py` | 3 weld contract tests (§7b) |
+| `model_labs/tests/test_length_classes.py` | 8 length-class + smoothing contract tests (§7l); suite 26/26 green |
+
+Results (local, `_runs/` is gitignored):
+
+| path | what |
+|---|---|
+| `_runs/eval_bootstrap_v1/` | candidate #1 sealed run: `eval_summary.json`, `width_cap_diagnostic.json`, `frag_diag.json`, `unwalked_attribution.json`, `break_attribution.json`, exported InstanceSets |
+| `_runs/eval_bootstrap_candidate2/eval_summary.json` | candidate #2 sealed run (Codex-executed) |
+| `_runs/weld_rescue_sweep.json`, `_runs/weld_rescue_claim.json` | weld tune + claim |
+| `_runs/decompose_v1/results.json` | decomposition modes, all wells |
+| `_runs/length_distribution_report.json` | both conventions, both plate sets |
+| `_runs/three_way_plate32.json` | human vs tracer vs Omnipose |
+| `model_labs/omnipose_lab/_runs/plate32_omnipose.json` | Omnipose per-well |
+| `_runs/*.png` | overlays and figures (weld before/after, unseen plates, length proportions, three-way, B04 re-trace) |
+
+Data and coordination:
+
+| path | what |
+|---|---|
+| `model_labs/omnipose/checkpoints/v1-fold-B02-paint_out_epoch_299` | rescued Omnipose checkpoint, sha256 `5250ee87…` (also `/gpfs/home/danlovuw/rescued_checkpoints/`) |
+| `coordination/retrace_check/` | D04 human ceiling (2026-08-25) |
+| `coordination/retrace_check_p28b04/` | B04 blind re-trace + adjudication (§7j) |
+| `coordination/CODEX_PROMPT_T03_CANDIDATE2_2026-09-01.md` | the candidate-2 submission prompt |
+| `coordination/reports/codex_t03_candidate2_ruling_2026-09-01.md` | Codex's ruling (§7h) |
+
+## 9. Open items and reproduction
+
+**Decisions resting with the operator**
+
+1. **Steeper weld point** — dist 26 removes ~23% more cuts on tune wells for
+   mdape +0.036; frozen at dist 14 by the predeclared guard (§7b).
+2. **Smoothed convention lane-wide** — adopting it is a metric redefinition
+   and would require restating prior tables once, under both conventions
+   (§7d, §7e). The restate itself is already computed.
+3. **Candidate #3 to Codex?** Recall is T03's only failing metric and the
+   pass-2 loop is the only mechanism that moves it (+0.05); expected landing
+   ~0.60 against a 0.928 floor, so the submission may not be worth its
+   multiplicity cost (§7h, §7i).
+
+**Technical front (needs an explicit go)**
+
+4. **The history-conditioned stepping head** — the one untried mechanism
+   from the original plan, and the only one aimed at walking where the
+   centre field goes dark, which is 46–78% of missing coverage (§7a). Gates
+   must be pre-declared on tune wells before any training.
+5. **A third blind pass** on the B04 window would certify the ~25% of
+   tracer length that is on-signal but outside both existing passes (§7j).
+
+**Reproduction** (GPU env `pm-omnipose`; CPU work in `pm-annotate`):
+
+    # deployed stack, any PLATE_32 well
+    python model_labs/tracer_lab/decompose_retrace.py --wells C05 --mode repair
+
+    # plate tables (now including length-class shares)
+    python model_labs/tracer_lab/cv_report.py
+    python model_labs/tracer_lab/length_distribution_report.py
+
+    # never-seen plates (two stages: extract needs an env with `nd2`)
+    conda run -n base python model_labs/tracer_lab/eval_unseen_plates.py --extract
+    python model_labs/tracer_lab/eval_unseen_plates.py
+
+    # Omnipose benchmark row
+    python model_labs/omnipose_lab/quantify_plate_omnipose.py \
+        --checkpoint model_labs/omnipose/checkpoints/v1-fold-B02-paint_out_epoch_299
+
+    # tests
+    PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest \
+        model_labs/tests/test_oracle_trace.py model_labs/tests/test_tracer_targets.py -q
+
+**Traps paid for in this arc** (beyond those in the 2026-08-23 report):
+
+- `rescale=False` in a `cellpose_omni` eval call is read as 0.0 and resizes
+  the field to nothing — use `rescale=None` (§7k).
+- Blanking a corridor without dilating it leaves bright halo rims that
+  spawn endless never-claiming walks (B02: >40 min, zero output) (§7i).
+- Endpoint extensions used for *conflict detection* must be long (90 px) and
+  those used for *masking* short (20 px); one constant for both rebuilds the
+  fragments-joined error class (§7f).
+- `conda run` cannot take multi-line `python -c`; write a file instead.

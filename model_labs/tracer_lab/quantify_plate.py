@@ -79,11 +79,19 @@ def main(argv=None) -> int:
         h_len = np.array([_arc(t) * um for t in gt["traces"]])
         h_len = h_len[h_len >= a.min_um]
 
+        # Raw arc AND smoothed, both labelled -- see cv_report.py for why
+        # (freehand jitter inflates raw arc 10-15%; §7d).
+        from tracer_lab.length_classes import class_shares, smooth_polyline
+        h_sm = np.array([_arc(smooth_polyline(t)) * um for t in gt["traces"]])
+        h_sm = h_sm[h_sm >= a.min_um]
         rec = {"well": well, "held_out": well == a.held_out,
                "human_lengths_um": [round(float(v), 2) for v in h_len],
                "human_n": int(len(h_len)),
                "human_mm": float(h_len.sum() / 1000.0),
-               "human_median_um": float(np.median(h_len)) if len(h_len) else 0.0}
+               "human_mm_smoothed": float(h_sm.sum() / 1000.0),
+               "human_median_um": float(np.median(h_len)) if len(h_len) else 0.0,
+               "human_length_classes": class_shares(h_len),
+               "human_length_classes_smoothed": class_shares(h_sm)}
 
         for tag, ckpt, prep in (("raw", a.ckpt, "raw"),
                                 ("nms", a.ckpt_nms, "nms")):
@@ -113,6 +121,7 @@ def main(argv=None) -> int:
             # per-fibre lengths, needed for distribution figures; summary
             # statistics cannot be un-summarised later
             rec[f"{tag}_lengths_um"] = [round(float(v), 2) for v in lens]
+            rec[f"{tag}_length_classes"] = class_shares(lens)
             rec[f"{tag}_recall"] = float(sc["recall_traces"])
             rec[f"{tag}_identity"] = float(sc["identity_through_crossing"])
             rec[f"{tag}_mdape"] = float(sc["length_mdape"])

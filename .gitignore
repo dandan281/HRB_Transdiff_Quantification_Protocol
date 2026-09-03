@@ -100,3 +100,6 @@ competitors/MyoFuse/upstream/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Rescued/compiled model checkpoints — large binaries, never in git
+model_labs/omnipose/checkpoints/
